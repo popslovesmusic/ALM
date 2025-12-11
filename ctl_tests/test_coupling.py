@@ -1,5 +1,10 @@
 """Coupling-specific tests."""
-from ctl.coupling import apply_coupling, compute_coupling_metrics, load_coupling_config
+from ctl.coupling import (
+    apply_coupling,
+    compute_coupling_metrics,
+    load_coupling_config,
+    process_coupling_sequence,
+)
 from ctl_tests.ctl_mock_data import generate_contrasting_l_sequence, generate_l_sequence
 from ctl_tests.ctl_testing_utils import build_r_sequence, load_tensor_r_config
 
@@ -13,9 +18,12 @@ def test_coupling_alignment_and_agreement_score():
 
     metrics = compute_coupling_metrics(l_seq, r_seq, coupling_cfg)
     coupled = apply_coupling(l_seq, r_seq, coupling_cfg)
+    summary_bundle = process_coupling_sequence(l_seq, r_seq, coupling_cfg)
 
     assert len(coupled) == len(l_seq)
     assert metrics["agreement"] > 0.5
+    assert metrics["coherence_score"] > 0.4
+    assert summary_bundle["summary"]["polarity_disagreement_rate"] >= 0.0
     assert all(cell["coherence"] >= coupling_cfg["coherence"]["min_coherence"] for cell in coupled)
     assert all(cell["constraint_flag"] in {"OK", "WARN", "VIOLATION"} for cell in coupled)
 
@@ -29,8 +37,10 @@ def test_coupling_detects_disparity():
         for i in range(len(l_seq))
     ]
 
+    metrics = compute_coupling_metrics(l_seq, r_seq, coupling_cfg)
     coupled = apply_coupling(l_seq, r_seq, coupling_cfg)
     violations = [c for c in coupled if c["constraint_flag"] != "OK"]
 
     assert violations, "Expected coupling to flag disparities"
     assert any(cell["constraint_flag"] == "VIOLATION" for cell in violations)
+    assert metrics.get("polarity_disagreement_rate", 0) >= 0

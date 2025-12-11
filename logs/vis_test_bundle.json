@@ -1,0 +1,64 @@
+{
+  "tone": [
+    {
+      "timestamp": 0.0,
+      "tone": 1
+    },
+    {
+      "timestamp": 1.0,
+      "tone": 2
+    },
+    {
+      "timestamp": 2.0,
+      "tone": 3
+    },
+    {
+      "timestamp": 3.0,
+      "tone": 4
+    }
+  ],
+  "hue": [
+    {
+      "timestamp": 0.0,
+      "r": 30,
+      "g": 60,
+      "b": 90
+    },
+    {
+      "timestamp": 1.0,
+      "r": 40,
+      "g": 65,
+      "b": 93
+    },
+    {
+      "timestamp": 2.0,
+      "r": 50,
+      "g": 70,
+      "b": 96
+    },
+    {
+      "timestamp": 3.0,
+      "r": 60,
+      "g": 75,
+      "b": 99
+    }
+  ],
+  "intensity": [
+    {
+      "timestamp": 0.0,
+      "intensity": 1.0
+    },
+    {
+      "timestamp": 1.0,
+      "intensity": 1.1
+    },
+    {
+      "timestamp": 2.0,
+      "intensity": 1.2
+    },
+    {
+      "timestamp": 3.0,
+      "intensity": 1.3
+    }
+  ]
+}

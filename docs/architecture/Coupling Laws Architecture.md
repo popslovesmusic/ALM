@@ -30,7 +30,7 @@ Semantics:
 * **intensity**: carries long-horizon salience; avoids spikes by partial adoption.
 * **polarity**: prefers consensus; may flip when conflicts persist with low agreement.
 * **agreement**: composite similarity measure (tone, hue, intensity).
-* **coherence**: internal stability that decays unless supported by agreement.
+* **coherence**: internal stability that decays unless supported by agreement and window-level harmony.
 * **constraint_flag**: signals disparities that exceed allowed thresholds.
 
 ---
@@ -43,8 +43,9 @@ Semantics:
 
 ### Configuration (ctl/coupling_config.json5)
 * **weights**: `tone_alignment`, `hue_alignment`, `intensity_alignment` (0–1 blends).
-* **thresholds**: `tone_error_max`, `hue_error_max`, `intensity_gap_max`, `agreement_min`.
-* **coherence**: `min_coherence`, `boost_on_agreement`, `decay`.
+* **nonlinear**: `tone_exponent`, `hue_exponent`, `intensity_exponent`, `coherence_curve`, `polarity_penalty`.
+* **thresholds**: `tone_error_max`, `hue_error_max`, `intensity_gap_max`, `agreement_min`, `window` (context span).
+* **coherence**: `min_coherence`, `boost_on_agreement`, `decay`, `window_gain` (sliding-window lift).
 * **polarity**: `prefer_consensus`, `flip_if_conflict`.
 * **logging**: `enabled`, `log_dir` (append-only CSVs).
 
@@ -53,10 +54,11 @@ Semantics:
 ## 3. Coupling Algorithm
 For each `(L[i], R[i])` pair:
 
-1. **Measure Disparity**
+1. **Measure Disparity (Nonlinear Aware)**
    * `tone_gap` = min cyclic distance on 12-tone circle.
    * `hue_gap` = mean RGB channel difference.
    * `intensity_gap` = absolute scalar gap.
+   * `polarity_disagreement` = 1 if signs differ.
 
 2. **Blend Toward Consensus**
    * `tone` = `(1-w_tone) * tone_R + w_tone * tone_L (mod 12)`.
@@ -64,11 +66,13 @@ For each `(L[i], R[i])` pair:
    * `intensity` = linear blend using `w_intensity`.
 
 3. **Compute Agreement**
-   * Normalize each gap by its threshold and average.
+   * Normalize each gap by its threshold, apply nonlinear exponents.
+   * Sliding-window penalty uses recent rolling means.
    * `agreement = max(0, 1 - mean_normalized_gap)`.
 
 4. **Update Coherence**
    * Apply decay, then add agreement-driven boost.
+   * Add `window_gain` boost when rolling disparity decreases.
    * Clamp to `>= min_coherence`.
 
 5. **Negotiate Polarity**
@@ -76,7 +80,7 @@ For each `(L[i], R[i])` pair:
    * If conflict persists and `agreement < agreement_min`, optionally flip polarity.
 
 6. **Constraint Flagging**
-   * Count breaches of tone/hue/intensity thresholds or low agreement.
+   * Count breaches of tone/hue/intensity thresholds, low agreement, or window penalty beyond 1.0.
    * `WARN` on single breach, `VIOLATION` on multiple, else `OK`.
 
 7. **Emit Coupled Cell** with updated fields.
@@ -84,7 +88,7 @@ For each `(L[i], R[i])` pair:
 ---
 
 ## 4. Metrics and Logging
-* **Coupling metrics**: averages of tone/hue/intensity errors and agreement.
+* **Coupling metrics**: averages of tone/hue/intensity disparities, polarity disagreement rate, coherence score, and agreement.
 * **Tensor R behavior**: mean tone/intensity/coherence + sequence length.
 * **End-to-end summary**: input length, mean agreement, warning/violation counts.
 
@@ -100,6 +104,6 @@ CSV logs (append-only) live in `/logs/`:
 2. Build Tensor R via `tensor_r_update.update_tensor_r_sequence` using `tensor_R.json5`.
 3. Load coupling config with `coupling.load_coupling_config()`.
 4. Run `coupling.apply_coupling(L, R, config)` to obtain coupled stream.
-5. Compute metrics and append logs using provided logging helpers.
+5. Compute metrics (or full `process_coupling_sequence`) and append logs using provided logging helpers.
 
 This pipeline ensures the inside-out model (R) remains synchronized with the outside-in stream (L) while respecting stability, coherence, and constraint signals.

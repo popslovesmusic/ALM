@@ -1,3 +1,4 @@
-tone_error,hue_error,intensity_gap,agreement
-0.75,6.167,0.047,0.913
-0.0,9.111,0.072,0.972
+tone_disparity,hue_disparity,intensity_disparity,polarity_disagreement_rate,coherence_score,agreement
+,,,,,0.913
+,,,,,0.972
+2.667,10.778,0.072,1.0,0.619,0.756

@@ -6,16 +6,25 @@
     "hue_alignment": 0.25,
     "intensity_alignment": 0.2
   },
+  "nonlinear": {
+    "tone_exponent": 1.25,
+    "hue_exponent": 1.1,
+    "intensity_exponent": 1.05,
+    "coherence_curve": 1.1,
+    "polarity_penalty": 0.12
+  },
   "thresholds": {
     "tone_error_max": 3,
     "hue_error_max": 45,
     "intensity_gap_max": 1.5,
-    "agreement_min": 0.4
+    "agreement_min": 0.4,
+    "window": 4
   },
   "coherence": {
     "min_coherence": 0.35,
     "boost_on_agreement": 0.08,
-    "decay": 0.05
+    "decay": 0.05,
+    "window_gain": 0.05
   },
   "polarity": {
     "prefer_consensus": true,
