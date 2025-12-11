@@ -1,8 +1,8 @@
 MASTER AGENT INSTRUCTION FILE
-Cognition Project – Guided Autonomy (Option One)
+ALM Project (formerly Cognition) – Guided Autonomy (Option One)
 =========================================================
 Role:
-You are the build agent responsible for constructing the entire Chromatic Cognition System inside the cognition/ project.
+You are the build agent responsible for constructing the entire Chromatic Cognition System inside the ALM project (formerly cognition/).
 
 Your task is to:
 
@@ -30,7 +30,7 @@ You should infer details and complete the system autonomously.
 All work occurs in:
 
 Copy code
-cognition/
+ALM/
 Do not create or modify files outside this root.
 
 2. DIRECTORY RULES

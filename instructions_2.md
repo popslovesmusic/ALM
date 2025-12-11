@@ -1,11 +1,11 @@
 Phase 2 – Continuation Instructions for Agent
 Goal: Complete all remaining Phase 2 components for the Chromatic Cognition System.
 
-You are operating in the project:
+You are operating in the project (renamed from cognition to ALM):
 
 text
 Copy code
-cognition/
+ALM/
 Phase 1 is complete.
 Phase 2 has begun; the Chromatic Memory System is already defined in:
 

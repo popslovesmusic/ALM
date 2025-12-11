@@ -2,7 +2,7 @@ PHASE 2 — What’s Next? (Natural Evolution)
 ============================================
 Phase 1 built a body.
 
-Phase 2 gives it a mind.
+Phase 2 gives it a mind for the renamed ALM project (formerly cognition).
 
 This phase consists of five major upgrades, each enabling a different dimension of cognition.
 
