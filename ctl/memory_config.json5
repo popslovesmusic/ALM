@@ -1,0 +1,26 @@
+{
+  "name": "Chromatic Memory System",
+  "peaks": {
+    "tone": {
+      "decay": 0.03,
+      "max_peaks": 12,
+      "reinforce_gain": 0.35,
+      "min_separation": 2,
+      "min_strength": 0.05
+    },
+    "hue": {
+      "decay": 0.02,
+      "max_peaks": 8,
+      "reinforce_gain": 0.25,
+      "min_distance": 18,
+      "min_strength": 0.05
+    }
+  },
+  "matching": {
+    "tone_tolerance": 2,
+    "hue_tolerance": 25,
+    "intensity_weight": 0.3,
+    "coherence_bias": 0.2,
+    "min_match_strength": 0.12
+  }
+}

@@ -15,6 +15,8 @@ from typing import Dict, List, Any
 import math
 import copy
 
+from ctl import memory
+
 
 ChromaticCell = Dict[str, Any]
 Config = Dict[str, Any]
@@ -72,28 +74,14 @@ def _exp_smooth(prev: float, curr: float, beta: float) -> float:
 
 # Memory hooks (stubs for now)
 
-def match_to_memory_profile(l_cell: ChromaticCell) -> bool:
-    """
-    Stub: returns False for now.
-    In future, this will check tone/hue/etc. against stored peak-sets.
-    """
-    return False
-
-
-def snap_to_nearest_memory_tone(tone: int) -> int:
-    """
-    Stub: currently returns input tone unchanged.
-    Replace with snapping to known memory tone peaks.
-    """
-    return tone
-
-
-def snap_to_nearest_memory_hue(hue: List[int]) -> List[int]:
-    """
-    Stub: currently returns hue unchanged.
-    Replace with snapping to known memory hue peaks.
-    """
-    return hue
+def _resolve_memory_config(memory_config: Config | None) -> Config:
+    """Return provided memory config or load default."""
+    if memory_config is not None:
+        return memory_config
+    try:
+        return memory.load_memory_config()
+    except FileNotFoundError:
+        return {}
 
 
 # --------- Initialization --------- #
@@ -124,7 +112,9 @@ def update_tensor_r_cell(
     l_prev: ChromaticCell,
     l_curr: ChromaticCell,
     config: Config,
-    flip_history: List[int] = None
+    flip_history: List[int] = None,
+    memory_state: Dict[str, Any] | None = None,
+    memory_config: Config | None = None,
 ) -> ChromaticCell:
     """
     Compute R[i] given:
@@ -133,6 +123,8 @@ def update_tensor_r_cell(
     - L[i]   = l_curr
     - config: Tensor R config dict (from tensor_R.json5)
     - flip_history: list of past polarity_R values (for over-oscillation detection)
+    - memory_state: optional mutable memory accumulator from ctl.memory
+    - memory_config: optional memory config dict (defaults to ctl/memory_config.json5)
 
     Returns a new R[i] cell.
     """
@@ -160,6 +152,8 @@ def update_tensor_r_cell(
     max_tone_jump = tone_constr_cfg.get("max_jump", 5)
     saturation_factor = intens_constr_cfg.get("saturation_factor", 0.5)
     coherence_enabled = coherence_cfg.get("enabled", True)
+    mem_state: Dict[str, Any] | None = memory_state if mem_cfg.get("enabled", True) else None
+    mem_cfg_resolved = _resolve_memory_config(memory_config) if mem_state is not None else {}
 
     r = copy.deepcopy(prev_r)
     r["constraint_flag"] = "OK"  # reset by default
@@ -205,23 +199,19 @@ def update_tensor_r_cell(
 
     # --- Coherence / memory integration ---
     if coherence_enabled:
-        # Start from previous coherence
         coherence = prev_r.get("coherence", 1.0)
 
-        if mem_cfg.get("enabled", True) and match_to_memory_profile(l_curr):
+        if mem_state is not None and memory.match_to_memory_profile(l_curr, mem_state, mem_cfg_resolved):
             coherence += coherence_gain
 
-        # Clamp coherence to [0, 1.0] for simplicity
         coherence = max(0.0, min(1.0, coherence))
         r["coherence"] = coherence
-
-        # Boost intensity by coherence
         r["intensity"] += coherence * intensity_gain
 
     # --- Snap to memory peaks (tone/hue) ---
-    if mem_cfg.get("enabled", True):
-        r["tone"] = snap_to_nearest_memory_tone(r["tone"])
-        r["hue"] = snap_to_nearest_memory_hue(r["hue"])
+    if mem_state is not None:
+        r["tone"] = memory.snap_to_nearest_memory_tone(r["tone"], mem_state, mem_cfg_resolved)
+        r["hue"] = memory.snap_to_nearest_memory_hue(r["hue"], mem_state, mem_cfg_resolved)
 
     # --- Tone constraint (max jump) ---
     if tone_constr_cfg.get("enabled", True):
@@ -248,6 +238,12 @@ def update_tensor_r_cell(
             r["constraint_flag"] = "VIOLATION"
             r["polarity"] = 1  # reset structural polarity
 
+    # --- Memory reinforcement update ---
+    if mem_state is not None:
+        updated_mem = memory.update_memory_state(mem_state, l_curr, mem_cfg_resolved, r.get("coherence", 1.0))
+        mem_state.clear()
+        mem_state.update(updated_mem)
+
     return r
 
 
@@ -255,7 +251,8 @@ def update_tensor_r_cell(
 
 def update_tensor_r_sequence(
     l_sequence: List[ChromaticCell],
-    config: Config
+    config: Config,
+    memory_config: Config | None = None,
 ) -> List[ChromaticCell]:
     """
     Convenience function:
@@ -270,6 +267,7 @@ def update_tensor_r_sequence(
 
     r_sequence: List[ChromaticCell] = []
     flip_history: List[int] = []
+    mem_state = memory.init_memory_state() if config.get("behaviors", {}).get("memory_integration", {}).get("enabled", True) else None
 
     # Initialize R[0]
     r0 = init_tensor_r_cell(l_sequence[0], config)
@@ -281,7 +279,15 @@ def update_tensor_r_sequence(
         prev_r = r_sequence[-1]
         l_prev = l_sequence[i - 1]
         l_curr = l_sequence[i]
-        r_i = update_tensor_r_cell(prev_r, l_prev, l_curr, config, flip_history)
+        r_i = update_tensor_r_cell(
+            prev_r,
+            l_prev,
+            l_curr,
+            config,
+            flip_history,
+            memory_state=mem_state,
+            memory_config=memory_config,
+        )
         r_sequence.append(r_i)
         flip_history.append(r_i["polarity"])
 
