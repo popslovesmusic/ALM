@@ -1,0 +1,69 @@
+
+
+{
+  name: "Tensor_R",
+  role: "Chromatic Interpretive Fiber",
+  domain: "MSC_Coherence_Constraint",
+  description: "Inside-out chromatic stream of stabilized, predicted, and constraint-aware events.",
+
+  cell_schema: {
+    tone: "int (0–11) – predicted/smoothed tone",
+    hue: "array[3] – expected RGB [0–255, 0–255, 0–255]",
+    intensity: "float – long-horizon salience",
+    polarity: "int – +1 or -1 structural polarity",
+    timestamp: "number – predictive or lagged time index",
+    coherence: "float – optional 0–1 coherence score",
+    constraint_flag: "string – 'OK' | 'WARN' | 'VIOLATION'"
+  },
+
+  behaviors: {
+    smoothing: {
+      enabled: true,
+      lambda: 0.7  // smoothing factor for tone_R
+    },
+
+    prediction: {
+      enabled: true,
+      alpha: 0.2   // weight for local tone trend from L
+    },
+
+    hue_expectation: {
+      enabled: true,
+      weight: 0.2  // blend weight toward hue_L each step
+    },
+
+    intensity_integration: {
+      enabled: true,
+      beta: 0.85,   // memory factor (higher = slower change)
+      max_value: 3.0  // saturation limit before damping
+    },
+
+    polarity_integration: {
+      enabled: true,
+      flip_on_input_change: true,   // flip R polarity when L polarity changes
+      max_flips_per_window: 4,      // constraint: maximum flips
+      flip_window: 16               // window size (steps) to monitor flips
+    },
+
+    memory_integration: {
+      enabled: true,
+      coherence_gain: 0.2,  // how much to increase coherence on match
+      intensity_gain: 0.1   // how much coherence boosts intensity_R
+    },
+
+    tone_constraints: {
+      enabled: true,
+      max_jump: 5  // maximum allowed tone jump between R[i-1] and R[i]
+    },
+
+    intensity_constraints: {
+      enabled: true,
+      saturation_factor: 0.5  // multiply intensity_R by this on saturation
+    },
+
+    coherence_field: {
+      enabled: true,  // track coherence_R[i]
+      default_value: 1.0
+    }
+  }
+}

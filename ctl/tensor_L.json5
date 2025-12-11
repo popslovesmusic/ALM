@@ -1,0 +1,22 @@
+{
+  name: "Tensor_L",
+  role: "Chromatic Perceptual Fiber",
+  domain: "MSP_Relational",
+  description: "Outside-in chromatic stream of immediate perceptual events.",
+
+  cell: {
+    tone: "int (0–11)",
+    hue: "RGB array",
+    intensity: "float",
+    polarity: "int (+1 or -1)",
+    timestamp: "int or float"
+  },
+
+  behaviors: {
+    smoothing: false,
+    prediction: false,
+    constraint_enforcement: false,
+    memory_integration: false,
+    local_interference: true
+  }
+}

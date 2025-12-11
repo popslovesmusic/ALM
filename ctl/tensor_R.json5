@@ -1,0 +1,22 @@
+{
+  name: "Tensor_R",
+  role: "Chromatic Interpretive Fiber",
+  domain: "MSC_Coherence_MBC_Constraint",
+  description: "Inside-out chromatic stream of stabilized, predicted, and constraint-aware events.",
+
+  cell: {
+    tone: "int (predicted/smoothed)",
+    hue: "RGB array (expected values)",
+    intensity: "float (long-horizon salience)",
+    polarity: "int (+1 or -1, ethical/structural polarity)",
+    timestamp: "int or float (predictive or lagged)"
+  },
+
+  behaviors: {
+    smoothing: true,
+    prediction: true,
+    constraint_enforcement: true,
+    memory_integration: true,
+    local_interference: true
+  }
+}
