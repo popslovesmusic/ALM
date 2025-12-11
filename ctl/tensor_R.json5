@@ -1,22 +1,31 @@
 {
-  name: "Tensor_R",
-  role: "Chromatic Interpretive Fiber",
-  domain: "MSC_Coherence_MBC_Constraint",
-  description: "Inside-out chromatic stream of stabilized, predicted, and constraint-aware events.",
-
-  cell: {
-    tone: "int (predicted/smoothed)",
-    hue: "RGB array (expected values)",
-    intensity: "float (long-horizon salience)",
-    polarity: "int (+1 or -1, ethical/structural polarity)",
-    timestamp: "int or float (predictive or lagged)"
+  "name": "Tensor_R",
+  "role": "Chromatic Interpretive Fiber",
+  "domain": "MSC_Coherence_MBC_Constraint",
+  "description": "Inside-out chromatic stream of stabilized, predicted, and constraint-aware events.",
+  "cell": {
+    "tone": "int (predicted/smoothed)",
+    "hue": "RGB array (expected values)",
+    "intensity": "float (long-horizon salience)",
+    "polarity": "int (+1 or -1, ethical/structural polarity)",
+    "timestamp": "int or float (predictive or lagged)",
+    "coherence": "float 0-1 (stability of the internal model)",
+    "constraint_flag": "string (OK | WARN | VIOLATION)"
   },
-
-  behaviors: {
-    smoothing: true,
-    prediction: true,
-    constraint_enforcement: true,
-    memory_integration: true,
-    local_interference: true
+  "behaviors": {
+    "smoothing": {"enabled": true, "lambda": 0.65},
+    "prediction": {"enabled": true, "alpha": 0.25},
+    "hue_expectation": {"enabled": true, "weight": 0.2},
+    "intensity_integration": {"enabled": true, "beta": 0.85, "max_value": 3.0},
+    "polarity_integration": {
+      "enabled": true,
+      "flip_on_input_change": true,
+      "max_flips_per_window": 4,
+      "flip_window": 8
+    },
+    "memory_integration": {"enabled": true, "coherence_gain": 0.15, "intensity_gain": 0.05},
+    "tone_constraints": {"enabled": true, "max_jump": 5},
+    "intensity_constraints": {"enabled": true, "saturation_factor": 0.6},
+    "coherence_field": {"enabled": true, "default_value": 1.0}
   }
 }

@@ -1,0 +1,28 @@
+{
+  "name": "Coupling Laws",
+  "description": "Rules for binding Tensor L and Tensor R into a coherent chromatic stream.",
+  "weights": {
+    "tone_alignment": 0.55,
+    "hue_alignment": 0.25,
+    "intensity_alignment": 0.2
+  },
+  "thresholds": {
+    "tone_error_max": 3,
+    "hue_error_max": 45,
+    "intensity_gap_max": 1.5,
+    "agreement_min": 0.4
+  },
+  "coherence": {
+    "min_coherence": 0.35,
+    "boost_on_agreement": 0.08,
+    "decay": 0.05
+  },
+  "polarity": {
+    "prefer_consensus": true,
+    "flip_if_conflict": true
+  },
+  "logging": {
+    "enabled": true,
+    "log_dir": "logs"
+  }
+}
