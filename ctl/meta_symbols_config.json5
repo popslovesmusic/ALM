@@ -1,0 +1,19 @@
+{
+  "relation_weights": {
+    "motif_match": 0.4,
+    "contrast": 0.25,
+    "coherence": 0.2,
+    "polarity": 0.15
+  },
+  "cadence": {
+    "anticipate_threshold": 0.05,
+    "resolve_threshold": -0.05
+  },
+  "support": {
+    "min_support": 1,
+    "merge_window": 2
+  },
+  "logging": {
+    "log_file": "meta_symbols_metrics.csv"
+  }
+}

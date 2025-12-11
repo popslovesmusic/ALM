@@ -1,0 +1,14 @@
+{
+  "window": 3,
+  "cadence_bias": 0.15,
+  "drift_penalty": 0.1,
+  "thresholds": {
+    "salience_high": 0.8,
+    "salience_low": 0.3,
+    "consistency_high": 0.7,
+    "consistency_low": 0.35
+  },
+  "logging": {
+    "log_file": "narrative_metrics.csv"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "weights": {
+    "meta_weight": 0.45,
+    "narrative_weight": 0.35,
+    "stability_weight": 0.2
+  },
+  "thresholds": {
+    "amplify": 0.75,
+    "stabilize": 0.45,
+    "reframe": 0.25
+  },
+  "adjustments": {
+    "max_delta": 0.2,
+    "cadence_bias": 0.05,
+    "polarity_bias": 0.03,
+    "window_bias": 1
+  },
+  "logging": {
+    "log_file": "coherence_feedback.csv"
+  }
+}

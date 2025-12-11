@@ -1,0 +1,16 @@
+{
+  "posture": "stable",
+  "smoothing": 0.6,
+  "posture_thresholds": {
+    "amplify": 0.7,
+    "stabilize": 0.4
+  },
+  "biases": {
+    "cadence": 0.0,
+    "polarity": 0.0,
+    "window": 0.0
+  },
+  "logging": {
+    "log_file": "self_model_snapshots.csv"
+  }
+}
