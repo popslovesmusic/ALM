@@ -1,0 +1,20 @@
+{
+  "aggregation": {
+    "window": 3,
+    "intensity_threshold": 1.15,
+    "polarity_weight": 0.6
+  },
+  "stability": {
+    "momentum": 0.35,
+    "decay": 0.08,
+    "role_bonus": 0.12
+  },
+  "labeling": {
+    "tone_band": 3,
+    "hue_band": 48
+  },
+  "logging": {
+    "enabled": true,
+    "log_file": "symbol_metrics.csv"
+  }
+}

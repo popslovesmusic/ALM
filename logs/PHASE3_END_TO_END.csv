@@ -1,0 +1,6 @@
+stage,metric,value
+symbols,peak_ratio,0.4
+clusters,mean_coherence,0.78
+attractors,mean_activation,0.324
+phrases,mean_cadence,0.5
+self_consistency,final_score,0.62

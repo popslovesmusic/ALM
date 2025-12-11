@@ -1,0 +1,21 @@
+{
+  "weights": {
+    "symbol": 0.25,
+    "cluster": 0.25,
+    "attractor": 0.25,
+    "phrase": 0.25
+  },
+  "thresholds": {
+    "min_symbols": 3,
+    "min_clusters": 1,
+    "min_phrases": 1
+  },
+  "evaluation": {
+    "symmetry_tolerance": 1.5,
+    "drift_tolerance": 5
+  },
+  "logging": {
+    "enabled": true,
+    "log_file": "self_consistency_metrics.csv"
+  }
+}

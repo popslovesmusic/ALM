@@ -1,0 +1,10 @@
+{
+  "window": 4,
+  "motif_length": 3,
+  "tone_slope_threshold": 2,
+  "cadence_threshold": 0.5,
+  "logging": {
+    "enabled": true,
+    "log_file": "phrase_metrics.csv"
+  }
+}

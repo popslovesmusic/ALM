@@ -1,0 +1,22 @@
+{
+  "similarity": {
+    "tone_threshold": 2,
+    "hue_threshold": 40,
+    "polarity_consensus": true
+  },
+  "coherence": {
+    "min_size": 2,
+    "tone_spread_limit": 4,
+    "hue_spread_limit": 75,
+    "bonus_for_peak": 0.1
+  },
+  "weights": {
+    "tone": 0.45,
+    "hue": 0.35,
+    "polarity": 0.2
+  },
+  "logging": {
+    "enabled": true,
+    "log_file": "cluster_metrics.csv"
+  }
+}

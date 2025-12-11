@@ -1,0 +1,20 @@
+{
+  "basins": {
+    "width": 3,
+    "stability_decay": 0.06,
+    "energy_gain": 0.2
+  },
+  "activation": {
+    "coherence_weight": 0.6,
+    "size_weight": 0.4,
+    "threshold": 0.45
+  },
+  "dynamics": {
+    "damping": 0.1,
+    "momentum": 0.2
+  },
+  "logging": {
+    "enabled": true,
+    "log_file": "attractor_metrics.csv"
+  }
+}
