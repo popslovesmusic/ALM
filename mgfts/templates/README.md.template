@@ -1,0 +1,402 @@
+# {{PROJECT_NAME}}
+
+[![Version](https://img.shields.io/badge/version-{{VERSION}}-blue.svg)](https://github.com/{{GITHUB_USER}}/{{REPO_NAME}})
+[![License](https://img.shields.io/badge/license-{{LICENSE}}-green.svg)](LICENSE)
+[![Build Status](https://img.shields.io/badge/build-{{BUILD_STATUS}}-{{BUILD_COLOR}}.svg)]({{CI_URL}})
+
+{{PROJECT_TAGLINE}}
+
+---
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Documentation](#documentation)
+- [Development](#development)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+
+---
+
+## 🌟 Overview
+
+{{PROJECT_DESCRIPTION}}
+
+### Why {{PROJECT_NAME}}?
+
+{{PROJECT_MOTIVATION}}
+
+**Key Benefits:**
+- ✅ {{BENEFIT_1}}
+- ✅ {{BENEFIT_2}}
+- ✅ {{BENEFIT_3}}
+
+---
+
+## ✨ Features
+
+- **{{FEATURE_1}}**: {{FEATURE_1_DESCRIPTION}}
+- **{{FEATURE_2}}**: {{FEATURE_2_DESCRIPTION}}
+- **{{FEATURE_3}}**: {{FEATURE_3_DESCRIPTION}}
+- **{{FEATURE_4}}**: {{FEATURE_4_DESCRIPTION}}
+
+---
+
+## 🚀 Quick Start
+
+```{{CODE_LANGUAGE}}
+{{QUICK_START_CODE}}
+```
+
+**Expected Output:**
+```
+{{EXPECTED_OUTPUT}}
+```
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+- {{PREREQUISITE_1}}
+- {{PREREQUISITE_2}}
+- {{PREREQUISITE_3}}
+
+### Install via {{PACKAGE_MANAGER}}
+
+```bash
+{{INSTALL_COMMAND}}
+```
+
+### Install from Source
+
+```bash
+git clone {{REPOSITORY_URL}}
+cd {{REPO_NAME}}
+{{BUILD_COMMAND}}
+{{INSTALL_FROM_SOURCE_COMMAND}}
+```
+
+### Verify Installation
+
+```bash
+{{VERIFY_COMMAND}}
+```
+
+---
+
+## 📖 Usage
+
+### Basic Usage
+
+```{{CODE_LANGUAGE}}
+{{BASIC_USAGE_CODE}}
+```
+
+### Advanced Usage
+
+```{{CODE_LANGUAGE}}
+{{ADVANCED_USAGE_CODE}}
+```
+
+### Common Patterns
+
+#### Pattern: {{PATTERN_1_NAME}}
+
+```{{CODE_LANGUAGE}}
+{{PATTERN_1_CODE}}
+```
+
+#### Pattern: {{PATTERN_2_NAME}}
+
+```{{CODE_LANGUAGE}}
+{{PATTERN_2_CODE}}
+```
+
+---
+
+## ⚙️ Configuration
+
+Configuration is managed through `{{CONFIG_FILE}}`:
+
+```{{CONFIG_FORMAT}}
+{{CONFIG_EXAMPLE}}
+```
+
+### Configuration Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `{{OPTION_1}}` | {{TYPE_1}} | `{{DEFAULT_1}}` | {{DESCRIPTION_1}} |
+| `{{OPTION_2}}` | {{TYPE_2}} | `{{DEFAULT_2}}` | {{DESCRIPTION_2}} |
+| `{{OPTION_3}}` | {{TYPE_3}} | `{{DEFAULT_3}}` | {{DESCRIPTION_3}} |
+
+### Environment Variables
+
+```bash
+export {{ENV_VAR_1}}={{ENV_VAR_1_VALUE}}
+export {{ENV_VAR_2}}={{ENV_VAR_2_VALUE}}
+```
+
+---
+
+## 📚 Documentation
+
+- **[Full Documentation]({{DOCS_URL}})**
+- **[API Reference]({{API_DOCS_URL}})**
+- **[Examples]({{EXAMPLES_URL}})**
+- **[Tutorials]({{TUTORIALS_URL}})**
+- **[FAQ]({{FAQ_URL}})**
+
+---
+
+## 🛠️ Development
+
+### Setup Development Environment
+
+```bash
+git clone {{REPOSITORY_URL}}
+cd {{REPO_NAME}}
+{{DEV_SETUP_COMMAND}}
+```
+
+### Project Structure
+
+```
+{{PROJECT_NAME}}/
+├── {{SOURCE_DIR}}/          # Source code
+├── {{TESTS_DIR}}/           # Test suites
+├── {{DOCS_DIR}}/            # Documentation
+├── {{CONFIG_DIR}}/          # Configuration files
+├── {{SCRIPTS_DIR}}/         # Build/utility scripts
+├── mgfts/                   # MGFTS governance files
+│   ├── AGENTS.md
+│   ├── COMPLIANCE_CHARTER.md
+│   └── templates/
+├── README.md                # This file
+├── CHANGELOG.md             # Version history
+└── LICENSE                  # License file
+```
+
+### Code Style
+
+This project follows:
+- **{{STYLE_GUIDE}}** style guide
+- **{{LINTER}}** for linting
+- **{{FORMATTER}}** for code formatting
+
+Run style checks:
+```bash
+{{STYLE_CHECK_COMMAND}}
+```
+
+### MGFTS Compliance
+
+This project is governed by the Meta-Global File Template System (MGFTS):
+
+- **Layer 1 (Structural)**: File structure and naming conventions
+- **Layer 2 (Governance)**: Agent behavior rules and compliance standards
+- **Layer 3 (Meta-Governance)**: Schema validation and template compliance
+
+Validate compliance:
+```bash
+{{VALIDATION_COMMAND}}
+```
+
+---
+
+## 🧪 Testing
+
+### Run All Tests
+
+```bash
+{{TEST_COMMAND}}
+```
+
+### Run Specific Test Suite
+
+```bash
+{{SPECIFIC_TEST_COMMAND}}
+```
+
+### Test Coverage
+
+```bash
+{{COVERAGE_COMMAND}}
+```
+
+**Current Coverage:** {{COVERAGE_PERCENTAGE}}%
+
+### Performance Tests
+
+```bash
+{{PERFORMANCE_TEST_COMMAND}}
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+### Quick Contribution Guide
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Commit** your changes: `git commit -m 'Add amazing feature'`
+4. **Push** to the branch: `git push origin feature/amazing-feature`
+5. **Open** a Pull Request
+
+### Development Workflow
+
+1. Read [AGENTS.md](mgfts/AGENTS.md) for agent behavior rules
+2. Follow [PRESERVATION_PROTOCOL.md](mgfts/PRESERVATION_PROTOCOL.md) when modifying files
+3. Ensure compliance with [COMPLIANCE_CHARTER.md](mgfts/COMPLIANCE_CHARTER.md)
+4. Run tests and validation before committing
+5. Write meaningful commit messages
+
+### Code Review Process
+
+- All changes require review
+- Constitutional Engine validation must pass
+- Tests must pass with >{{MIN_COVERAGE}}% coverage
+- Documentation must be updated
+
+---
+
+## 🐛 Bug Reports and Feature Requests
+
+- **Bug Reports**: [Issue Tracker]({{ISSUES_URL}})
+- **Feature Requests**: [Discussions]({{DISCUSSIONS_URL}})
+- **Security Issues**: Email {{SECURITY_EMAIL}}
+
+### Bug Report Template
+
+```markdown
+**Description:** Clear description of the bug
+
+**Steps to Reproduce:**
+1. Step 1
+2. Step 2
+3. ...
+
+**Expected Behavior:** What should happen
+
+**Actual Behavior:** What actually happens
+
+**Environment:**
+- OS: {{OS}}
+- Version: {{VERSION}}
+- {{LANGUAGE}} Version: {{LANGUAGE_VERSION}}
+```
+
+---
+
+## 📊 Project Status
+
+| Metric | Status |
+|--------|--------|
+| Build | {{BUILD_STATUS}} |
+| Tests | {{TEST_STATUS}} |
+| Coverage | {{COVERAGE_PERCENTAGE}}% |
+| Documentation | {{DOCS_STATUS}} |
+| MGFTS Compliance | {{COMPLIANCE_STATUS}} |
+
+---
+
+## 🗺️ Roadmap
+
+### Version {{NEXT_VERSION}} (Planned)
+- [ ] {{PLANNED_FEATURE_1}}
+- [ ] {{PLANNED_FEATURE_2}}
+- [ ] {{PLANNED_FEATURE_3}}
+
+### Future Versions
+- {{FUTURE_FEATURE_1}}
+- {{FUTURE_FEATURE_2}}
+
+See [ROADMAP.md](ROADMAP.md) for detailed plans.
+
+---
+
+## 📝 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for version history.
+
+### Recent Changes (v{{VERSION}})
+
+**Added:**
+- {{RECENT_ADDITION_1}}
+- {{RECENT_ADDITION_2}}
+
+**Changed:**
+- {{RECENT_CHANGE_1}}
+
+**Fixed:**
+- {{RECENT_FIX_1}}
+
+---
+
+## 📄 License
+
+This project is licensed under the {{LICENSE}} License - see the [LICENSE](LICENSE) file for details.
+
+```
+{{LICENSE_SUMMARY}}
+```
+
+---
+
+## 🙏 Acknowledgments
+
+- {{ACKNOWLEDGMENT_1}}
+- {{ACKNOWLEDGMENT_2}}
+- {{ACKNOWLEDGMENT_3}}
+
+### Built With
+
+- [{{DEPENDENCY_1}}]({{DEPENDENCY_1_URL}}) - {{DEPENDENCY_1_DESCRIPTION}}
+- [{{DEPENDENCY_2}}]({{DEPENDENCY_2_URL}}) - {{DEPENDENCY_2_DESCRIPTION}}
+- [{{DEPENDENCY_3}}]({{DEPENDENCY_3_URL}}) - {{DEPENDENCY_3_DESCRIPTION}}
+
+---
+
+## 📞 Contact
+
+**Project Maintainer:** {{MAINTAINER_NAME}}
+- Email: {{MAINTAINER_EMAIL}}
+- GitHub: [@{{GITHUB_USER}}](https://github.com/{{GITHUB_USER}})
+- Website: [{{WEBSITE_URL}}]({{WEBSITE_URL}})
+
+**Community:**
+- Discussions: [{{DISCUSSIONS_URL}}]({{DISCUSSIONS_URL}})
+- Chat: [{{CHAT_URL}}]({{CHAT_URL}})
+- Twitter: [@{{TWITTER_HANDLE}}](https://twitter.com/{{TWITTER_HANDLE}})
+
+---
+
+## 🌐 Links
+
+- [Homepage]({{HOMEPAGE_URL}})
+- [Documentation]({{DOCS_URL}})
+- [API Reference]({{API_DOCS_URL}})
+- [Issue Tracker]({{ISSUES_URL}})
+- [Release Notes]({{RELEASES_URL}})
+
+---
+
+<div align="center">
+
+**[⬆ Back to Top](#-table-of-contents)**
+
+Made with ❤️ by the {{PROJECT_NAME}} team
+
+</div>

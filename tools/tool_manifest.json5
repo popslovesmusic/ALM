@@ -1,0 +1,212 @@
+{
+  // MGFTS Tool Manifest
+  // Registry of all available analysis tools for the ALM Constitutional Engine
+
+  version: "1.0.0",
+  last_updated: "2025-01-15",
+
+  tools: [
+    {
+      name: "directory_scanner",
+      language: "python",
+      entry: "plugins/python/directory_scanner.py",
+      version: "1.0.0",
+      category: "structural",
+      description: "Scans project directories and enumerates files, directories, sizes, and timestamps. Checks for required MGFTS directory structure.",
+      capabilities: ["structure_scan", "file_enumeration", "directory_validation"],
+      targets_layers: [1],
+      inputs: ["project_path"],
+      outputs: ["file_index", "dir_index", "metrics", "violations"],
+      deterministic: true,
+      config: {
+        follow_symlinks: false,
+        ignore_patterns: [".git", "__pycache__", "node_modules", "*.pyc"]
+      }
+    },
+
+    {
+      name: "template_validator",
+      language: "python",
+      entry: "plugins/python/template_validator.py",
+      version: "1.0.0",
+      category: "structural",
+      description: "Validates that required templates exist and match template/meta-template definitions. Checks Layer 1 and Layer 3 compliance.",
+      capabilities: ["template_validation", "meta_template_validation"],
+      targets_layers: [1, 3],
+      inputs: ["project_path", "mgfts_root", "template_dir"],
+      outputs: ["violations", "warnings", "metrics", "score"],
+      deterministic: true,
+      config: {
+        required_templates: [
+          "/agents/SESSION_INSTRUCTIONS.md",
+          "/agents/PROJECT_RULES.md",
+          "/concepts/PROJECT_CONCEPT_VAULT.json5",
+          "/architecture/OVERVIEW.md"
+        ],
+        validate_against_meta_schemas: true
+      }
+    },
+
+    {
+      name: "naming_checker",
+      language: "python",
+      entry: "plugins/python/naming_checker.py",
+      version: "1.0.0",
+      category: "structural",
+      description: "Validates file naming conventions per MGFTS standards. Checks snake_case for Python, JSON5 schemas, and proper extensions.",
+      capabilities: ["naming_validation", "convention_checking"],
+      targets_layers: [1],
+      inputs: ["project_path"],
+      outputs: ["violations", "warnings", "metrics"],
+      deterministic: true,
+      config: {
+        rules: {
+          python: "snake_case",
+          schemas: "snake_case",
+          markdown: "Title Case or snake_case",
+          templates: "SCREAMING_SNAKE_CASE for global"
+        }
+      }
+    },
+
+    {
+      name: "schema_validator",
+      language: "python",
+      entry: "plugins/python/schema_validator.py",
+      version: "1.0.0",
+      category: "schema",
+      description: "Validates JSON5 files against their schemas and meta-schemas. Ensures structural integrity of configuration files.",
+      capabilities: ["json5_validation", "schema_conformance"],
+      targets_layers: [3],
+      inputs: ["project_path", "mgfts_root"],
+      outputs: ["violations", "warnings", "metrics", "score"],
+      deterministic: true,
+      config: {
+        schema_extensions: [".json5", ".json"],
+        meta_schema_path: "mgfts/meta_schemas/",
+        validate_examples: true
+      }
+    },
+
+    {
+      name: "concept_linker",
+      language: "python",
+      entry: "plugins/python/concept_linker.py",
+      version: "1.0.0",
+      category: "semantic",
+      description: "Analyzes concept references across files. Identifies missing concepts (referenced but undefined) and unused concepts (defined but never referenced).",
+      capabilities: ["concept_analysis", "reference_tracking", "vault_validation"],
+      targets_layers: [4],
+      inputs: ["project_path", "concept_vault_path"],
+      outputs: ["concepts_missing", "concepts_unused", "metrics", "warnings"],
+      deterministic: true,
+      config: {
+        concept_patterns: [
+          "Aletheia Principle",
+          "Generalized Variational Principle",
+          "Coherence Field",
+          "Concealment Functional",
+          "Concept Preservation System"
+        ],
+        check_lineage: true,
+        check_dependencies: true
+      }
+    },
+
+    {
+      name: "spell_checker",
+      language: "python",
+      entry: "plugins/python/spell_checker.py",
+      version: "1.0.0",
+      category: "utility",
+      description: "Checks spelling in markdown and documentation files. Uses custom dictionary for technical and MGFTS-specific terms.",
+      capabilities: ["spell_checking", "documentation_quality"],
+      targets_layers: [],  // utility tool, doesn't target specific layer
+      inputs: ["project_path"],
+      outputs: ["warnings", "metrics"],
+      deterministic: true,
+      config: {
+        file_patterns: ["*.md", "*.txt"],
+        custom_dictionary: [
+          "MGFTS", "Aletheia", "GVP", "CTL", "CPS", "UVF",
+          "Tensor", "Chromatic", "Concealment", "Coherence",
+          "Ontological", "Epistemological", "Variational"
+        ],
+        severity: "warning"  // don't fail on spelling issues
+      }
+    },
+
+    {
+      name: "governance_analyzer",
+      language: "python",
+      entry: "plugins/python/governance_analyzer.py",
+      version: "1.0.0",
+      category: "content",
+      description: "Analyzes governance files (AGENTS.md, PROJECT_RULES.md, COMPLIANCE_CHARTER.md) for completeness and consistency.",
+      capabilities: ["governance_validation", "policy_checking"],
+      targets_layers: [2],
+      inputs: ["project_path", "mgfts_root"],
+      outputs: ["violations", "warnings", "metrics", "score"],
+      deterministic: true,
+      config: {
+        required_files: [
+          "AGENTS.md",
+          "/agents/SESSION_INSTRUCTIONS.md",
+          "/agents/PROJECT_RULES.md"
+        ],
+        check_concepts_in_force: true,
+        validate_compliance_references: true
+      }
+    },
+
+    {
+      name: "coherence_calculator",
+      language: "python",
+      entry: "plugins/python/coherence_calculator.py",
+      version: "1.0.0",
+      category: "meta_schema",
+      description: "Computes the Coherence Field score based on structural, semantic, and governance alignment.",
+      capabilities: ["coherence_computation", "field_analysis"],
+      targets_layers: [2, 3, 4],
+      inputs: ["aggregated_state"],
+      outputs: ["coherence_score", "metrics"],
+      deterministic: true,
+      config: {
+        weights: {
+          structural: 0.3,
+          semantic: 0.3,
+          governance: 0.2,
+          meta_schema: 0.2
+        },
+        threshold: 0.7  // minimum acceptable coherence
+      }
+    },
+
+    {
+      name: "concealment_calculator",
+      language: "python",
+      entry: "plugins/python/concealment_calculator.py",
+      version: "1.0.0",
+      category: "meta_schema",
+      description: "Computes the Concealment Functional based on missing structure, undefined concepts, violations, and unexplained drift.",
+      capabilities: ["concealment_computation", "aletheia_validation"],
+      targets_layers: [1, 2, 3, 4],
+      inputs: ["aggregated_state"],
+      outputs: ["concealment_score", "metrics"],
+      deterministic: true,
+      config: {
+        weights: {
+          missing_files: 10,
+          undefined_concepts: 5,
+          violations_critical: 20,
+          violations_high: 10,
+          violations_medium: 5,
+          violations_low: 1,
+          undocumented_functions: 2,
+          broken_links: 3
+        },
+        normalize: true  // normalize to 0-1 range
+      }
+    }
+  ]
+}

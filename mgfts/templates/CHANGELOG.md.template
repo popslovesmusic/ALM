@@ -1,0 +1,201 @@
+# Changelog
+
+All notable changes to {{PROJECT_NAME}} will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [Unreleased]
+
+### Added
+- {{UNRELEASED_ADDITION}}
+
+### Changed
+- {{UNRELEASED_CHANGE}}
+
+### Fixed
+- {{UNRELEASED_FIX}}
+
+---
+
+## [{{CURRENT_VERSION}}] - {{CURRENT_DATE}}
+
+### Added
+- {{ADDED_FEATURE_1}} - {{ADDED_DESCRIPTION_1}}
+- {{ADDED_FEATURE_2}} - {{ADDED_DESCRIPTION_2}}
+- New API endpoint: `{{NEW_ENDPOINT}}` for {{ENDPOINT_PURPOSE}}
+- Documentation: Added {{DOC_ADDITION}}
+- Tests: Added {{TEST_ADDITION}} with {{COVERAGE_INCREASE}}% coverage increase
+
+### Changed
+- **BREAKING**: {{BREAKING_CHANGE}} (see [Migration Guide]({{MIGRATION_GUIDE_URL}}))
+- {{CHANGED_FEATURE_1}}: {{CHANGE_DESCRIPTION_1}}
+- {{CHANGED_FEATURE_2}}: Improved performance by {{PERFORMANCE_IMPROVEMENT}}
+- Dependencies: Updated {{DEPENDENCY_NAME}} from {{OLD_VERSION}} to {{NEW_VERSION}}
+- Configuration: {{CONFIG_CHANGE}}
+
+### Deprecated
+- {{DEPRECATED_FEATURE}}: Will be removed in {{REMOVAL_VERSION}}
+  - Use {{REPLACEMENT_FEATURE}} instead
+  - See deprecation guide: {{DEPRECATION_GUIDE_URL}}
+
+### Removed
+- {{REMOVED_FEATURE}} (deprecated in {{DEPRECATION_VERSION}})
+- Removed support for {{REMOVED_SUPPORT}}
+- Cleaned up: {{CLEANUP_DESCRIPTION}}
+
+### Fixed
+- Fixed #{{ISSUE_NUMBER}}: {{BUG_DESCRIPTION}}
+- Fixed {{BUG_2}}: {{BUG_2_DESCRIPTION}}
+- Security: Fixed {{SECURITY_ISSUE}} ({{CVE_ID}})
+- Performance: Fixed {{PERFORMANCE_ISSUE}}
+
+### Security
+- **CVE-{{CVE_YEAR}}-{{CVE_NUMBER}}**: {{CVE_DESCRIPTION}}
+  - Severity: {{SEVERITY}}
+  - Impact: {{IMPACT}}
+  - Mitigation: {{MITIGATION}}
+- Updated {{DEPENDENCY}} to address {{SECURITY_ADVISORY}}
+
+---
+
+## [{{PREVIOUS_VERSION}}] - {{PREVIOUS_DATE}}
+
+### Added
+- {{PREV_ADDED_1}}
+- {{PREV_ADDED_2}}
+
+### Changed
+- {{PREV_CHANGED_1}}
+- {{PREV_CHANGED_2}}
+
+### Fixed
+- {{PREV_FIXED_1}}
+- {{PREV_FIXED_2}}
+
+---
+
+## [{{VERSION_3}}] - {{VERSION_3_DATE}}
+
+### Added
+- Initial implementation of {{MAJOR_FEATURE}}
+- {{FEATURE_1}}
+- {{FEATURE_2}}
+
+### Changed
+- Refactored {{COMPONENT}} for better {{IMPROVEMENT}}
+
+### Fixed
+- Fixed initialization bug in {{MODULE}}
+
+---
+
+## [{{VERSION_2}}] - {{VERSION_2_DATE}}
+
+### Added
+- {{V2_ADDED_1}}
+- {{V2_ADDED_2}}
+
+### Changed
+- {{V2_CHANGED_1}}
+
+---
+
+## [{{VERSION_1}}] - {{VERSION_1_DATE}}
+
+### Added
+- Initial release
+- Core functionality:
+  - {{CORE_FEATURE_1}}
+  - {{CORE_FEATURE_2}}
+  - {{CORE_FEATURE_3}}
+- Basic documentation
+- Initial test suite
+
+---
+
+## Version Comparison Links
+
+[Unreleased]: {{REPO_URL}}/compare/v{{CURRENT_VERSION}}...HEAD
+[{{CURRENT_VERSION}}]: {{REPO_URL}}/compare/v{{PREVIOUS_VERSION}}...v{{CURRENT_VERSION}}
+[{{PREVIOUS_VERSION}}]: {{REPO_URL}}/compare/v{{VERSION_3}}...v{{PREVIOUS_VERSION}}
+[{{VERSION_3}}]: {{REPO_URL}}/compare/v{{VERSION_2}}...v{{VERSION_3}}
+[{{VERSION_2}}]: {{REPO_URL}}/compare/v{{VERSION_1}}...v{{VERSION_2}}
+[{{VERSION_1}}]: {{REPO_URL}}/releases/tag/v{{VERSION_1}}
+
+---
+
+## Changelog Guidelines
+
+### Categories
+
+Changes should be categorized as:
+
+- **Added**: New features
+- **Changed**: Changes in existing functionality
+- **Deprecated**: Soon-to-be removed features
+- **Removed**: Removed features
+- **Fixed**: Bug fixes
+- **Security**: Security fixes
+
+### Breaking Changes
+
+Breaking changes should be marked with **BREAKING** and include:
+- Clear description of what changed
+- Migration guide link
+- Timeline for deprecation (if applicable)
+
+### Issue References
+
+- Reference issues using #number
+- Reference pull requests using PR #number
+- Reference CVEs using CVE-YEAR-NUMBER
+
+### Examples
+
+**Good:**
+```markdown
+### Fixed
+- Fixed #123: User authentication failing on mobile devices
+  - Root cause: Session timeout too aggressive
+  - Solution: Increased timeout to 30 minutes
+  - Impact: Mobile users no longer need to re-login frequently
+```
+
+**Bad:**
+```markdown
+### Fixed
+- Bug fixes
+```
+
+---
+
+## Migration Guides
+
+For breaking changes, see version-specific migration guides:
+
+- [Migrating to v{{CURRENT_VERSION}}]({{MIGRATION_CURRENT_URL}})
+- [Migrating to v{{PREVIOUS_VERSION}}]({{MIGRATION_PREVIOUS_URL}})
+
+---
+
+## Release Schedule
+
+- **Major releases** (X.0.0): Annually, with breaking changes
+- **Minor releases** (x.Y.0): Quarterly, with new features
+- **Patch releases** (x.y.Z): As needed, with bug fixes
+
+---
+
+## Support Policy
+
+- **Latest major version**: Full support
+- **Previous major version**: Security fixes only (12 months)
+- **Older versions**: Unsupported
+
+---
+
+**Maintained by:** {{MAINTAINER}}
+**Last updated:** {{LAST_UPDATED}}

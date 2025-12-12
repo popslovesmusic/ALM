@@ -1,0 +1,139 @@
+# META-TEMPLATE: Base Template Structure
+# This is a template FOR creating templates
+#
+# Purpose: Defines the standard structure all MGFTS templates should follow
+# Layer: 3 (Meta-Governance)
+# Version: 1.0.0
+#
+# Usage: When creating a new template, use this meta-template to ensure
+#        consistency with MGFTS template standards.
+#
+# Variables in this meta-template:
+#   {{TEMPLATE_TYPE}}: Type of template (e.g., "python_module", "documentation")
+#   {{TEMPLATE_DESCRIPTION}}: What this template generates
+#   {{FILE_EXTENSION}}: Extension for generated files (e.g., ".py", ".md")
+#   {{TEMPLATE_CATEGORY}}: Category (code|config|docs|test)
+
+# =============================================================================
+# TEMPLATE HEADER SECTION
+# All templates MUST include a header explaining what they generate
+# =============================================================================
+
+{{HEADER_COMMENT_START}}{{TEMPLATE_DESCRIPTION}}
+
+{{PURPOSE_SECTION}}
+
+Author: {{AUTHOR}}
+Created: {{CREATED_DATE}}
+Version: {{VERSION}}
+Layer: {{MGFTS_LAYER}}
+{{HEADER_COMMENT_END}}
+
+# =============================================================================
+# REQUIRED VARIABLES SECTION
+# All templates MUST document their required variables
+# =============================================================================
+
+{{COMMENT_START}}
+Required Template Variables:
+  {{VARIABLE_LIST}}
+
+Optional Template Variables:
+  {{OPTIONAL_VARIABLE_LIST}}
+
+Example Usage:
+  {{USAGE_EXAMPLE}}
+{{COMMENT_END}}
+
+# =============================================================================
+# TEMPLATE BODY SECTION
+# The actual content that will be generated
+# =============================================================================
+
+{{TEMPLATE_SPECIFIC_CONTENT}}
+
+# =============================================================================
+# TEMPLATE FOOTER SECTION (optional)
+# =============================================================================
+
+{{FOOTER_CONTENT}}
+
+# =============================================================================
+# META-TEMPLATE VALIDATION RULES
+# =============================================================================
+#
+# When creating a template from this meta-template, ensure:
+#
+# 1. HEADER COMPLETENESS
+#    - Template description is clear and concise
+#    - Purpose explains what gets generated
+#    - Author and version are specified
+#
+# 2. VARIABLE DOCUMENTATION
+#    - All variables are listed
+#    - Variable purposes are explained
+#    - Example values are provided
+#
+# 3. TEMPLATE BODY
+#    - Uses consistent variable naming (UPPER_SNAKE_CASE)
+#    - Variables are enclosed in {{double braces}}
+#    - No hard-coded values that should be variables
+#
+# 4. SYNTACTIC CORRECTNESS
+#    - Generated files will be syntactically valid
+#    - Comment syntax matches target language
+#    - Indentation is consistent
+#
+# 5. COMPLETENESS
+#    - Template generates a fully functional file
+#    - Includes error handling (if applicable)
+#    - Includes documentation (if applicable)
+#    - Includes examples (if applicable)
+#
+# 6. MGFTS COMPLIANCE
+#    - Template output complies with Layer 1 structural requirements
+#    - Template output complies with Layer 2 governance requirements
+#    - Template itself is documented in template manifest
+#
+# =============================================================================
+
+# Meta-Template Substitution Markers:
+#
+# {{HEADER_COMMENT_START}} → Language-specific comment start
+# {{HEADER_COMMENT_END}}   → Language-specific comment end (if needed)
+# {{COMMENT_START}}        → Multi-line comment start
+# {{COMMENT_END}}          → Multi-line comment end
+# {{PURPOSE_SECTION}}      → Detailed purpose text
+# {{VARIABLE_LIST}}        → Comma-separated required variables
+# {{OPTIONAL_VARIABLE_LIST}} → Comma-separated optional variables
+# {{USAGE_EXAMPLE}}        → Example of how to use the template
+# {{TEMPLATE_SPECIFIC_CONTENT}} → The core template body
+# {{FOOTER_CONTENT}}       → Optional footer (license, attribution, etc.)
+
+# =============================================================================
+# EXAMPLES OF LANGUAGE-SPECIFIC SUBSTITUTIONS
+# =============================================================================
+
+# For Python templates:
+#   {{HEADER_COMMENT_START}} = '"""'
+#   {{HEADER_COMMENT_END}}   = '"""'
+#   {{COMMENT_START}}        = '"""'
+#   {{COMMENT_END}}          = '"""'
+
+# For JavaScript templates:
+#   {{HEADER_COMMENT_START}} = '/**\n * '
+#   {{HEADER_COMMENT_END}}   = '\n */'
+#   {{COMMENT_START}}        = '/*'
+#   {{COMMENT_END}}          = '*/'
+
+# For Configuration templates (JSON5, YAML):
+#   {{HEADER_COMMENT_START}} = '// '
+#   {{HEADER_COMMENT_END}}   = ''
+#   {{COMMENT_START}}        = '// '
+#   {{COMMENT_END}}          = ''
+
+# For Markdown templates:
+#   {{HEADER_COMMENT_START}} = '<!--\n'
+#   {{HEADER_COMMENT_END}}   = '\n-->'
+#   {{COMMENT_START}}        = '<!--'
+#   {{COMMENT_END}}          = '-->'

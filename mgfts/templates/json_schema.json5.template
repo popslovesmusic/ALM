@@ -1,0 +1,327 @@
+// JSON Schema for {{SCHEMA_NAME}}
+// {{SCHEMA_DESCRIPTION}}
+//
+// Version: {{VERSION}}
+// Created: {{CREATED_DATE}}
+// Layer: {{MGFTS_LAYER}}
+//
+// This schema validates instances of {{SCHEMA_NAME}}.
+// Validation tools: jsonschema (Python), ajv (JavaScript)
+
+{
+  // Schema metadata
+  $schema: "http://json-schema.org/draft-07/schema#",
+  $id: "{{SCHEMA_ID}}",
+  title: "{{SCHEMA_TITLE}}",
+  description: "{{SCHEMA_DESCRIPTION}}",
+  version: "{{VERSION}}",
+
+  // Root type
+  type: "object",
+
+  // Required properties
+  required: [
+    "{{REQUIRED_FIELD_1}}",
+    "{{REQUIRED_FIELD_2}}",
+    // Add required fields
+  ],
+
+  // Property definitions
+  properties: {
+
+    // Metadata fields
+    $schema: {
+      type: "string",
+      description: "JSON Schema version reference",
+      format: "uri"
+    },
+
+    version: {
+      type: "string",
+      description: "Schema version",
+      pattern: "^\\d+\\.\\d+\\.\\d+$",
+      examples: ["1.0.0", "2.1.3"]
+    },
+
+    // Identifier field
+    {{ID_FIELD}}: {
+      type: "{{ID_TYPE}}",
+      description: "{{ID_DESCRIPTION}}",
+      {{ID_CONSTRAINTS}}
+    },
+
+    // String field with pattern
+    {{STRING_FIELD}}: {
+      type: "string",
+      description: "{{STRING_FIELD_DESCRIPTION}}",
+      minLength: {{MIN_LENGTH}},
+      maxLength: {{MAX_LENGTH}},
+      pattern: "{{PATTERN}}",
+      examples: [
+        "{{EXAMPLE_1}}",
+        "{{EXAMPLE_2}}"
+      ]
+    },
+
+    // String field with enum
+    {{ENUM_FIELD}}: {
+      type: "string",
+      description: "{{ENUM_FIELD_DESCRIPTION}}",
+      enum: [
+        "{{ENUM_VALUE_1}}",
+        "{{ENUM_VALUE_2}}",
+        "{{ENUM_VALUE_3}}"
+      ],
+      default: "{{ENUM_DEFAULT}}"
+    },
+
+    // Number field with constraints
+    {{NUMBER_FIELD}}: {
+      type: "number",
+      description: "{{NUMBER_FIELD_DESCRIPTION}}",
+      minimum: {{MINIMUM}},
+      maximum: {{MAXIMUM}},
+      multipleOf: {{MULTIPLE_OF}},
+      exclusiveMinimum: {{EXCLUSIVE_MIN}},
+      default: {{NUMBER_DEFAULT}}
+    },
+
+    // Integer field
+    {{INTEGER_FIELD}}: {
+      type: "integer",
+      description: "{{INTEGER_FIELD_DESCRIPTION}}",
+      minimum: {{INT_MIN}},
+      maximum: {{INT_MAX}},
+      default: {{INT_DEFAULT}}
+    },
+
+    // Boolean field
+    {{BOOLEAN_FIELD}}: {
+      type: "boolean",
+      description: "{{BOOLEAN_FIELD_DESCRIPTION}}",
+      default: {{BOOLEAN_DEFAULT}}
+    },
+
+    // Array field
+    {{ARRAY_FIELD}}: {
+      type: "array",
+      description: "{{ARRAY_FIELD_DESCRIPTION}}",
+      items: {
+        type: "{{ARRAY_ITEM_TYPE}}",
+        {{ARRAY_ITEM_CONSTRAINTS}}
+      },
+      minItems: {{ARRAY_MIN_ITEMS}},
+      maxItems: {{ARRAY_MAX_ITEMS}},
+      uniqueItems: {{ARRAY_UNIQUE}},
+      default: []
+    },
+
+    // Array of objects
+    {{OBJECT_ARRAY_FIELD}}: {
+      type: "array",
+      description: "{{OBJECT_ARRAY_DESCRIPTION}}",
+      items: {
+        $ref: "#/definitions/{{ITEM_DEFINITION}}"
+      },
+      minItems: {{MIN_ITEMS}},
+      default: []
+    },
+
+    // Nested object field
+    {{OBJECT_FIELD}}: {
+      type: "object",
+      description: "{{OBJECT_FIELD_DESCRIPTION}}",
+      required: [
+        "{{OBJECT_REQUIRED_1}}",
+        "{{OBJECT_REQUIRED_2}}"
+      ],
+      properties: {
+        {{OBJECT_PROPERTY_1}}: {
+          type: "{{OBJECT_PROP_1_TYPE}}",
+          description: "{{OBJECT_PROP_1_DESCRIPTION}}"
+        },
+        {{OBJECT_PROPERTY_2}}: {
+          type: "{{OBJECT_PROP_2_TYPE}}",
+          description: "{{OBJECT_PROP_2_DESCRIPTION}}"
+        }
+      },
+      additionalProperties: false
+    },
+
+    // Reference to definition
+    {{REF_FIELD}}: {
+      $ref: "#/definitions/{{DEFINITION_NAME}}",
+      description: "{{REF_FIELD_DESCRIPTION}}"
+    },
+
+    // oneOf field (union type)
+    {{UNION_FIELD}}: {
+      description: "{{UNION_FIELD_DESCRIPTION}}",
+      oneOf: [
+        { type: "string", format: "uri" },
+        { type: "null" }
+      ]
+    },
+
+    // Date-time field
+    {{DATETIME_FIELD}}: {
+      type: "string",
+      description: "{{DATETIME_FIELD_DESCRIPTION}}",
+      format: "date-time",
+      examples: ["2025-01-15T14:30:00Z"]
+    },
+
+    // Email field
+    {{EMAIL_FIELD}}: {
+      type: "string",
+      description: "{{EMAIL_FIELD_DESCRIPTION}}",
+      format: "email",
+      examples: ["user@example.com"]
+    },
+
+    // URI field
+    {{URI_FIELD}}: {
+      type: "string",
+      description: "{{URI_FIELD_DESCRIPTION}}",
+      format: "uri",
+      examples: ["https://example.com/resource"]
+    },
+
+    // UUID field
+    {{UUID_FIELD}}: {
+      type: "string",
+      description: "{{UUID_FIELD_DESCRIPTION}}",
+      format: "uuid",
+      pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      examples: ["123e4567-e89b-12d3-a456-426614174000"]
+    },
+
+    // Timestamps
+    created_at: {
+      type: "string",
+      description: "Timestamp when resource was created",
+      format: "date-time",
+      readOnly: true
+    },
+
+    updated_at: {
+      type: "string",
+      description: "Timestamp when resource was last updated",
+      format: "date-time",
+      readOnly: true
+    },
+
+    // Metadata object
+    metadata: {
+      type: "object",
+      description: "Additional metadata",
+      additionalProperties: {
+        type: "string"
+      }
+    }
+
+  },
+
+  // Additional properties not allowed by default
+  additionalProperties: {{ALLOW_ADDITIONAL_PROPERTIES}},
+
+  // Reusable definitions
+  definitions: {
+
+    {{DEFINITION_1}}: {
+      type: "object",
+      description: "{{DEFINITION_1_DESCRIPTION}}",
+      required: [
+        "{{DEF_1_REQUIRED_1}}"
+      ],
+      properties: {
+        {{DEF_1_PROPERTY_1}}: {
+          type: "{{DEF_1_PROP_1_TYPE}}",
+          description: "{{DEF_1_PROP_1_DESCRIPTION}}"
+        },
+        {{DEF_1_PROPERTY_2}}: {
+          type: "{{DEF_1_PROP_2_TYPE}}",
+          description: "{{DEF_1_PROP_2_DESCRIPTION}}"
+        }
+      },
+      additionalProperties: false
+    },
+
+    {{DEFINITION_2}}: {
+      type: "object",
+      description: "{{DEFINITION_2_DESCRIPTION}}",
+      properties: {
+        {{DEF_2_PROPERTY_1}}: {
+          type: "{{DEF_2_PROP_1_TYPE}}",
+          description: "{{DEF_2_PROP_1_DESCRIPTION}}"
+        }
+      }
+    },
+
+    // Common patterns
+    NonEmptyString: {
+      type: "string",
+      minLength: 1,
+      pattern: "\\S+"  // At least one non-whitespace character
+    },
+
+    PositiveInteger: {
+      type: "integer",
+      minimum: 1
+    },
+
+    NonNegativeInteger: {
+      type: "integer",
+      minimum: 0
+    },
+
+    Percentage: {
+      type: "number",
+      minimum: 0,
+      maximum: 100
+    },
+
+    SemanticVersion: {
+      type: "string",
+      pattern: "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.-]+)?(\\+[a-zA-Z0-9.-]+)?$",
+      examples: ["1.0.0", "2.1.3-alpha.1", "1.0.0+build.123"]
+    },
+
+    ISO8601DateTime: {
+      type: "string",
+      format: "date-time",
+      pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\.\\d+)?(Z|[+-]\\d{2}:\\d{2})$"
+    }
+
+  },
+
+  // Conditional validation
+  if: {
+    properties: {
+      {{CONDITIONAL_PROPERTY}}: {
+        const: "{{CONDITIONAL_VALUE}}"
+      }
+    }
+  },
+  then: {
+    required: ["{{THEN_REQUIRED_FIELD}}"]
+  },
+  else: {
+    required: ["{{ELSE_REQUIRED_FIELD}}"]
+  },
+
+  // Dependencies
+  dependencies: {
+    {{DEPENDENCY_PROPERTY}}: [
+      "{{DEPENDENT_PROPERTY_1}}",
+      "{{DEPENDENT_PROPERTY_2}}"
+    ]
+  },
+
+  // Examples (for documentation)
+  examples: [
+    {
+      {{EXAMPLE_INSTANCE}}
+    }
+  ]
+}

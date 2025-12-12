@@ -1,0 +1,271 @@
+// {{CONFIG_NAME}} Configuration
+// {{CONFIG_DESCRIPTION}}
+//
+// Layer: {{MGFTS_LAYER}}
+// Schema: {{SCHEMA_PATH}}
+// Version: {{VERSION}}
+// Created: {{CREATED_DATE}}
+// Last Modified: {{LAST_MODIFIED}}
+//
+// This configuration file uses JSON5 format:
+// - Comments are allowed (like this one)
+// - Trailing commas are allowed
+// - Keys don't need quotes
+// - Strings can span multiple lines
+//
+// Validation: This file MUST validate against {{SCHEMA_PATH}}
+
+{
+  // Metadata
+  $schema: "{{SCHEMA_PATH}}",
+  version: "{{VERSION}}",
+  name: "{{CONFIG_NAME}}",
+  description: "{{CONFIG_DESCRIPTION}}",
+
+  // Project Information
+  project: {
+    name: "{{PROJECT_NAME}}",
+    id: "{{PROJECT_ID}}",
+    version: "{{PROJECT_VERSION}}",
+    author: "{{AUTHOR}}",
+    license: "{{LICENSE}}",
+    repository: "{{REPOSITORY_URL}}",
+  },
+
+  // MGFTS Configuration
+  mgfts: {
+    enabled: {{MGFTS_ENABLED}},
+    layers: [
+      {{LAYER_1}},  // Structural
+      {{LAYER_2}},  // Governance
+      {{LAYER_3}},  // Meta-Governance
+      // {{LAYER_4}},  // Transcendental (optional)
+      // {{LAYER_5}},  // Ecological (optional)
+      // {{LAYER_6}},  // Formal Verification (optional)
+      // {{LAYER_7}},  // Ontological (optional)
+    ],
+    validation: {
+      enabled: {{VALIDATION_ENABLED}},
+      on_commit: {{VALIDATE_ON_COMMIT}},
+      on_build: {{VALIDATE_ON_BUILD}},
+      severity_threshold: "{{SEVERITY_THRESHOLD}}", // critical|high|medium|low
+    },
+    agent_mode: "{{AGENT_MODE}}", // strict_compliance|guided_development|exploratory|emergency_override
+  },
+
+  // {{SECTION_NAME}} Configuration
+  {{SECTION_NAME}}: {
+    // {{SUBSECTION_DESCRIPTION}}
+    {{SUBSECTION_NAME}}: {
+      enabled: {{SUBSECTION_ENABLED}},
+      {{SUBSECTION_OPTIONS}}
+    },
+
+    // Feature flags
+    features: {
+      {{FEATURE_NAME}}: {{FEATURE_ENABLED}},
+      {{FEATURE_NAME_2}}: {{FEATURE_2_ENABLED}},
+      // Add more feature flags as needed
+    },
+
+    // Resource limits
+    limits: {
+      max_{{RESOURCE}}: {{MAX_VALUE}},
+      timeout_seconds: {{TIMEOUT}},
+      retry_attempts: {{RETRY_ATTEMPTS}},
+    },
+  },
+
+  // Paths Configuration
+  paths: {
+    root: "{{PROJECT_ROOT}}",
+    source: "{{SOURCE_PATH}}",
+    tests: "{{TESTS_PATH}}",
+    docs: "{{DOCS_PATH}}",
+    config: "{{CONFIG_PATH}}",
+    output: "{{OUTPUT_PATH}}",
+    temp: "{{TEMP_PATH}}",
+    archive: "{{ARCHIVE_PATH}}",
+
+    // MGFTS-specific paths
+    mgfts_root: "{{MGFTS_ROOT}}",
+    templates: "{{TEMPLATES_PATH}}",
+    meta_schemas: "{{META_SCHEMAS_PATH}}",
+    tools: "{{TOOLS_PATH}}",
+  },
+
+  // Logging Configuration
+  logging: {
+    enabled: {{LOGGING_ENABLED}},
+    level: "{{LOG_LEVEL}}", // debug|info|warning|error|critical
+    format: "{{LOG_FORMAT}}",
+    output: {
+      console: {{LOG_TO_CONSOLE}},
+      file: {{LOG_TO_FILE}},
+      file_path: "{{LOG_FILE_PATH}}",
+      max_size_mb: {{LOG_MAX_SIZE}},
+      backup_count: {{LOG_BACKUP_COUNT}},
+    },
+    categories: {
+      {{CATEGORY_NAME}}: "{{CATEGORY_LEVEL}}",
+      // Add more category-specific log levels
+    },
+  },
+
+  // Environment-specific Configuration
+  environments: {
+    development: {
+      debug: true,
+      strict_validation: false,
+      auto_reload: true,
+      {{DEV_SPECIFIC_OPTIONS}}
+    },
+
+    staging: {
+      debug: true,
+      strict_validation: true,
+      auto_reload: false,
+      {{STAGING_SPECIFIC_OPTIONS}}
+    },
+
+    production: {
+      debug: false,
+      strict_validation: true,
+      auto_reload: false,
+      {{PROD_SPECIFIC_OPTIONS}}
+    },
+  },
+
+  // Active environment (overridden by ENV variable)
+  active_environment: "{{ACTIVE_ENVIRONMENT}}",
+
+  // Dependencies Configuration
+  dependencies: {
+    required: [
+      "{{REQUIRED_DEPENDENCY_1}}",
+      "{{REQUIRED_DEPENDENCY_2}}",
+      // Add required dependencies
+    ],
+    optional: [
+      "{{OPTIONAL_DEPENDENCY_1}}",
+      // Add optional dependencies
+    ],
+    versions: {
+      "{{DEPENDENCY_NAME}}": "{{DEPENDENCY_VERSION}}",
+      // Specify version constraints
+    },
+  },
+
+  // Integration Configuration
+  integrations: {
+    {{INTEGRATION_NAME}}: {
+      enabled: {{INTEGRATION_ENABLED}},
+      api_endpoint: "{{API_ENDPOINT}}",
+      timeout_ms: {{TIMEOUT_MS}},
+      retry_policy: {
+        max_attempts: {{MAX_RETRY_ATTEMPTS}},
+        backoff_ms: {{BACKOFF_MS}},
+        exponential: {{USE_EXPONENTIAL_BACKOFF}},
+      },
+      // API keys and secrets should be in environment variables, not here!
+      // Use: process.env.{{INTEGRATION_NAME}}_API_KEY
+    },
+  },
+
+  // Security Configuration
+  security: {
+    // Never put actual secrets here! Use environment variables.
+    // This section documents what secrets are needed.
+    required_env_vars: [
+      "{{ENV_VAR_1}}",
+      "{{ENV_VAR_2}}",
+      // List all required environment variables
+    ],
+
+    encryption: {
+      enabled: {{ENCRYPTION_ENABLED}},
+      algorithm: "{{ENCRYPTION_ALGORITHM}}",
+      // Key should be in ENV: process.env.ENCRYPTION_KEY
+    },
+
+    authentication: {
+      required: {{AUTH_REQUIRED}},
+      method: "{{AUTH_METHOD}}", // jwt|oauth2|api_key|custom
+      token_expiry_seconds: {{TOKEN_EXPIRY}},
+    },
+  },
+
+  // Performance Configuration
+  performance: {
+    caching: {
+      enabled: {{CACHING_ENABLED}},
+      ttl_seconds: {{CACHE_TTL}},
+      max_size_mb: {{CACHE_MAX_SIZE}},
+    },
+
+    concurrency: {
+      max_workers: {{MAX_WORKERS}},
+      queue_size: {{QUEUE_SIZE}},
+      timeout_ms: {{WORKER_TIMEOUT}},
+    },
+
+    optimization: {
+      minify: {{MINIFY_ENABLED}},
+      compress: {{COMPRESS_ENABLED}},
+      bundle: {{BUNDLE_ENABLED}},
+    },
+  },
+
+  // Testing Configuration
+  testing: {
+    enabled: {{TESTING_ENABLED}},
+    framework: "{{TEST_FRAMEWORK}}",
+    coverage: {
+      enabled: {{COVERAGE_ENABLED}},
+      threshold: {{COVERAGE_THRESHOLD}}, // percentage
+      report_format: "{{COVERAGE_REPORT_FORMAT}}",
+    },
+    fixtures_path: "{{FIXTURES_PATH}}",
+    mocks_enabled: {{MOCKS_ENABLED}},
+  },
+
+  // Build Configuration
+  build: {
+    target: "{{BUILD_TARGET}}",
+    mode: "{{BUILD_MODE}}", // development|production
+    source_maps: {{SOURCE_MAPS_ENABLED}},
+    output_path: "{{BUILD_OUTPUT_PATH}}",
+    clean_before_build: {{CLEAN_BEFORE_BUILD}},
+  },
+
+  // Monitoring and Metrics
+  monitoring: {
+    enabled: {{MONITORING_ENABLED}},
+    metrics: {
+      enabled: {{METRICS_ENABLED}},
+      interval_seconds: {{METRICS_INTERVAL}},
+      endpoint: "{{METRICS_ENDPOINT}}",
+    },
+    health_check: {
+      enabled: {{HEALTH_CHECK_ENABLED}},
+      interval_seconds: {{HEALTH_CHECK_INTERVAL}},
+      endpoint: "{{HEALTH_CHECK_ENDPOINT}}",
+    },
+  },
+
+  // Custom Configuration
+  // Add project-specific configuration here
+  custom: {
+    {{CUSTOM_KEY}}: {{CUSTOM_VALUE}},
+    // Add more custom configuration
+  },
+
+  // Metadata
+  metadata: {
+    created: "{{CREATED_DATE}}",
+    last_modified: "{{LAST_MODIFIED}}",
+    modified_by: "{{MODIFIED_BY}}",
+    config_version: "{{CONFIG_VERSION}}",
+    comments: "{{ADDITIONAL_COMMENTS}}",
+  },
+}

@@ -1,0 +1,193 @@
+{
+  // Meta-schema for tool_manifest.json5
+  // Validates the structure of the MGFTS tool manifest
+
+  $schema: "http://json-schema.org/draft-07/schema#",
+  $id: "https://mgfts.org/schemas/tool_manifest.schema.json5",
+  title: "MGFTS Tool Manifest Schema",
+  description: "Schema for validating MGFTS tool manifest files",
+  type: "object",
+
+  required: ["version", "tools"],
+
+  properties: {
+    version: {
+      type: "string",
+      pattern: "^\\d+\\.\\d+(\\.\\d+)?$",
+      description: "Semantic version of the manifest format"
+    },
+
+    last_updated: {
+      type: "string",
+      format: "date",
+      description: "ISO 8601 date of last manifest update"
+    },
+
+    tools: {
+      type: "array",
+      description: "Array of tool definitions",
+      minItems: 1,
+      items: {
+        $ref: "#/definitions/tool"
+      },
+      uniqueItems: true
+    }
+  },
+
+  definitions: {
+    tool: {
+      type: "object",
+      required: [
+        "name",
+        "language",
+        "entry",
+        "version",
+        "category",
+        "description",
+        "capabilities",
+        "targets_layers",
+        "inputs",
+        "outputs",
+        "deterministic"
+      ],
+
+      properties: {
+        name: {
+          type: "string",
+          pattern: "^[a-z][a-z0-9_]*$",
+          description: "Unique tool identifier (snake_case)",
+          minLength: 3,
+          maxLength: 50
+        },
+
+        language: {
+          type: "string",
+          enum: ["python", "javascript", "js", "rust", "cpp", "bash", "other"],
+          description: "Programming language of the tool"
+        },
+
+        entry: {
+          type: "string",
+          pattern: "^plugins/",
+          description: "Relative path to tool entry point from /tools/ directory"
+        },
+
+        version: {
+          type: "string",
+          pattern: "^\\d+\\.\\d+\\.\\d+$",
+          description: "Semantic version of the tool"
+        },
+
+        category: {
+          type: "string",
+          enum: [
+            "structural",
+            "content",
+            "semantic",
+            "schema",
+            "meta_schema",
+            "ontological",
+            "utility"
+          ],
+          description: "Tool category for classification"
+        },
+
+        description: {
+          type: "string",
+          minLength: 10,
+          maxLength: 500,
+          description: "Human-readable description of tool purpose"
+        },
+
+        capabilities: {
+          type: "array",
+          description: "List of capabilities this tool provides",
+          items: {
+            type: "string",
+            pattern: "^[a-z][a-z0-9_]*$"
+          },
+          minItems: 1,
+          uniqueItems: true
+        },
+
+        targets_layers: {
+          type: "array",
+          description: "MGFTS layers this tool analyzes (1-7, empty array for utilities)",
+          items: {
+            type: "integer",
+            minimum: 1,
+            maximum: 7
+          },
+          uniqueItems: true
+        },
+
+        inputs: {
+          type: "array",
+          description: "Required input parameters",
+          items: {
+            type: "string"
+          },
+          minItems: 1
+        },
+
+        outputs: {
+          type: "array",
+          description: "Output types produced by this tool",
+          items: {
+            type: "string",
+            enum: [
+              "violations",
+              "warnings",
+              "metrics",
+              "score",
+              "file_index",
+              "dir_index",
+              "concepts_missing",
+              "concepts_unused",
+              "coherence_score",
+              "concealment_score"
+            ]
+          },
+          minItems: 1
+        },
+
+        deterministic: {
+          type: "boolean",
+          description: "Whether tool produces same output for same input",
+          const: true  // MUST be true for Constitutional Engine tools
+        },
+
+        config: {
+          type: "object",
+          description: "Tool-specific configuration parameters",
+          additionalProperties: true
+        },
+
+        dependencies: {
+          type: "array",
+          description: "Other tools this tool depends on",
+          items: {
+            type: "string"
+          },
+          uniqueItems: true
+        },
+
+        optional: {
+          type: "boolean",
+          description: "Whether this tool is optional (default: false)",
+          default: false
+        },
+
+        timeout_ms: {
+          type: "integer",
+          minimum: 100,
+          maximum: 300000,
+          description: "Maximum execution time in milliseconds",
+          default: 60000
+        }
+      },
+
+      additionalProperties: false
+    }
+  }
+}

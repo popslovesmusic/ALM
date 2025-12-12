@@ -1,0 +1,292 @@
+"""Tests for {{MODULE_NAME}}.
+
+{{TEST_SUITE_DESCRIPTION}}
+
+Author: {{AUTHOR}}
+Created: {{CREATED_DATE}}
+Version: {{VERSION}}
+"""
+
+import pytest
+from pathlib import Path
+from typing import Any, Dict, List
+import logging
+
+# Import module under test
+{{IMPORTS}}
+
+
+# Configure logging for tests
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+
+class Test{{CLASS_NAME}}:
+    """Test suite for {{CLASS_NAME}} class.
+
+    This test suite verifies:
+    - {{TEST_COVERAGE_POINT_1}}
+    - {{TEST_COVERAGE_POINT_2}}
+    - {{TEST_COVERAGE_POINT_3}}
+    """
+
+    def test_initialization(self):
+        """Verify {{CLASS_NAME}} can be initialized correctly."""
+        # Arrange
+        {{ARRANGE}}
+
+        # Act
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+
+        # Assert
+        assert obj is not None
+        {{ASSERTIONS}}
+
+    def test_{{PRIMARY_METHOD}}_happy_path(self):
+        """Verify {{PRIMARY_METHOD}} works correctly with valid input."""
+        # Arrange
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+        {{ARRANGE}}
+
+        # Act
+        result = obj.{{PRIMARY_METHOD}}({{METHOD_ARGS}})
+
+        # Assert
+        assert result == {{EXPECTED_RESULT}}
+        {{ASSERTIONS}}
+
+    def test_{{PRIMARY_METHOD}}_edge_case(self):
+        """Verify {{PRIMARY_METHOD}} handles edge cases correctly."""
+        # Arrange
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+        edge_case_input = {{EDGE_CASE_INPUT}}
+
+        # Act
+        result = obj.{{PRIMARY_METHOD}}(edge_case_input)
+
+        # Assert
+        assert result == {{EXPECTED_EDGE_RESULT}}
+        {{ASSERTIONS}}
+
+    def test_{{PRIMARY_METHOD}}_error_handling(self):
+        """Verify {{PRIMARY_METHOD}} raises expected errors for invalid input."""
+        # Arrange
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+        invalid_input = {{INVALID_INPUT}}
+
+        # Act & Assert
+        with pytest.raises({{EXPECTED_EXCEPTION}}):
+            obj.{{PRIMARY_METHOD}}(invalid_input)
+
+    def test_repr(self):
+        """Verify __repr__ returns valid representation."""
+        # Arrange
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+
+        # Act
+        repr_str = repr(obj)
+
+        # Assert
+        assert "{{CLASS_NAME}}" in repr_str
+        {{ASSERTIONS}}
+
+    def test_str(self):
+        """Verify __str__ returns human-readable representation."""
+        # Arrange
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+
+        # Act
+        str_repr = str(obj)
+
+        # Assert
+        assert isinstance(str_repr, str)
+        assert len(str_repr) > 0
+        {{ASSERTIONS}}
+
+
+class Test{{HELPER_FUNCTION}}:
+    """Test suite for {{HELPER_FUNCTION}} function."""
+
+    def test_{{HELPER_FUNCTION}}_basic(self):
+        """Verify {{HELPER_FUNCTION}} works with basic input."""
+        # Arrange
+        {{ARRANGE}}
+
+        # Act
+        result = {{HELPER_FUNCTION}}({{FUNCTION_ARGS}})
+
+        # Assert
+        assert result == {{EXPECTED_RESULT}}
+        {{ASSERTIONS}}
+
+    def test_{{HELPER_FUNCTION}}_empty_input(self):
+        """Verify {{HELPER_FUNCTION}} handles empty input correctly."""
+        # Arrange
+        empty_input = {{EMPTY_INPUT}}
+
+        # Act
+        result = {{HELPER_FUNCTION}}(empty_input)
+
+        # Assert
+        assert result == {{EXPECTED_EMPTY_RESULT}}
+
+    def test_{{HELPER_FUNCTION}}_large_input(self):
+        """Verify {{HELPER_FUNCTION}} handles large input efficiently."""
+        # Arrange
+        large_input = {{LARGE_INPUT}}
+
+        # Act
+        result = {{HELPER_FUNCTION}}(large_input)
+
+        # Assert
+        assert result == {{EXPECTED_LARGE_RESULT}}
+        {{ASSERTIONS}}
+
+
+class TestIntegration:
+    """Integration tests for {{MODULE_NAME}}."""
+
+    def test_full_workflow(self):
+        """Verify complete workflow from initialization to result."""
+        # Arrange
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+        {{ARRANGE}}
+
+        # Act
+        intermediate_result = obj.{{PRIMARY_METHOD}}({{METHOD_ARGS}})
+        final_result = {{HELPER_FUNCTION}}(intermediate_result)
+
+        # Assert
+        assert final_result == {{EXPECTED_FINAL_RESULT}}
+        {{ASSERTIONS}}
+
+    def test_error_recovery(self):
+        """Verify system recovers gracefully from errors."""
+        # Arrange
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+        {{ARRANGE}}
+
+        # Act & Assert
+        # First operation should fail
+        with pytest.raises({{EXPECTED_EXCEPTION}}):
+            obj.{{PRIMARY_METHOD}}({{INVALID_INPUT}})
+
+        # Second operation should succeed (recovery)
+        result = obj.{{PRIMARY_METHOD}}({{VALID_INPUT}})
+        assert result == {{EXPECTED_RESULT}}
+
+
+class TestEdgeCases:
+    """Test edge cases and boundary conditions."""
+
+    def test_null_input(self):
+        """Verify handling of None input."""
+        # Arrange
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+
+        # Act & Assert
+        with pytest.raises({{EXPECTED_EXCEPTION}}):
+            obj.{{PRIMARY_METHOD}}(None)
+
+    def test_unicode_input(self):
+        """Verify handling of Unicode characters."""
+        # Arrange
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+        unicode_input = "{{UNICODE_TEST_STRING}}"
+
+        # Act
+        result = obj.{{PRIMARY_METHOD}}(unicode_input)
+
+        # Assert
+        assert result is not None
+        {{ASSERTIONS}}
+
+    def test_concurrent_access(self):
+        """Verify thread safety (if applicable)."""
+        # Arrange
+        obj = {{CLASS_NAME}}({{INIT_ARGS}})
+        import threading
+
+        results = []
+
+        def worker():
+            result = obj.{{PRIMARY_METHOD}}({{METHOD_ARGS}})
+            results.append(result)
+
+        # Act
+        threads = [threading.Thread(target=worker) for _ in range(10)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        # Assert
+        assert len(results) == 10
+        {{ASSERTIONS}}
+
+
+# Pytest fixtures
+@pytest.fixture
+def sample_{{CLASS_NAME_LOWER}}():
+    """Fixture providing a sample {{CLASS_NAME}} instance."""
+    return {{CLASS_NAME}}({{FIXTURE_INIT_ARGS}})
+
+
+@pytest.fixture
+def sample_data():
+    """Fixture providing sample test data."""
+    return {{SAMPLE_DATA}}
+
+
+@pytest.fixture
+def temp_directory(tmp_path):
+    """Fixture providing a temporary directory for tests."""
+    test_dir = tmp_path / "{{MODULE_NAME}}_test"
+    test_dir.mkdir()
+    return test_dir
+
+
+@pytest.fixture
+def mock_{{DEPENDENCY}}(monkeypatch):
+    """Fixture providing mocked {{DEPENDENCY}}."""
+    mock = {{MOCK_OBJECT}}
+    monkeypatch.setattr("{{MODULE_PATH}}.{{DEPENDENCY}}", mock)
+    return mock
+
+
+# Parametrized tests
+@pytest.mark.parametrize("input,expected", [
+    ({{PARAM_INPUT_1}}, {{PARAM_EXPECTED_1}}),
+    ({{PARAM_INPUT_2}}, {{PARAM_EXPECTED_2}}),
+    ({{PARAM_INPUT_3}}, {{PARAM_EXPECTED_3}}),
+])
+def test_{{FUNCTION_NAME}}_parametrized(input, expected):
+    """Test {{FUNCTION_NAME}} with various inputs."""
+    # Act
+    result = {{FUNCTION_NAME}}(input)
+
+    # Assert
+    assert result == expected
+
+
+# Performance tests (optional)
+@pytest.mark.slow
+def test_{{FUNCTION_NAME}}_performance():
+    """Verify {{FUNCTION_NAME}} meets performance requirements."""
+    import time
+
+    # Arrange
+    large_dataset = {{LARGE_DATASET}}
+    start_time = time.time()
+
+    # Act
+    result = {{FUNCTION_NAME}}(large_dataset)
+
+    # Assert
+    elapsed_time = time.time() - start_time
+    assert elapsed_time < {{MAX_ALLOWED_TIME}}  # seconds
+    assert result is not None
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v", "--tb=short"])

@@ -1,0 +1,459 @@
+// JSON Schema for Template Metadata
+// Layer 3: Meta-Governance
+//
+// This schema validates template metadata files that describe templates.
+// Each template should have a corresponding metadata file documenting
+// its variables, purpose, and usage.
+//
+// Version: 1.0.0
+// Created: 2025-01-15
+
+{
+  $schema: "http://json-schema.org/draft-07/schema#",
+  $id: "https://mgfts.org/schemas/template_metadata.schema.json",
+  title: "Template Metadata Schema",
+  description: "Schema for validating MGFTS template metadata files",
+  version: "1.0.0",
+
+  type: "object",
+
+  required: [
+    "template_name",
+    "template_type",
+    "version",
+    "description",
+    "variables",
+    "generates"
+  ],
+
+  properties: {
+
+    // Template identification
+    template_name: {
+      type: "string",
+      description: "Unique template identifier",
+      pattern: "^[a-z][a-z0-9_]*$",
+      examples: [
+        "python_module",
+        "json_schema",
+        "api_spec"
+      ]
+    },
+
+    template_type: {
+      type: "string",
+      description: "Category of template",
+      enum: [
+        "code",           // Generates source code
+        "test",           // Generates test files
+        "config",         // Generates configuration
+        "documentation",  // Generates docs
+        "schema",         // Generates schemas
+        "meta"            // Generates templates
+      ]
+    },
+
+    version: {
+      type: "string",
+      description: "Semantic version of template",
+      pattern: "^\\d+\\.\\d+\\.\\d+$",
+      examples: ["1.0.0", "2.1.3"]
+    },
+
+    description: {
+      type: "string",
+      description: "Brief description of what template generates",
+      minLength: 10,
+      maxLength: 200,
+      examples: [
+        "Generates a fully-featured Python module with type annotations and documentation"
+      ]
+    },
+
+    layer: {
+      type: "integer",
+      description: "MGFTS layer this template relates to",
+      minimum: 1,
+      maximum: 7,
+      default: 1
+    },
+
+    // Template file information
+    file_path: {
+      type: "string",
+      description: "Path to template file relative to mgfts/templates/",
+      pattern: "^[a-zA-Z0-9_/.-]+\\.template$",
+      examples: [
+        "python_module.py.template",
+        "config.json5.template"
+      ]
+    },
+
+    generates: {
+      type: "object",
+      description: "Information about what this template generates",
+      required: ["file_type", "extension"],
+      properties: {
+        file_type: {
+          type: "string",
+          description: "Type of file generated",
+          examples: ["Python module", "JSON configuration", "Markdown documentation"]
+        },
+        extension: {
+          type: "string",
+          description: "File extension (including dot)",
+          pattern: "^\\.[a-z0-9]+$",
+          examples: [".py", ".json5", ".md", ".yaml"]
+        },
+        naming_pattern: {
+          type: "string",
+          description: "Recommended naming pattern for generated files",
+          examples: ["snake_case", "kebab-case", "PascalCase", "UPPER_CASE"]
+        },
+        typical_location: {
+          type: "string",
+          description: "Typical directory for generated files",
+          examples: ["src/", "tests/", "docs/", "config/"]
+        }
+      }
+    },
+
+    // Variable definitions
+    variables: {
+      type: "object",
+      description: "Template variables",
+      required: ["required", "optional"],
+      properties: {
+
+        required: {
+          type: "array",
+          description: "Required variables that must be provided",
+          items: {
+            $ref: "#/definitions/Variable"
+          },
+          minItems: 1
+        },
+
+        optional: {
+          type: "array",
+          description: "Optional variables with defaults",
+          items: {
+            $ref: "#/definitions/Variable"
+          }
+        }
+
+      }
+    },
+
+    // Usage information
+    usage: {
+      type: "object",
+      description: "Usage instructions and examples",
+      properties: {
+
+        command_line: {
+          type: "string",
+          description: "Example command-line usage",
+          examples: [
+            "python scripts/create_from_template.py python_module --name my_module"
+          ]
+        },
+
+        programmatic: {
+          type: "string",
+          description: "Example programmatic usage (code snippet)",
+          examples: [
+            "template = load_template('python_module')\nresult = template.render(MODULE_NAME='my_module')"
+          ]
+        },
+
+        examples: {
+          type: "array",
+          description: "Concrete usage examples",
+          items: {
+            type: "object",
+            required: ["description", "substitutions"],
+            properties: {
+              description: {
+                type: "string",
+                description: "What this example demonstrates"
+              },
+              substitutions: {
+                type: "object",
+                description: "Variable substitutions for this example",
+                additionalProperties: {
+                  type: "string"
+                }
+              },
+              output_preview: {
+                type: "string",
+                description: "Preview of generated output (first few lines)"
+              }
+            }
+          }
+        }
+
+      }
+    },
+
+    // Validation and compliance
+    validation: {
+      type: "object",
+      description: "Validation rules for generated output",
+      properties: {
+
+        syntax_check: {
+          type: "boolean",
+          description: "Whether generated output should be syntax-checked",
+          default: true
+        },
+
+        linter: {
+          type: "string",
+          description: "Linter to run on generated output",
+          examples: ["pylint", "eslint", "markdownlint"]
+        },
+
+        schema: {
+          type: "string",
+          description: "Schema to validate generated output against",
+          examples: ["mgfts/meta_schemas/config.schema.json5"]
+        },
+
+        custom_validator: {
+          type: "string",
+          description: "Path to custom validation script",
+          examples: ["scripts/validate_generated_module.py"]
+        }
+
+      }
+    },
+
+    // Metadata
+    author: {
+      type: "string",
+      description: "Template author",
+      examples: ["ALM Team", "Jane Doe"]
+    },
+
+    created: {
+      type: "string",
+      format: "date-time",
+      description: "When template was created"
+    },
+
+    last_modified: {
+      type: "string",
+      format: "date-time",
+      description: "When template was last modified"
+    },
+
+    tags: {
+      type: "array",
+      description: "Tags for categorization and search",
+      items: {
+        type: "string"
+      },
+      examples: [["python", "module", "class"], ["config", "json5"]]
+    },
+
+    related_templates: {
+      type: "array",
+      description: "Related or complementary templates",
+      items: {
+        type: "string"
+      },
+      examples: [["python_test", "python_module"]]
+    },
+
+    deprecation: {
+      type: "object",
+      description: "Deprecation information (if applicable)",
+      properties: {
+        deprecated: {
+          type: "boolean",
+          description: "Whether template is deprecated",
+          default: false
+        },
+        reason: {
+          type: "string",
+          description: "Why template was deprecated"
+        },
+        replacement: {
+          type: "string",
+          description: "Replacement template name"
+        },
+        removal_version: {
+          type: "string",
+          description: "Version when template will be removed",
+          pattern: "^\\d+\\.\\d+\\.\\d+$"
+        }
+      }
+    }
+
+  },
+
+  definitions: {
+
+    Variable: {
+      type: "object",
+      description: "Template variable definition",
+      required: ["name", "description", "type"],
+      properties: {
+
+        name: {
+          type: "string",
+          description: "Variable name (UPPER_SNAKE_CASE)",
+          pattern: "^[A-Z][A-Z0-9_]*$",
+          examples: ["MODULE_NAME", "CLASS_DESCRIPTION", "AUTHOR"]
+        },
+
+        description: {
+          type: "string",
+          description: "What this variable represents",
+          minLength: 5,
+          examples: [
+            "Name of the module to create",
+            "Brief description of the class purpose"
+          ]
+        },
+
+        type: {
+          type: "string",
+          description: "Expected type of value",
+          enum: [
+            "string",
+            "integer",
+            "boolean",
+            "path",
+            "date",
+            "version",
+            "identifier",
+            "list",
+            "dict"
+          ]
+        },
+
+        default: {
+          description: "Default value (for optional variables)",
+          oneOf: [
+            { type: "string" },
+            { type: "number" },
+            { type: "boolean" },
+            { type: "null" }
+          ]
+        },
+
+        examples: {
+          type: "array",
+          description: "Example values",
+          items: { type: "string" },
+          minItems: 1,
+          examples: [
+            ["my_module", "user_auth", "data_processor"]
+          ]
+        },
+
+        validation: {
+          type: "object",
+          description: "Validation rules for this variable",
+          properties: {
+            pattern: {
+              type: "string",
+              description: "Regex pattern value must match",
+              examples: ["^[a-z][a-z0-9_]*$"]
+            },
+            min_length: {
+              type: "integer",
+              description: "Minimum string length",
+              minimum: 0
+            },
+            max_length: {
+              type: "integer",
+              description: "Maximum string length",
+              minimum: 1
+            },
+            allowed_values: {
+              type: "array",
+              description: "Enumeration of allowed values",
+              items: { type: "string" }
+            }
+          }
+        },
+
+        placeholder: {
+          type: "string",
+          description: "Placeholder text shown in interactive prompts",
+          examples: ["Enter module name (snake_case)"]
+        }
+
+      }
+    }
+
+  },
+
+  // Example valid template metadata
+  examples: [
+    {
+      template_name: "python_module",
+      template_type: "code",
+      version: "1.0.0",
+      description: "Generates a Python module with class, documentation, and logging",
+      layer: 1,
+      file_path: "python_module.py.template",
+      generates: {
+        file_type: "Python module",
+        extension: ".py",
+        naming_pattern: "snake_case",
+        typical_location: "src/"
+      },
+      variables: {
+        required: [
+          {
+            name: "MODULE_NAME",
+            description: "Name of the Python module",
+            type: "identifier",
+            examples: ["user_auth", "data_processor"],
+            validation: {
+              pattern: "^[a-z][a-z0-9_]*$"
+            }
+          },
+          {
+            name: "CLASS_NAME",
+            description: "Name of the main class",
+            type: "identifier",
+            examples: ["Authenticator", "DataProcessor"],
+            validation: {
+              pattern: "^[A-Z][a-zA-Z0-9]*$"
+            }
+          }
+        ],
+        optional: [
+          {
+            name: "AUTHOR",
+            description: "Module author name",
+            type: "string",
+            default: "Unknown",
+            examples: ["Jane Doe", "Development Team"]
+          },
+          {
+            name: "VERSION",
+            description: "Module version",
+            type: "version",
+            default: "0.1.0",
+            examples: ["1.0.0", "2.1.3"],
+            validation: {
+              pattern: "^\\d+\\.\\d+\\.\\d+$"
+            }
+          }
+        ]
+      },
+      validation: {
+        syntax_check: true,
+        linter: "pylint"
+      },
+      tags: ["python", "module", "class"],
+      related_templates: ["python_test", "domain_class"]
+    }
+  ]
+}

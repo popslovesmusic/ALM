@@ -1,0 +1,412 @@
+// Agent Behavior Modes Configuration
+// Layer 3: Meta-Governance
+//
+// This file defines the available agent behavior modes and their settings.
+// Projects can switch between modes to balance governance strictness with
+// development velocity.
+//
+// Version: 1.0.0
+// Schema: ../meta_schemas/agent_modes.schema.json5
+
+{
+  $schema: "../meta_schemas/agent_modes.schema.json5",
+  version: "1.0.0",
+  last_modified: "2025-01-15",
+
+  // Current active mode (can be overridden by ENV variable MGFTS_AGENT_MODE)
+  active_mode: "guided_development",
+
+  // Mode definitions
+  modes: {
+
+    // =========================================================================
+    // MODE 1: STRICT COMPLIANCE
+    // =========================================================================
+    strict_compliance: {
+      name: "Strict Compliance",
+      description: "Maximum governance enforcement for production systems",
+
+      when_to_use: [
+        "Production systems",
+        "Critical infrastructure",
+        "Regulated industries (finance, healthcare, aerospace)",
+        "Post-incident recovery",
+        "Before major releases"
+      ],
+
+      behavior: {
+        // Validation settings
+        validation: {
+          enabled: true,
+          on_commit: true,               // Validate before every commit
+          on_build: true,                // Validate during build
+          on_file_write: true,           // Validate when writing files
+          block_on_violations: true,     // Block operations on violations
+          severity_threshold: "high",    // critical|high|medium|low
+          max_violations: 0,             // Maximum allowed violations
+          max_warnings: 5                // Maximum allowed warnings
+        },
+
+        // Template enforcement
+        templates: {
+          required: true,                // MUST use templates for new files
+          allow_deviation: false,        // NO deviations from templates allowed
+          validate_variables: true,      // Validate all variable substitutions
+          require_documentation: true    // All files MUST have documentation
+        },
+
+        // Governance file protection
+        governance: {
+          files_immutable: true,         // Cannot modify governance files
+          require_review: true,          // Human review required for gov changes
+          require_justification: true,   // Must document why changing governance
+          audit_log: true                // Log all governance file access
+        },
+
+        // Preservation protocol
+        preservation: {
+          archival_required: true,       // MUST archive before deletion
+          require_context: true,         // MUST provide ARCHIVAL_CONTEXT.md
+          read_before_write: true,       // MUST read file before modifying
+          incremental_only: true,        // Only incremental changes allowed
+          no_rewrites: true              // Full rewrites forbidden
+        },
+
+        // Code review
+        review: {
+          required: true,                // All changes require review
+          min_reviewers: 2,              // Minimum number of reviewers
+          require_approvals: 2,          // Minimum approvals needed
+          block_self_approval: true      // Cannot approve own changes
+        },
+
+        // Testing requirements
+        testing: {
+          required: true,                // Tests MUST pass
+          coverage_threshold: 90,        // Minimum test coverage %
+          require_integration_tests: true,
+          require_regression_tests: true
+        },
+
+        // Documentation requirements
+        documentation: {
+          required: true,                // Documentation MUST be present
+          api_docs_required: true,       // All public APIs documented
+          inline_comments_required: true,// Complex code must have comments
+          readme_current: true,          // README must be up-to-date
+          changelog_current: true        // CHANGELOG must be updated
+        }
+      },
+
+      // Automatic actions
+      actions: {
+        fail_fast: true,                 // Stop on first violation
+        notify_stakeholders: true,       // Alert team on violations
+        create_incident: true,           // Create incident for critical violations
+        rollback_on_failure: true        // Automatic rollback if validation fails
+      }
+    },
+
+    // =========================================================================
+    // MODE 2: GUIDED DEVELOPMENT
+    // =========================================================================
+    guided_development: {
+      name: "Guided Development",
+      description: "Balanced governance for active feature development",
+
+      when_to_use: [
+        "Active development",
+        "Feature branches",
+        "Small to medium teams",
+        "Normal development workflow",
+        "Default for most projects"
+      ],
+
+      behavior: {
+        validation: {
+          enabled: true,
+          on_commit: true,
+          on_build: true,
+          on_file_write: false,          // Only validate at commit/build
+          block_on_violations: true,     // Block critical/high violations
+          severity_threshold: "medium",  // More lenient threshold
+          max_violations: 0,             // No critical/high violations
+          max_warnings: 20               // Allow some warnings
+        },
+
+        templates: {
+          required: true,                // Use templates (encouraged)
+          allow_deviation: true,         // Can deviate with justification
+          validate_variables: true,
+          require_documentation: true
+        },
+
+        governance: {
+          files_immutable: false,        // Can modify with review
+          require_review: true,
+          require_justification: true,
+          audit_log: true
+        },
+
+        preservation: {
+          archival_required: true,       // Archive important deletions
+          require_context: true,
+          read_before_write: true,
+          incremental_only: false,       // Can do larger refactors
+          no_rewrites: false             // Rewrites allowed with tests
+        },
+
+        review: {
+          required: true,
+          min_reviewers: 1,              // At least one reviewer
+          require_approvals: 1,
+          block_self_approval: false     // Can self-approve minor changes
+        },
+
+        testing: {
+          required: true,
+          coverage_threshold: 80,        // 80% coverage required
+          require_integration_tests: false,
+          require_regression_tests: false
+        },
+
+        documentation: {
+          required: true,
+          api_docs_required: true,
+          inline_comments_required: false,// Encouraged but not required
+          readme_current: false,         // Should update but not blocking
+          changelog_current: false       // Should update but not blocking
+        }
+      },
+
+      actions: {
+        fail_fast: false,                // Continue to collect all violations
+        notify_stakeholders: false,
+        create_incident: false,
+        rollback_on_failure: false      // Manual rollback decision
+      }
+    },
+
+    // =========================================================================
+    // MODE 3: EXPLORATORY
+    // =========================================================================
+    exploratory: {
+      name: "Exploratory",
+      description: "Minimal governance for prototyping and experimentation",
+
+      when_to_use: [
+        "Prototyping",
+        "Research and experimentation",
+        "Proof-of-concept work",
+        "Spike solutions",
+        "Learning and training"
+      ],
+
+      behavior: {
+        validation: {
+          enabled: true,
+          on_commit: false,              // Don't validate on every commit
+          on_build: true,                // Validate before builds
+          on_file_write: false,
+          block_on_violations: false,    // Report but don't block
+          severity_threshold: "low",
+          max_violations: -1,            // Unlimited violations allowed
+          max_warnings: -1               // Unlimited warnings
+        },
+
+        templates: {
+          required: false,               // Templates optional
+          allow_deviation: true,
+          validate_variables: false,
+          require_documentation: false   // Docs optional
+        },
+
+        governance: {
+          files_immutable: false,
+          require_review: false,         // No review required
+          require_justification: false,
+          audit_log: false
+        },
+
+        preservation: {
+          archival_required: false,      // Can delete without archiving
+          require_context: false,
+          read_before_write: false,
+          incremental_only: false,
+          no_rewrites: false
+        },
+
+        review: {
+          required: false,               // No review required
+          min_reviewers: 0,
+          require_approvals: 0,
+          block_self_approval: false
+        },
+
+        testing: {
+          required: false,               // Tests optional
+          coverage_threshold: 0,
+          require_integration_tests: false,
+          require_regression_tests: false
+        },
+
+        documentation: {
+          required: false,               // All docs optional
+          api_docs_required: false,
+          inline_comments_required: false,
+          readme_current: false,
+          changelog_current: false
+        }
+      },
+
+      actions: {
+        fail_fast: false,
+        notify_stakeholders: false,
+        create_incident: false,
+        rollback_on_failure: false
+      },
+
+      // Special warnings for exploratory mode
+      warnings: [
+        "⚠️  Exploratory mode active: Minimal governance enforced",
+        "⚠️  Code MUST pass strict_compliance before merging to main",
+        "⚠️  Remember to validate before promoting to production"
+      ]
+    },
+
+    // =========================================================================
+    // MODE 4: EMERGENCY OVERRIDE
+    // =========================================================================
+    emergency_override: {
+      name: "Emergency Override",
+      description: "Bypass governance for critical incidents",
+
+      when_to_use: [
+        "Security vulnerabilities (CVEs)",
+        "Production incidents",
+        "Data loss prevention",
+        "System outages",
+        "Emergency patches"
+      ],
+
+      behavior: {
+        validation: {
+          enabled: false,                // ❌ ALL VALIDATION DISABLED
+          on_commit: false,
+          on_build: false,
+          on_file_write: false,
+          block_on_violations: false,
+          severity_threshold: "low",
+          max_violations: -1,
+          max_warnings: -1
+        },
+
+        templates: {
+          required: false,
+          allow_deviation: true,
+          validate_variables: false,
+          require_documentation: false
+        },
+
+        governance: {
+          files_immutable: false,
+          require_review: false,
+          require_justification: true,   // MUST justify emergency
+          audit_log: true                // Full audit trail required
+        },
+
+        preservation: {
+          archival_required: false,
+          require_context: true,         // MUST document emergency context
+          read_before_write: false,
+          incremental_only: false,
+          no_rewrites: false
+        },
+
+        review: {
+          required: false,
+          min_reviewers: 0,
+          require_approvals: 0,
+          block_self_approval: false
+        },
+
+        testing: {
+          required: false,
+          coverage_threshold: 0,
+          require_integration_tests: false,
+          require_regression_tests: false
+        },
+
+        documentation: {
+          required: false,
+          api_docs_required: false,
+          inline_comments_required: false,
+          readme_current: false,
+          changelog_current: false
+        }
+      },
+
+      actions: {
+        fail_fast: false,
+        notify_stakeholders: true,       // ✅ Alert everyone
+        create_incident: true,           // ✅ Create incident report
+        rollback_on_failure: false
+      },
+
+      // Emergency mode tracking
+      emergency: {
+        require_incident_id: true,       // Must reference incident
+        max_duration_hours: 48,          // Max time in emergency mode
+        require_postmortem: true,        // Post-incident review required
+        require_remediation: true,       // Must create remediation plan
+        auto_revert_mode: "guided_development", // Revert to this mode after
+        notify_on_activate: true,        // Alert team when activated
+        notify_on_duration: true         // Alert if duration exceeded
+      },
+
+      warnings: [
+        "🚨 EMERGENCY MODE ACTIVE",
+        "🚨 All governance checks DISABLED",
+        "🚨 Full audit trail being recorded",
+        "🚨 Incident ID required for all changes",
+        "🚨 Post-mortem and remediation required within 48 hours",
+        "🚨 Mode will auto-revert after incident resolved"
+      ]
+    }
+
+  },
+
+  // Mode transition rules
+  transitions: {
+    // Who can switch modes
+    allowed_switchers: [
+      "project_admin",
+      "tech_lead",
+      "ci_system"
+    ],
+
+    // Mode transition matrix (which modes can transition to which)
+    allowed_transitions: {
+      strict_compliance: ["guided_development", "emergency_override"],
+      guided_development: ["strict_compliance", "exploratory", "emergency_override"],
+      exploratory: ["guided_development", "strict_compliance"],
+      emergency_override: ["strict_compliance", "guided_development"]
+    },
+
+    // Approval requirements for transitions
+    require_approval: {
+      to_emergency_override: true,      // Always require approval
+      to_strict_compliance: false,
+      to_guided_development: false,
+      to_exploratory: true              // Require approval to relax governance
+    }
+  },
+
+  // Audit and monitoring
+  audit: {
+    log_mode_changes: true,              // Log all mode switches
+    log_location: "logs/agent_mode_audit.log",
+    include_in_reports: true,            // Include in compliance reports
+    alert_on_emergency: true             // Alert when emergency mode activated
+  }
+}

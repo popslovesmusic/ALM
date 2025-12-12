@@ -1,0 +1,754 @@
+// GLOBAL_CONCEPT_VAULT.json5
+// Core Concept Registry for MGFTS-Governed Projects
+//
+// Version: 1.0.0
+// Layer: 2 (Governance)
+// Status: Foundational
+// Authority: Global Governance
+//
+// Purpose: This vault defines the 8 foundational concepts that underpin
+// the Meta-Global File Template System (MGFTS) and the Constitutional Engine.
+// All project-specific concepts should reference or derive from these.
+
+{
+  // Schema reference
+  $schema: "../mgfts/meta_schemas/concept_vault.schema.json5",
+
+  // Metadata
+  vault_version: "1.0.0",
+  project: "ALM-MGFTS",
+  created: "2025-01-15",
+  last_modified: "2025-01-15",
+
+  // Core Concepts (8 foundational concepts)
+  concepts: [
+
+    // ========================================================================
+    // CONCEPT 1: Aletheia Principle
+    // ========================================================================
+    {
+      id: "CORE-001",
+      name: "Aletheia Principle",
+      category: "philosophical",
+      status: "active",
+      layer: 2,
+      introduced: "2025-01-15",
+
+      definition: "The fundamental principle that cognition evolves by reducing concealment over time. Named after the Greek concept of 'unconcealment' or 'truth', Aletheia states that systems should continuously decrease the amount of hidden, implicit, or unexplained information.",
+
+      mathematical_formulation: "δ∫C(t) dt = 0",
+
+      interpretation: {
+        equation: "The variation of the concealment integral over time must be zero at equilibrium",
+        meaning: "Systems naturally evolve toward states of minimal concealment",
+        implication: "Any action that increases concealment is non-optimal and should be corrected"
+      },
+
+      properties: [
+        "Monotonicity: Concealment should never increase without justification",
+        "Asymptotic: Perfect transparency (C=0) is the ideal limit",
+        "Context-aware: What constitutes 'concealment' depends on the observer and context",
+        "Actionable: Provides concrete guidance (document, explain, reveal)"
+      ],
+
+      examples: [
+        "Adding documentation to undocumented code reduces concealment",
+        "Explaining a complex algorithm in comments reduces concealment",
+        "Making implicit assumptions explicit reduces concealment",
+        "Extracting magic numbers into named constants reduces concealment"
+      ],
+
+      anti_examples: [
+        "Removing explanatory comments increases concealment",
+        "Using obscure variable names increases concealment",
+        "Hiding error messages from users increases concealment",
+        "Implicit dependencies increase concealment"
+      ],
+
+      measurement: {
+        metric: "Concealment Score C(t)",
+        formula: "C = 0.3·(1 - doc_coverage) + 0.3·(complexity/max) + 0.2·dead_code + 0.2·implicit_deps",
+        target: "C < 0.3 (low concealment)",
+        tool: "concealment_calculator"
+      },
+
+      related_concepts: [
+        "CORE-004: Concealment Functional",
+        "CORE-005: Concept Preservation System",
+        "CORE-002: Generalized Variational Principle"
+      ],
+
+      implementation: [
+        "Document all public APIs",
+        "Explain complex logic in comments",
+        "Make dependencies explicit",
+        "Provide error messages with context",
+        "Maintain CHANGELOG.md",
+        "Write ADRs for significant decisions"
+      ],
+
+      references: [
+        "Heidegger, M. (1927). Being and Time (Aletheia as unconcealment)",
+        "Constitutional Engine Architecture v0.1",
+        "PRESERVATION_PROTOCOL.md"
+      ]
+    },
+
+    // ========================================================================
+    // CONCEPT 2: Generalized Variational Principle (GVP)
+    // ========================================================================
+    {
+      id: "CORE-002",
+      name: "Generalized Variational Principle",
+      aliases: ["GVP", "Variational Principle"],
+      category: "mathematical",
+      status: "active",
+      layer: 2,
+      introduced: "2025-01-15",
+
+      definition: "A mathematical principle stating that physical and cognitive systems evolve along paths that make an action functional stationary (typically minimal). In the context of software, this means systems naturally evolve toward states of maximal coherence and minimal complexity.",
+
+      mathematical_formulation: "δS[T] = 0",
+
+      interpretation: {
+        equation: "The variation of the action functional S over trajectories T equals zero",
+        meaning: "The system's evolution path is at a stationary point (usually a minimum)",
+        implication: "Coherent systems are more stable than incoherent ones"
+      },
+
+      properties: [
+        "Optimality: Systems seek optimal (not just feasible) configurations",
+        "Coherence: Consistency emerges naturally as a stationary property",
+        "Stability: Stationary points are stable under small perturbations",
+        "Universality: Applies to physics, mathematics, and information systems"
+      ],
+
+      examples: [
+        "Light takes the path of least time (Fermat's principle)",
+        "Particles follow paths of least action (Lagrangian mechanics)",
+        "Code naturally refactors toward patterns with less duplication",
+        "Naming conventions emerge to maximize clarity per character"
+      ],
+
+      anti_examples: [
+        "Arbitrary inconsistencies that don't serve a purpose",
+        "Duplicated code without shared abstraction",
+        "Random naming conventions that reduce coherence"
+      ],
+
+      measurement: {
+        metric: "Coherence Field Φ",
+        formula: "Φ = 0.25·naming + 0.25·patterns + 0.25·(1-coupling) + 0.25·architecture",
+        target: "Φ > 0.7 (high coherence)",
+        tool: "coherence_calculator"
+      },
+
+      related_concepts: [
+        "CORE-003: Coherence Field",
+        "CORE-001: Aletheia Principle",
+        "CORE-006: Constitutional Axioms"
+      ],
+
+      implementation: [
+        "Establish consistent naming conventions",
+        "Use design patterns consistently",
+        "Minimize coupling between modules",
+        "Maintain architectural coherence",
+        "Refactor to reduce complexity"
+      ],
+
+      references: [
+        "Lagrange, J.L. (1788). Mécanique Analytique",
+        "Feynman, R.P. (1948). Space-Time Approach to Quantum Mechanics",
+        "COMPLIANCE_CHARTER.md Section 2.2"
+      ]
+    },
+
+    // ========================================================================
+    // CONCEPT 3: Coherence Field
+    // ========================================================================
+    {
+      id: "CORE-003",
+      name: "Coherence Field",
+      aliases: ["Φ_coherence", "System Coherence"],
+      category: "metric",
+      status: "active",
+      layer: 2,
+      introduced: "2025-01-15",
+
+      definition: "A scalar field quantifying the degree of internal consistency, pattern alignment, and structural harmony within a software project. High coherence indicates that the system's parts work together smoothly; low coherence indicates friction, inconsistency, and technical debt.",
+
+      mathematical_formulation: "Φ_coherence ∈ [0, 1]",
+
+      interpretation: {
+        equation: "Coherence is a normalized score from 0 (completely incoherent) to 1 (perfectly coherent)",
+        meaning: "Measures how well the system's parts align with each other",
+        implication: "High coherence correlates with maintainability and low bug rates"
+      },
+
+      components: {
+        naming_coherence: "Consistency in naming conventions across the project",
+        pattern_coherence: "Consistency in design patterns and idioms",
+        coupling_coherence: "Minimal and well-structured dependencies (1 - coupling_factor)",
+        architectural_coherence: "Adherence to stated architectural principles"
+      },
+
+      formula: "Φ = 0.25·naming + 0.25·patterns + 0.25·(1-coupling) + 0.25·architecture",
+
+      properties: [
+        "Compositionality: Can be computed per module and aggregated",
+        "Monotonicity: Should increase or remain stable over time",
+        "Sensitivity: Responds to refactoring and consistency improvements",
+        "Actionability: Low scores indicate where to focus improvement efforts"
+      ],
+
+      examples: [
+        "A project where all modules use snake_case has high naming coherence",
+        "A project consistently using dependency injection has high pattern coherence",
+        "A project with minimal circular dependencies has high coupling coherence",
+        "A project following SOLID principles has high architectural coherence"
+      ],
+
+      anti_examples: [
+        "Mixing camelCase and snake_case randomly reduces naming coherence",
+        "Using five different ORM libraries reduces pattern coherence",
+        "Circular dependencies reduce coupling coherence",
+        "Violating stated architectural boundaries reduces architectural coherence"
+      ],
+
+      measurement: {
+        metric: "Coherence Score Φ",
+        range: "[0.0, 1.0]",
+        target: "Φ > 0.7",
+        tool: "coherence_calculator",
+        frequency: "On every commit"
+      },
+
+      related_concepts: [
+        "CORE-002: Generalized Variational Principle",
+        "CORE-004: Concealment Functional",
+        "CORE-007: Meta-Governance"
+      ],
+
+      implementation: [
+        "Measure coherence on every commit",
+        "Set minimum coherence threshold (e.g., 0.7)",
+        "Identify low-coherence modules for refactoring",
+        "Track coherence trends over time",
+        "Include coherence in code review criteria"
+      ],
+
+      references: [
+        "COMPLIANCE_CHARTER.md Section 2.2",
+        "State Model: coherence_score computation",
+        "Coherence Calculator tool specification"
+      ]
+    },
+
+    // ========================================================================
+    // CONCEPT 4: Concealment Functional
+    // ========================================================================
+    {
+      id: "CORE-004",
+      name: "Concealment Functional",
+      aliases: ["C(t)", "Concealment Measure"],
+      category: "metric",
+      status: "active",
+      layer: 2,
+      introduced: "2025-01-15",
+
+      definition: "A quantitative measure of how much information is hidden, implicit, or unexplained within a software system. The concealment functional aggregates multiple sources of opacity including lack of documentation, code complexity, dead code, and implicit dependencies.",
+
+      mathematical_formulation: "C: ProjectState → [0, 1]",
+
+      interpretation: {
+        equation: "Concealment is a function from project state to a normalized opacity score",
+        meaning: "Higher C indicates more hidden/implicit information",
+        implication: "C should decrease over time per the Aletheia Principle"
+      },
+
+      components: {
+        documentation_deficit: "1 - (documented_symbols / total_symbols)",
+        complexity_opacity: "cyclomatic_complexity / max_allowed_complexity",
+        dead_code_ratio: "lines_of_dead_code / total_lines",
+        implicit_dependency_ratio: "implicit_imports / total_imports"
+      },
+
+      formula: "C = 0.3·(1-doc) + 0.3·(complexity/max) + 0.2·dead + 0.2·implicit",
+
+      properties: [
+        "Non-negativity: C ≥ 0 always",
+        "Boundedness: C ≤ 1 (normalized)",
+        "Monotonicity: Should decrease or remain stable (Aletheia)",
+        "Decomposability: Can identify which component contributes most"
+      ],
+
+      examples: [
+        "Undocumented API function increases C",
+        "Function with cyclomatic complexity of 50 increases C",
+        "Commented-out code that's never used increases C",
+        "Implicit global variable access increases C"
+      ],
+
+      anti_examples: [
+        "Comprehensive docstrings decrease C",
+        "Simple, linear functions decrease C",
+        "Removed dead code decreases C",
+        "Explicit dependency injection decreases C"
+      ],
+
+      measurement: {
+        metric: "Concealment Score C",
+        range: "[0.0, 1.0]",
+        target: "C < 0.3 (low concealment)",
+        tool: "concealment_calculator",
+        frequency: "On every commit"
+      },
+
+      related_concepts: [
+        "CORE-001: Aletheia Principle",
+        "CORE-003: Coherence Field",
+        "CORE-005: Concept Preservation System"
+      ],
+
+      implementation: [
+        "Measure concealment on every commit",
+        "Set maximum concealment threshold (e.g., 0.3)",
+        "Identify high-concealment modules",
+        "Track concealment trends (should decrease)",
+        "Block commits that increase concealment (Mode 1)"
+      ],
+
+      references: [
+        "COMPLIANCE_CHARTER.md Section 2.1",
+        "State Model: concealment_score computation",
+        "Concealment Calculator tool specification"
+      ]
+    },
+
+    // ========================================================================
+    // CONCEPT 5: Concept Preservation System (CPS)
+    // ========================================================================
+    {
+      id: "CORE-005",
+      name: "Concept Preservation System",
+      aliases: ["CPS", "Knowledge Continuity"],
+      category: "process",
+      status: "active",
+      layer: 2,
+      introduced: "2025-01-15",
+
+      definition: "A systematic approach to preserving knowledge, context, and conceptual understanding throughout a project's evolution. CPS ensures that implicit knowledge is made explicit and that historical decisions are documented for future reference.",
+
+      mathematical_formulation: "CPS: (State, Delta) → (State', Archive)",
+
+      interpretation: {
+        equation: "CPS transforms state changes into new state plus preserved archive",
+        meaning: "Every modification preserves the context of what changed and why",
+        implication: "Knowledge is never lost, only transformed or archived"
+      },
+
+      components: {
+        concept_vault: "GLOBAL_CONCEPT_VAULT.json5 - registry of domain concepts",
+        preservation_protocol: "Rules for modifying existing content",
+        archival_system: "Structured archival with context metadata",
+        decision_records: "Architecture Decision Records (ADRs)",
+        commit_history: "Git history with meaningful messages"
+      },
+
+      properties: [
+        "Losslessness: No knowledge is destroyed, only transformed",
+        "Traceability: All decisions traceable to rationale",
+        "Incrementality: Prefer small changes over large rewrites",
+        "Explicitness: Make implicit knowledge explicit"
+      ],
+
+      examples: [
+        "Before deleting legacy code, archive it with ARCHIVAL_CONTEXT.md",
+        "When refactoring, document what pattern changed and why",
+        "Add new domain concept to GLOBAL_CONCEPT_VAULT.json5",
+        "Write ADR when making architectural decision"
+      ],
+
+      anti_examples: [
+        "Silently deleting old code without archival",
+        "Rewriting function without understanding original purpose",
+        "Making breaking changes without migration guide",
+        "Removing comments because they seem obvious"
+      ],
+
+      measurement: {
+        metric: "Preservation Compliance",
+        indicators: [
+          "All deletions have archival metadata",
+          "All commits have meaningful messages",
+          "ADRs exist for major decisions",
+          "Concept vault is up-to-date"
+        ],
+        tool: "preservation_checker",
+        frequency: "On every commit"
+      },
+
+      related_concepts: [
+        "CORE-001: Aletheia Principle",
+        "CORE-004: Concealment Functional",
+        "CORE-007: Meta-Governance"
+      ],
+
+      implementation: [
+        "Follow PRESERVATION_PROTOCOL.md rules",
+        "Update GLOBAL_CONCEPT_VAULT.json5 when introducing concepts",
+        "Write ADRs for significant decisions",
+        "Archive before deletion",
+        "Write meaningful commit messages"
+      ],
+
+      references: [
+        "PRESERVATION_PROTOCOL.md",
+        "GLOBAL_CONCEPT_VAULT.json5 (this file)",
+        "Architecture Decision Records (ADRs)"
+      ]
+    },
+
+    // ========================================================================
+    // CONCEPT 6: Constitutional Axioms
+    // ========================================================================
+    {
+      id: "CORE-006",
+      name: "Constitutional Axioms",
+      aliases: ["Axioms", "Immutable Rules", "Layer 4 Governance"],
+      category: "governance",
+      status: "active",
+      layer: 4,
+      introduced: "2025-01-15",
+
+      definition: "A set of immutable, foundational principles that govern all other layers of the MGFTS system. Constitutional Axioms are the highest authority; all lower-layer rules must derive from or be consistent with them. Axioms are versioned but never edited; changes require creating a new version.",
+
+      mathematical_formulation: "Axioms: Immutable Set of Propositions",
+
+      interpretation: {
+        equation: "A = {a₁, a₂, ..., aₙ} where each aᵢ is immutable",
+        meaning: "A finite set of fundamental, unchangeable principles",
+        implication: "All system behavior must be derivable from axioms"
+      },
+
+      properties: [
+        "Immutability: Cannot be edited, only versioned",
+        "Foundationality: All other rules derive from axioms",
+        "Universality: Apply to all layers and all components",
+        "Minimality: Should be as few as necessary",
+        "Clarity: Must be unambiguous and well-defined"
+      ],
+
+      examples: [
+        "Axiom: 'No user data shall be logged unencrypted' (security)",
+        "Axiom: 'System shall degrade gracefully under load' (reliability)",
+        "Axiom: 'All financial calculations use decimal arithmetic' (correctness)",
+        "Axiom: 'Personal data deletion requests honored within 30 days' (compliance)"
+      ],
+
+      anti_examples: [
+        "Non-axiom: 'Use Python for backend' (implementation detail, not foundational)",
+        "Non-axiom: 'Tests should have > 80% coverage' (guideline, not immutable)",
+        "Non-axiom: 'Use tabs for indentation' (style, not foundational)"
+      ],
+
+      measurement: {
+        metric: "Axiom Violation Count",
+        target: "Zero violations",
+        tool: "axiom_checker",
+        severity: "Critical (blocks all operations)",
+        frequency: "On every commit"
+      },
+
+      related_concepts: [
+        "CORE-002: Generalized Variational Principle",
+        "CORE-007: Meta-Governance",
+        "CORE-008: Ontological Grounding"
+      ],
+
+      implementation: [
+        "Define axioms in CONSTITUTIONAL_AXIOMS.md",
+        "Validate all operations against axioms",
+        "Block any action that violates axioms",
+        "Version axioms (never edit existing versions)",
+        "Derive lower-layer rules from axioms"
+      ],
+
+      lifecycle: {
+        creation: "Consensus or designated authority",
+        modification: "Create new version, never edit",
+        deprecation: "Mark as superseded, reference new version",
+        removal: "Extremely rare; requires project-wide review"
+      },
+
+      references: [
+        "CONSTITUTIONAL_AXIOMS.md (when created)",
+        "COMPLIANCE_CHARTER.md Article I.4",
+        "Layer 4: Transcendental Governance specification"
+      ]
+    },
+
+    // ========================================================================
+    // CONCEPT 7: Meta-Governance
+    // ========================================================================
+    {
+      id: "CORE-007",
+      name: "Meta-Governance",
+      aliases: ["Self-Regulation", "Layer 3", "Governance of Governance"],
+      category: "architectural",
+      status: "active",
+      layer: 3,
+      introduced: "2025-01-15",
+
+      definition: "The principle that governance systems themselves must be governed. Meta-governance provides templates for templates, schemas for schemas, and rules for rules. It enables systems to self-regulate, self-validate, and evolve their own governance structures while maintaining consistency.",
+
+      mathematical_formulation: "Meta: Governance → Governance",
+
+      interpretation: {
+        equation: "Meta-governance is a higher-order function over governance structures",
+        meaning: "The system can reason about and modify its own governance",
+        implication: "Self-improvement and adaptation are built into the system"
+      },
+
+      components: {
+        meta_schemas: "Schemas that validate other schemas",
+        meta_templates: "Templates for creating templates",
+        meta_validator: "Tool that validates validators",
+        agent_modes: "Configurable behavior modes for agents",
+        project_index: "Registry of all MGFTS-governed projects"
+      },
+
+      properties: [
+        "Self-reference: System reasons about itself",
+        "Consistency: Meta-rules don't contradict base rules",
+        "Completeness: All governance artifacts are governed",
+        "Adaptability: Can evolve governance without external changes"
+      ],
+
+      examples: [
+        "Meta-schema validates the structure of all schemas",
+        "Template template defines the structure of all templates",
+        "Validation rules are themselves validated for correctness",
+        "Agent modes allow switching between strict and exploratory governance"
+      ],
+
+      anti_examples: [
+        "Hard-coded validation without meta-validation",
+        "Templates without a template structure",
+        "Governance rules that can't be questioned or validated"
+      ],
+
+      measurement: {
+        metric: "Meta-Governance Compliance",
+        indicators: [
+          "All schemas validate against meta-schema",
+          "All templates follow meta-template structure",
+          "Validation tools are validated",
+          "Governance is documented and versioned"
+        ],
+        tool: "meta_validator",
+        frequency: "On governance artifact changes"
+      },
+
+      related_concepts: [
+        "CORE-006: Constitutional Axioms",
+        "CORE-005: Concept Preservation System",
+        "CORE-008: Ontological Grounding"
+      ],
+
+      implementation: [
+        "Create meta-schemas for all schema types",
+        "Create meta-templates for all template types",
+        "Validate governance files against meta-governance rules",
+        "Allow configurable agent modes",
+        "Maintain project index for cross-project governance"
+      ],
+
+      references: [
+        "Layer 3: Meta-Governance specification",
+        "meta_schemas/ directory",
+        "meta_templates/ directory",
+        "COMPLIANCE_CHARTER.md Article I.3"
+      ]
+    },
+
+    // ========================================================================
+    // CONCEPT 8: Ontological Grounding
+    // ========================================================================
+    {
+      id: "CORE-008",
+      name: "Ontological Grounding",
+      aliases: ["Existence Criteria", "Layer 7", "Being and Knowledge"],
+      category: "philosophical",
+      status: "active",
+      layer: 7,
+      introduced: "2025-01-15",
+
+      definition: "The foundational principle that all concepts, entities, and structures in the system must have well-defined existence criteria and epistemological grounding. Ontological grounding asks: 'What does it mean for this concept to exist?' and 'How do we know something is true about it?'",
+
+      mathematical_formulation: "∃x: Entity → ∃P: Predicate(x) → Boolean",
+
+      interpretation: {
+        equation: "For every entity, there exists a predicate defining its existence conditions",
+        meaning: "Nothing exists in the system without defined existence criteria",
+        implication: "All concepts are grounded in verifiable reality"
+      },
+
+      components: {
+        existence_criteria: "Conditions under which a concept/entity exists",
+        epistemological_framework: "How we know things about entities",
+        reality_grounding: "Connection to observable/verifiable facts",
+        truth_semantics: "Meaning of truth for system statements",
+        cognitive_axioms: "Foundational beliefs about knowledge",
+        ontology_registry: "Catalog of all defined entities and their criteria"
+      },
+
+      properties: [
+        "Explicitness: Existence is never implicit",
+        "Verifiability: Can check if existence criteria are met",
+        "Clarity: No ambiguity about what exists vs. what doesn't",
+        "Coherence: Existence criteria are consistent with each other"
+      ],
+
+      examples: [
+        "User exists when: has_unique_id AND has_auth_method AND has_permissions",
+        "Session exists when: has_token AND token_not_expired AND user_exists",
+        "Concept exists when: defined_in_vault AND has_examples AND has_existence_criteria",
+        "File exists when: path_resolves AND readable AND not_in_archive"
+      ],
+
+      anti_examples: [
+        "User 'kind of' exists (ambiguous)",
+        "Assuming entity exists without verification",
+        "Implicit existence based on convention",
+        "Circular existence definitions"
+      ],
+
+      measurement: {
+        metric: "Ontological Completeness",
+        indicators: [
+          "All domain concepts have existence criteria",
+          "All entities have verification methods",
+          "No circular definitions",
+          "All predicates are computable"
+        ],
+        tool: "ontology_validator",
+        frequency: "On concept vault updates"
+      },
+
+      related_concepts: [
+        "CORE-005: Concept Preservation System",
+        "CORE-006: Constitutional Axioms",
+        "CORE-007: Meta-Governance"
+      ],
+
+      implementation: [
+        "Define existence criteria for all domain concepts",
+        "Document epistemological assumptions",
+        "Maintain ontology registry",
+        "Validate concept definitions for circularity",
+        "Ground all abstractions in verifiable reality"
+      ],
+
+      philosophical_foundations: {
+        ontology: "Study of what exists and how",
+        epistemology: "Study of knowledge and how we know",
+        metaphysics: "Study of fundamental nature of reality",
+        logic: "Study of valid inference and truth"
+      },
+
+      references: [
+        "Layer 7: Ontological Foundation specification",
+        "GLOBAL_CONCEPT_VAULT.json5 existence_criteria fields",
+        "Heidegger, M. (1927). Being and Time",
+        "Quine, W.V.O. (1948). On What There Is"
+      ]
+    }
+
+  ],
+
+  // Concept Relationships (Graph Structure)
+  relationships: [
+    {
+      from: "CORE-001", // Aletheia
+      to: "CORE-004",   // Concealment
+      type: "measures",
+      description: "Aletheia is operationalized through Concealment measurement"
+    },
+    {
+      from: "CORE-002", // GVP
+      to: "CORE-003",   // Coherence
+      type: "measures",
+      description: "GVP is operationalized through Coherence measurement"
+    },
+    {
+      from: "CORE-001", // Aletheia
+      to: "CORE-005",   // CPS
+      type: "requires",
+      description: "Reducing concealment requires preserving knowledge"
+    },
+    {
+      from: "CORE-006", // Axioms
+      to: "CORE-001",   // Aletheia
+      type: "constrains",
+      description: "Axioms may require specific transparency guarantees"
+    },
+    {
+      from: "CORE-006", // Axioms
+      to: "CORE-002",   // GVP
+      type: "constrains",
+      description: "Axioms may require specific coherence guarantees"
+    },
+    {
+      from: "CORE-007", // Meta-Governance
+      to: "CORE-006",   // Axioms
+      type: "validates",
+      description: "Meta-governance validates that axioms are well-formed"
+    },
+    {
+      from: "CORE-008", // Ontological Grounding
+      to: "CORE-005",   // CPS
+      type: "grounds",
+      description: "Ontology defines existence criteria for concepts in vault"
+    },
+    {
+      from: "CORE-008", // Ontological Grounding
+      to: "CORE-006",   // Axioms
+      type: "grounds",
+      description: "Ontology provides foundational truth semantics for axioms"
+    },
+    {
+      from: "CORE-007", // Meta-Governance
+      to: "CORE-003",   // Coherence
+      type: "ensures",
+      description: "Meta-governance ensures coherence across governance layers"
+    },
+    {
+      from: "CORE-003", // Coherence
+      to: "CORE-004",   // Concealment
+      type: "inversely_related",
+      description: "High coherence typically correlates with low concealment"
+    }
+  ],
+
+  // Evolution History
+  evolution: [
+    {
+      date: "2025-01-15",
+      version: "1.0.0",
+      change: "Initial vault created with 8 core concepts",
+      author: "ALM Constitutional Engine"
+    }
+  ],
+
+  // Metadata
+  metadata: {
+    total_concepts: 8,
+    active_concepts: 8,
+    deprecated_concepts: 0,
+    layers_covered: [2, 3, 4, 7],
+    last_validation: "2025-01-15",
+    next_review: "2025-04-15"
+  }
+}

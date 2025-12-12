@@ -4,7 +4,9 @@
       "Bash(python:*)",
       "Bash(dir /s /b ctl*.py ctl*.json 2)",
       "Bash(nul)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(dir /s /b \"C:\\Users\\j\\Desktop\\ALM\")",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []

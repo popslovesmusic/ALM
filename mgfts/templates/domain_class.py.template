@@ -1,0 +1,598 @@
+"""{{DOMAIN_CLASS_NAME}} - Domain Model Implementation
+
+Purpose: {{CLASS_PURPOSE}}
+Domain: {{DOMAIN_AREA}}
+Layer: {{MGFTS_LAYER}}
+
+This module implements the {{DOMAIN_CLASS_NAME}} domain entity with:
+- Full type annotations
+- Immutability (where appropriate)
+- Validation
+- Serialization/deserialization
+- Domain invariants
+- Event generation (if applicable)
+
+Dependencies:
+- {{DEPENDENCY_1}}
+- {{DEPENDENCY_2}}
+
+Author: {{AUTHOR}}
+Created: {{CREATED_DATE}}
+Version: {{VERSION}}
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field, asdict
+from typing import Optional, List, Dict, Any, ClassVar, Tuple
+from datetime import datetime
+from enum import Enum
+import logging
+import json
+import uuid
+
+# Configure logging
+logger = logging.getLogger(__name__)
+
+
+# ============================================================================
+# Enumerations
+# ============================================================================
+
+class {{ENUM_NAME}}(Enum):
+    """{{ENUM_DESCRIPTION}}
+
+    This enum defines valid states/types for {{DOMAIN_CLASS_NAME}}.
+    """
+    {{ENUM_VALUE_1}} = "{{ENUM_VALUE_1_STRING}}"
+    {{ENUM_VALUE_2}} = "{{ENUM_VALUE_2_STRING}}"
+    {{ENUM_VALUE_3}} = "{{ENUM_VALUE_3_STRING}}"
+
+    def __str__(self) -> str:
+        return self.value
+
+
+# ============================================================================
+# Value Objects (Immutable)
+# ============================================================================
+
+@dataclass(frozen=True)
+class {{VALUE_OBJECT_NAME}}:
+    """{{VALUE_OBJECT_DESCRIPTION}}
+
+    Value object representing {{VALUE_OBJECT_PURPOSE}}.
+    Immutable - use replace() to create modified copies.
+
+    Attributes:
+        {{VO_ATTRIBUTE_1}}: {{VO_ATTRIBUTE_1_DESCRIPTION}}
+        {{VO_ATTRIBUTE_2}}: {{VO_ATTRIBUTE_2_DESCRIPTION}}
+
+    Invariants:
+        - {{INVARIANT_1}}
+        - {{INVARIANT_2}}
+
+    Examples:
+        >>> vo = {{VALUE_OBJECT_NAME}}({{VO_EXAMPLE_ARGS}})
+        >>> print(vo)
+        {{VO_EXAMPLE_OUTPUT}}
+    """
+
+    {{VO_ATTRIBUTE_1}}: {{VO_TYPE_1}}
+    {{VO_ATTRIBUTE_2}}: {{VO_TYPE_2}}
+
+    def __post_init__(self) -> None:
+        """Validate invariants after initialization."""
+        self._validate()
+
+    def _validate(self) -> None:
+        """Validate domain invariants.
+
+        Raises:
+            ValueError: If invariants are violated
+        """
+        if {{VALIDATION_CONDITION_1}}:
+            raise ValueError(f"{{VALIDATION_ERROR_1}}")
+
+        if {{VALIDATION_CONDITION_2}}:
+            raise ValueError(f"{{VALIDATION_ERROR_2}}")
+
+    def __str__(self) -> str:
+        """Human-readable representation."""
+        return f"{{VALUE_OBJECT_NAME}}({{VO_STR_FORMAT}})"
+
+
+# ============================================================================
+# Domain Entity
+# ============================================================================
+
+@dataclass
+class {{DOMAIN_CLASS_NAME}}:
+    """{{DOMAIN_CLASS_DESCRIPTION}}
+
+    Domain entity representing {{ENTITY_PURPOSE}}.
+
+    This entity is responsible for:
+    - {{RESPONSIBILITY_1}}
+    - {{RESPONSIBILITY_2}}
+    - {{RESPONSIBILITY_3}}
+
+    Attributes:
+        id: Unique identifier (UUID)
+        {{ATTRIBUTE_1}}: {{ATTRIBUTE_1_DESCRIPTION}}
+        {{ATTRIBUTE_2}}: {{ATTRIBUTE_2_DESCRIPTION}}
+        {{ATTRIBUTE_3}}: {{ATTRIBUTE_3_DESCRIPTION}}
+        status: Current status ({{ENUM_NAME}})
+        created_at: Timestamp of creation
+        updated_at: Timestamp of last update
+        version: Version number for optimistic locking
+
+    Domain Invariants:
+        - ID must be unique across all instances
+        - {{DOMAIN_INVARIANT_1}}
+        - {{DOMAIN_INVARIANT_2}}
+        - {{DOMAIN_INVARIANT_3}}
+
+    Business Rules:
+        - {{BUSINESS_RULE_1}}
+        - {{BUSINESS_RULE_2}}
+
+    Examples:
+        >>> entity = {{DOMAIN_CLASS_NAME}}.create({{CREATE_EXAMPLE_ARGS}})
+        >>> entity.{{DOMAIN_METHOD}}({{METHOD_EXAMPLE_ARGS}})
+        >>> print(entity.{{ATTRIBUTE_1}})
+        {{EXAMPLE_OUTPUT}}
+    """
+
+    # ========================================================================
+    # Class-level constants
+    # ========================================================================
+
+    MAX_{{CONSTANT_NAME}}: ClassVar[int] = {{CONSTANT_VALUE}}
+    DEFAULT_{{CONSTANT_2}}: ClassVar[str] = "{{DEFAULT_VALUE}}"
+
+    # ========================================================================
+    # Instance attributes
+    # ========================================================================
+
+    # Identity
+    id: uuid.UUID = field(default_factory=uuid.uuid4)
+
+    # Core attributes
+    {{ATTRIBUTE_1}}: {{TYPE_1}}
+    {{ATTRIBUTE_2}}: {{TYPE_2}}
+    {{ATTRIBUTE_3}}: Optional[{{TYPE_3}}] = None
+
+    # Status and lifecycle
+    status: {{ENUM_NAME}} = {{ENUM_NAME}}.{{DEFAULT_STATUS}}
+
+    # Collections (use default_factory for mutable defaults)
+    {{COLLECTION_ATTRIBUTE}}: List[{{COLLECTION_TYPE}}] = field(default_factory=list)
+
+    # Metadata
+    created_at: datetime = field(default_factory=datetime.utcnow)
+    updated_at: datetime = field(default_factory=datetime.utcnow)
+    version: int = 1
+
+    # Private/internal attributes (not serialized)
+    _events: List[{{EVENT_TYPE}}] = field(default_factory=list, repr=False)
+    _validated: bool = field(default=False, repr=False)
+
+    # ========================================================================
+    # Factory methods
+    # ========================================================================
+
+    @classmethod
+    def create(
+        cls,
+        {{CREATE_PARAM_1}}: {{CREATE_TYPE_1}},
+        {{CREATE_PARAM_2}}: {{CREATE_TYPE_2}},
+        **kwargs: Any
+    ) -> {{DOMAIN_CLASS_NAME}}:
+        """Create a new {{DOMAIN_CLASS_NAME}} instance with validation.
+
+        Factory method that ensures all domain invariants are satisfied.
+
+        Args:
+            {{CREATE_PARAM_1}}: {{CREATE_PARAM_1_DESCRIPTION}}
+            {{CREATE_PARAM_2}}: {{CREATE_PARAM_2_DESCRIPTION}}
+            **kwargs: Additional optional attributes
+
+        Returns:
+            New validated {{DOMAIN_CLASS_NAME}} instance
+
+        Raises:
+            ValueError: If creation parameters violate domain rules
+
+        Examples:
+            >>> entity = {{DOMAIN_CLASS_NAME}}.create(
+            ...     {{CREATE_PARAM_1}}={{EXAMPLE_VALUE_1}},
+            ...     {{CREATE_PARAM_2}}={{EXAMPLE_VALUE_2}}
+            ... )
+        """
+        logger.debug(f"Creating new {{DOMAIN_CLASS_NAME}}")
+
+        # Create instance
+        instance = cls(
+            {{ATTRIBUTE_1}}={{CREATE_PARAM_1}},
+            {{ATTRIBUTE_2}}={{CREATE_PARAM_2}},
+            **kwargs
+        )
+
+        # Validate
+        instance.validate()
+
+        # Record creation event
+        instance._add_event({{EVENT_TYPE}}.CREATED, {
+            "{{ATTRIBUTE_1}}": {{CREATE_PARAM_1}},
+            "{{ATTRIBUTE_2}}": {{CREATE_PARAM_2}}
+        })
+
+        return instance
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> {{DOMAIN_CLASS_NAME}}:
+        """Deserialize from dictionary.
+
+        Args:
+            data: Dictionary representation
+
+        Returns:
+            Reconstructed {{DOMAIN_CLASS_NAME}} instance
+
+        Examples:
+            >>> data = {"id": "...", "{{ATTRIBUTE_1}}": "..."}
+            >>> entity = {{DOMAIN_CLASS_NAME}}.from_dict(data)
+        """
+        # Convert string UUID to UUID object
+        if "id" in data and isinstance(data["id"], str):
+            data["id"] = uuid.UUID(data["id"])
+
+        # Convert datetime strings
+        if "created_at" in data and isinstance(data["created_at"], str):
+            data["created_at"] = datetime.fromisoformat(data["created_at"])
+        if "updated_at" in data and isinstance(data["updated_at"], str):
+            data["updated_at"] = datetime.fromisoformat(data["updated_at"])
+
+        # Convert status
+        if "status" in data and isinstance(data["status"], str):
+            data["status"] = {{ENUM_NAME}}(data["status"])
+
+        return cls(**data)
+
+    @classmethod
+    def from_json(cls, json_str: str) -> {{DOMAIN_CLASS_NAME}}:
+        """Deserialize from JSON string.
+
+        Args:
+            json_str: JSON string representation
+
+        Returns:
+            Reconstructed {{DOMAIN_CLASS_NAME}} instance
+        """
+        data = json.loads(json_str)
+        return cls.from_dict(data)
+
+    # ========================================================================
+    # Validation
+    # ========================================================================
+
+    def validate(self) -> None:
+        """Validate all domain invariants.
+
+        This method checks all business rules and invariants.
+        Call after any state mutation.
+
+        Raises:
+            ValueError: If any invariant is violated
+        """
+        errors = []
+
+        # Validate required attributes
+        if not self.{{ATTRIBUTE_1}}:
+            errors.append("{{ATTRIBUTE_1}} is required")
+
+        # Validate business rules
+        if {{BUSINESS_RULE_CONDITION}}:
+            errors.append("{{BUSINESS_RULE_VIOLATION_MESSAGE}}")
+
+        # Validate collection constraints
+        if len(self.{{COLLECTION_ATTRIBUTE}}) > self.MAX_{{CONSTANT_NAME}}:
+            errors.append(f"{{COLLECTION_ATTRIBUTE}} exceeds maximum ({self.MAX_{{CONSTANT_NAME}}})")
+
+        # Validate value object if present
+        if self.{{ATTRIBUTE_3}} is not None:
+            try:
+                self.{{ATTRIBUTE_3}}._validate()
+            except ValueError as e:
+                errors.append(f"Invalid {{ATTRIBUTE_3}}: {e}")
+
+        # Raise if errors found
+        if errors:
+            raise ValueError(f"Validation failed: {'; '.join(errors)}")
+
+        self._validated = True
+        logger.debug(f"{{DOMAIN_CLASS_NAME}} {self.id} validated successfully")
+
+    # ========================================================================
+    # Domain methods (business logic)
+    # ========================================================================
+
+    def {{DOMAIN_METHOD}}(
+        self,
+        {{METHOD_PARAM_1}}: {{METHOD_TYPE_1}},
+        {{METHOD_PARAM_2}}: Optional[{{METHOD_TYPE_2}}] = None
+    ) -> {{METHOD_RETURN_TYPE}}:
+        """{{DOMAIN_METHOD_DESCRIPTION}}
+
+        This method implements the business logic for {{METHOD_PURPOSE}}.
+
+        Args:
+            {{METHOD_PARAM_1}}: {{METHOD_PARAM_1_DESCRIPTION}}
+            {{METHOD_PARAM_2}}: {{METHOD_PARAM_2_DESCRIPTION}}
+
+        Returns:
+            {{METHOD_RETURN_DESCRIPTION}}
+
+        Raises:
+            ValueError: If {{METHOD_ERROR_CONDITION}}
+            RuntimeError: If {{METHOD_RUNTIME_ERROR_CONDITION}}
+
+        Side Effects:
+            - Updates {{ATTRIBUTE_2}}
+            - Records {{EVENT_TYPE}} event
+            - Increments version number
+
+        Examples:
+            >>> entity = {{DOMAIN_CLASS_NAME}}.create(...)
+            >>> result = entity.{{DOMAIN_METHOD}}({{METHOD_EXAMPLE_ARGS}})
+        """
+        logger.info(f"Executing {{DOMAIN_METHOD}} on {self.id}")
+
+        # Pre-conditions
+        if not self._validated:
+            self.validate()
+
+        if {{PRECONDITION}}:
+            raise ValueError("{{PRECONDITION_ERROR}}")
+
+        # Business logic
+        previous_value = self.{{ATTRIBUTE_2}}
+
+        {{METHOD_BUSINESS_LOGIC}}
+
+        # Update state
+        self.{{ATTRIBUTE_2}} = {{NEW_VALUE}}
+        self._mark_updated()
+
+        # Record event
+        self._add_event({{EVENT_TYPE}}.{{EVENT_NAME}}, {
+            "{{METHOD_PARAM_1}}": {{METHOD_PARAM_1}},
+            "previous_{{ATTRIBUTE_2}}": previous_value,
+            "new_{{ATTRIBUTE_2}}": self.{{ATTRIBUTE_2}}
+        })
+
+        # Post-conditions
+        assert {{POSTCONDITION}}, "Postcondition violated"
+
+        return {{RETURN_VALUE}}
+
+    def {{DOMAIN_METHOD_2}}(self, {{PARAM}}: {{PARAM_TYPE}}) -> None:
+        """{{DOMAIN_METHOD_2_DESCRIPTION}}"""
+        # Implement second domain method
+        {{METHOD_2_LOGIC}}
+        self._mark_updated()
+
+    # ========================================================================
+    # Query methods (read-only, no side effects)
+    # ========================================================================
+
+    def is_{{STATE_CHECK}}(self) -> bool:
+        """Check if entity is in {{STATE}} state.
+
+        Returns:
+            True if {{STATE_CONDITION}}
+        """
+        return {{STATE_CHECK_LOGIC}}
+
+    def can_{{ACTION}}(self) -> bool:
+        """Check if {{ACTION}} is allowed in current state.
+
+        Returns:
+            True if action is permitted
+        """
+        return {{ACTION_PERMISSION_LOGIC}}
+
+    def get_{{DERIVED_VALUE}}(self) -> {{DERIVED_TYPE}}:
+        """Calculate and return {{DERIVED_VALUE}}.
+
+        This is a derived value computed from entity state.
+
+        Returns:
+            {{DERIVED_VALUE_DESCRIPTION}}
+        """
+        return {{DERIVED_CALCULATION}}
+
+    # ========================================================================
+    # Lifecycle methods
+    # ========================================================================
+
+    def {{TRANSITION_METHOD}}(self) -> None:
+        """Transition entity to {{NEW_STATE}} state.
+
+        Implements state machine transition logic.
+
+        Raises:
+            RuntimeError: If transition is not allowed
+        """
+        if not self.can_{{ACTION}}():
+            raise RuntimeError(f"Cannot {{ACTION}} in {self.status} state")
+
+        previous_status = self.status
+        self.status = {{ENUM_NAME}}.{{NEW_STATE}}
+        self._mark_updated()
+
+        self._add_event({{EVENT_TYPE}}.{{TRANSITION_EVENT}}, {
+            "from": str(previous_status),
+            "to": str(self.status)
+        })
+
+        logger.info(f"{{DOMAIN_CLASS_NAME}} {self.id} transitioned to {self.status}")
+
+    def delete(self) -> None:
+        """Mark entity as deleted (soft delete).
+
+        Note: This is a soft delete. Entity remains in database but is
+        marked as inactive/deleted.
+        """
+        self.status = {{ENUM_NAME}}.{{DELETED_STATUS}}
+        self._mark_updated()
+
+        self._add_event({{EVENT_TYPE}}.DELETED, {})
+
+        logger.info(f"{{DOMAIN_CLASS_NAME}} {self.id} deleted")
+
+    # ========================================================================
+    # Internal/private methods
+    # ========================================================================
+
+    def _mark_updated(self) -> None:
+        """Mark entity as updated (internal use only)."""
+        self.updated_at = datetime.utcnow()
+        self.version += 1
+
+    def _add_event(self, event_type: {{EVENT_TYPE}}, data: Dict[str, Any]) -> None:
+        """Record domain event (internal use only)."""
+        event = {
+            "type": event_type,
+            "entity_id": str(self.id),
+            "timestamp": datetime.utcnow().isoformat(),
+            "data": data
+        }
+        self._events.append(event)
+
+    def _clear_events(self) -> List[{{EVENT_TYPE}}]:
+        """Clear and return pending events (internal use only)."""
+        events = self._events.copy()
+        self._events.clear()
+        return events
+
+    # ========================================================================
+    # Serialization
+    # ========================================================================
+
+    def to_dict(self, include_private: bool = False) -> Dict[str, Any]:
+        """Convert to dictionary representation.
+
+        Args:
+            include_private: Whether to include private attributes
+
+        Returns:
+            Dictionary representation
+        """
+        data = {
+            "id": str(self.id),
+            "{{ATTRIBUTE_1}}": self.{{ATTRIBUTE_1}},
+            "{{ATTRIBUTE_2}}": self.{{ATTRIBUTE_2}},
+            "status": str(self.status),
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+            "version": self.version,
+        }
+
+        # Optional attribute
+        if self.{{ATTRIBUTE_3}} is not None:
+            data["{{ATTRIBUTE_3}}"] = asdict(self.{{ATTRIBUTE_3}})
+
+        # Collections
+        data["{{COLLECTION_ATTRIBUTE}}"] = self.{{COLLECTION_ATTRIBUTE}}.copy()
+
+        # Include private/internal state if requested
+        if include_private:
+            data["_events"] = self._events.copy()
+            data["_validated"] = self._validated
+
+        return data
+
+    def to_json(self, **kwargs: Any) -> str:
+        """Convert to JSON string.
+
+        Args:
+            **kwargs: Arguments passed to json.dumps
+
+        Returns:
+            JSON string representation
+        """
+        return json.dumps(self.to_dict(), **kwargs)
+
+    # ========================================================================
+    # Magic methods
+    # ========================================================================
+
+    def __eq__(self, other: object) -> bool:
+        """Entity equality based on ID."""
+        if not isinstance(other, {{DOMAIN_CLASS_NAME}}):
+            return False
+        return self.id == other.id
+
+    def __hash__(self) -> int:
+        """Hash based on ID (for use in sets/dicts)."""
+        return hash(self.id)
+
+    def __str__(self) -> str:
+        """Human-readable representation."""
+        return f"{{DOMAIN_CLASS_NAME}}(id={self.id}, {{ATTRIBUTE_1}}={self.{{ATTRIBUTE_1}}}, status={self.status})"
+
+    def __repr__(self) -> str:
+        """Developer representation."""
+        return f"{{DOMAIN_CLASS_NAME}}(id={self.id!r}, {{ATTRIBUTE_1}}={self.{{ATTRIBUTE_1}}!r}, {{ATTRIBUTE_2}}={self.{{ATTRIBUTE_2}}!r}, status={self.status!r})"
+
+
+# ============================================================================
+# Module-level functions
+# ============================================================================
+
+def {{FACTORY_FUNCTION}}({{FACTORY_PARAMS}}) -> {{DOMAIN_CLASS_NAME}}:
+    """Factory function for creating {{DOMAIN_CLASS_NAME}} from {{SOURCE}}.
+
+    Args:
+        {{FACTORY_PARAMS_DOCS}}
+
+    Returns:
+        New {{DOMAIN_CLASS_NAME}} instance
+    """
+    {{FACTORY_LOGIC}}
+
+    return {{DOMAIN_CLASS_NAME}}.create({{CREATE_ARGS}})
+
+
+# ============================================================================
+# Example usage
+# ============================================================================
+
+if __name__ == "__main__":
+    # Configure logging
+    logging.basicConfig(level=logging.DEBUG)
+
+    # Example: Create entity
+    entity = {{DOMAIN_CLASS_NAME}}.create(
+        {{CREATE_PARAM_1}}={{EXAMPLE_VALUE_1}},
+        {{CREATE_PARAM_2}}={{EXAMPLE_VALUE_2}}
+    )
+
+    print(f"Created: {entity}")
+
+    # Example: Execute domain method
+    result = entity.{{DOMAIN_METHOD}}({{METHOD_EXAMPLE_ARGS}})
+    print(f"Result: {result}")
+
+    # Example: Serialize
+    json_data = entity.to_json(indent=2)
+    print(f"JSON:\n{json_data}")
+
+    # Example: Deserialize
+    restored = {{DOMAIN_CLASS_NAME}}.from_json(json_data)
+    print(f"Restored: {restored}")
+
+    # Example: Validate equality
+    assert entity == restored
+    print("Serialization round-trip successful!")
