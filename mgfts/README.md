@@ -176,19 +176,19 @@ System shall degrade gracefully under load.
 
 ### Layer 6: Formal Verification ✓
 
-**What:** Mathematical proofs of correctness
+**What:** Mathematical proofs of correctness anchored in declared verification targets, registered tools, and auditable artifacts.
 
-**Example:**
-```
-Specification: sort(list) returns sorted list
-Proof: ∀ lists L, ∀ i,j where i<j: result[i] ≤ result[j]
-Verified: ✓ (via Coq/Isabelle)
-```
+**How to participate:**
+- Track verification intent in `mgfts/config/layer6_verification.json5` (proof directories, artifact patterns, tool registry, and targets).
+- Author proof obligations from `mgfts/templates/proof_obligation.md.template` and checker configs from `mgfts/templates/verification_config.json5.template`.
+- Store artifacts under `/verification/` or `/proofs/` using recognized formats (`.smt2`, `.v`, `.lean`, `.tla`, `.cfg`, `.als`, `.smv`, `.dfy`, `.fst`, `.lh`, `.l6spec`, `.contracts`).
+- Record outcomes (pending/proved/partial) so MGFTS reports surface Layer 6 coverage and validation checks.
+- Optionally run `python scripts/validate_project.py . --layers 1,2,6 --verify-artifacts` to sanity check artifacts and aggregate Layer 6 scores.
 
 **Benefits:**
-- Correctness guaranteed
-- Critical systems verified
-- Trust through proof
+- Correctness claims are linked to explicit targets, tools, and proof files.
+- Contributors share a repeatable workflow for adding or reviewing proofs.
+- Layer 6 coverage appears in MGFTS reports alongside other governance scores.
 
 ---
 

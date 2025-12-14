@@ -171,27 +171,25 @@ This Charter establishes the universal compliance standards for all projects gov
 
 ### Section 1.6: Layer 6 (Formal Verification Compliance)
 
-**Requirement**: Critical projects SHOULD provide formal specifications.
+**Requirement**: Projects that claim formal assurance MUST maintain verification configuration, targets, and proof artifacts.
 
 **When Required**:
 - Safety-critical systems
 - Cryptographic implementations
 - Distributed consensus algorithms
 - Financial transaction systems
+- Governance-critical automation (as declared in `layer6_verification.json5`)
 
 **Standards**:
-1. Formal specs MUST use a recognized specification language
-2. Invariants MUST be stated explicitly
-3. Proofs MUST be machine-checkable where possible
-4. Verification results MUST be documented
-
-**Example Specification Languages**:
-- TLA+, Alloy, Coq, Isabelle, Z notation
+1. **Configuration**: Maintain `mgfts/config/layer6_verification.json5` describing proof directories, artifact patterns, tools, and targets (use `mgfts/templates/verification_config.json5.template`).
+2. **Proof Artifacts**: Store proofs under `/verification/` or `/proofs/` (configurable). Accepted patterns include `.smt2`, `.v`, `.lean`, `.tla`, `.cfg`, `.als`, `.smv`, `.dfy`, `.fst`, `.lh`, `.l6spec`, `.contracts`.
+3. **Targets**: Each target MUST link to at least one artifact path and identify its source spec. Pending targets MUST include a stub created from `mgfts/templates/proof_obligation.md.template`.
+4. **Tool Registry**: Register verification tools with commands and supported patterns; at least one enabled tool MUST exist for covered targets.
+5. **Reporting**: Verification outcomes (or pending status) MUST feed Layer 6 sections of MGFTS reports (JSON/Markdown), including coverage and validation check results.
 
 **Validation**:
-- Tool: `theorem_prover_integration`, `invariant_verifier`
-- Frequency: On algorithm modification
-- Acceptance: All stated invariants proven
+- Tool: `validation_project.py --layers 6 --verify-artifacts` (optional checks); automated scoring via Layer 6 coverage metrics.
+- Acceptance: Configuration present, targets mapped to artifacts, ≥1 enabled tool, and non-empty proof artifacts for declared targets.
 
 ### Section 1.7: Layer 7 (Ontological Compliance)
 

@@ -1,0 +1,36 @@
+# Proof Obligation Stub
+
+**Target:** {{target_name}}
+
+- **Property Type:** {{property_type}} (safety | liveness | refinement | contract)
+- **Spec Reference:** {{spec_path}}
+- **Related Modules:** {{modules}}
+- **Assigned Tool:** {{tool_name}} (optional)
+
+## Statement
+
+Describe the invariant/property in plain language and the formal statement (logic, temporal operators, or refinement relation).
+
+## Assumptions
+
+- Preconditions: {{preconditions}}
+- Environmental assumptions: {{environmental_assumptions}}
+- Inductive base: {{base_case}}
+
+## Proof Artifact Plan
+
+- Artifact path(s): {{artifact_paths}}
+- Expected format: {{artifact_format}} (e.g., .smt2, .v, .tla)
+- Completion status: pending | in-progress | proved | partial | disproved
+- Reviewer/owner: {{owner}}
+
+## Acceptance Criteria
+
+- Property is encoded in an artifact recognized by configured tools.
+- Proof passes tool checks (or counterexample captured) with reproducible command lines.
+- Results recorded in verification reports (`verification/report/`).
+
+## Traceability Notes
+
+- Requirement linkage: {{requirements_refs}}
+- Change history / rationale: {{rationale}}

@@ -88,7 +88,8 @@ class ProjectValidator:
         self,
         project_path: Path,
         severity_threshold: Severity = Severity.HIGH,
-        layers: Optional[List[int]] = None
+        layers: Optional[List[int]] = None,
+        verify_artifacts: bool = False
     ):
         """Initialize validator.
 
@@ -100,6 +101,7 @@ class ProjectValidator:
         self.project_path = project_path.resolve()
         self.severity_threshold = severity_threshold
         self.layers = layers or [1, 2]  # Default to structural and governance
+        self.verify_artifacts = verify_artifacts
 
         if not self.project_path.exists():
             raise ValueError(f"Project path does not exist: {project_path}")
@@ -150,6 +152,10 @@ class ProjectValidator:
             # Layer 5: Ecological Intelligence
             if 5 in self.layers:
                 self._validate_layer_5_ecological()
+
+            # Layer 6: Formal Verification
+            if 6 in self.layers:
+                self._validate_layer_6_formal()
 
             # Compute scores
             self._compute_scores()
@@ -452,6 +458,169 @@ class ProjectValidator:
         }
         self.result.scores["layer_5_ecological_health"] = ecological_health_score
 
+    def _validate_layer_6_formal(self) -> None:
+        """Validate Layer 6: Formal verification readiness and artifacts."""
+        logger.info("Validating Layer 6: Formal verification...")
+
+        config_path = self.mgfts_path / "config" / "layer6_verification.json5"
+        default_patterns = [
+            "*.smt2", "*.smt", "*.smtlib", "*.v", "*.thy", "*.lean",
+            "*.tla", "*.cfg", "*.als", "*.smv", "*.dfy", "*.fst", "*.lh",
+            "*.l6spec", "*.contracts"
+        ]
+        proof_dirs: List[str] = ["verification", "proofs"]
+        artifact_patterns: List[str] = default_patterns
+        targets: List[Dict[str, Any]] = []
+        tools: List[Dict[str, Any]] = []
+        validation_checks: List[Dict[str, Any]] = []
+
+        if not config_path.exists():
+            self.result.add_violation(Violation(
+                code="FORM-001",
+                message="Layer 6 verification configuration missing (layer6_verification.json5)",
+                path=str(config_path),
+                severity=Severity.MEDIUM,
+                layer=6,
+                suggestion="Create mgfts/config/layer6_verification.json5 (see template)"
+            ))
+        else:
+            try:
+                config = self._load_json5(config_path)
+                proof_dirs = config.get("proof_dirs", proof_dirs)
+                artifact_patterns = config.get("artifact_patterns", default_patterns)
+                targets = config.get("targets", [])
+                tools = config.get("tools", [])
+            except json.JSONDecodeError as e:
+                self.result.add_violation(Violation(
+                    code="FORM-006",
+                    message=f"Invalid JSON in Layer 6 configuration: {e}",
+                    path=str(config_path),
+                    severity=Severity.CRITICAL,
+                    layer=6,
+                    suggestion="Fix JSON/JSON5 syntax in layer6_verification.json5"
+                ))
+                self.result.metadata["layer6_verification"] = {"config_path": str(config_path)}
+                self.result.scores["layer_6_formal"] = 0.0
+                return
+
+        proof_artifacts: List[Path] = []
+        scanned_dirs: List[str] = []
+        missing_dirs: List[str] = []
+
+        for dir_name in proof_dirs:
+            dir_path = self.project_path / dir_name
+            if dir_path.exists() and dir_path.is_dir():
+                scanned_dirs.append(str(dir_path))
+                for pattern in artifact_patterns:
+                    proof_artifacts.extend(dir_path.rglob(pattern))
+            else:
+                missing_dirs.append(str(dir_path))
+
+        if not proof_artifacts:
+            self.result.add_violation(Violation(
+                code="FORM-002",
+                message="No formal verification artifacts found in configured proof directories",
+                path=", ".join(scanned_dirs or proof_dirs),
+                severity=Severity.MEDIUM,
+                layer=6,
+                suggestion="Add proof artifacts (e.g., .smt2, .v, .tla) or update proof_dirs"
+            ))
+
+        targets_without_artifacts = []
+        for target in targets:
+            if not target.get("artifacts"):
+                targets_without_artifacts.append(target.get("name", "unnamed_target"))
+                continue
+            for art in target.get("artifacts", []):
+                art_path = self.project_path / art
+                if not art_path.exists():
+                    targets_without_artifacts.append(target.get("name", art))
+
+        if targets_without_artifacts:
+            self.result.add_violation(Violation(
+                code="FORM-003",
+                message=f"Verification targets missing artifacts: {', '.join(sorted(set(targets_without_artifacts)))}",
+                path=str(config_path),
+                severity=Severity.MEDIUM,
+                layer=6,
+                suggestion="Attach proof files to targets or mark status with rationale"
+            ))
+
+        active_tools = [t for t in tools if t.get("enabled")]
+        if not tools or not active_tools:
+            self.result.add_violation(Violation(
+                code="FORM-004",
+                message="No formal verification tools registered or enabled",
+                path=str(config_path),
+                severity=Severity.MEDIUM,
+                layer=6,
+                suggestion="Register and enable at least one verification tool entry"
+            ))
+
+        if self.verify_artifacts and proof_artifacts:
+            for artifact in proof_artifacts:
+                try:
+                    size = artifact.stat().st_size
+                    if size == 0:
+                        self.result.add_violation(Violation(
+                            code="FORM-005",
+                            message=f"Proof artifact is empty: {artifact}",
+                            path=str(artifact),
+                            severity=Severity.LOW,
+                            layer=6,
+                            suggestion="Populate artifact with proof obligations or remove stale entry"
+                        ))
+                        validation_checks.append({
+                            "artifact": str(artifact),
+                            "status": "failed",
+                            "reason": "empty file"
+                        })
+                    else:
+                        validation_checks.append({
+                            "artifact": str(artifact),
+                            "status": "ok",
+                            "bytes": size
+                        })
+                except OSError as e:
+                    self.result.add_violation(Violation(
+                        code="FORM-005",
+                        message=f"Unable to read proof artifact: {artifact} ({e})",
+                        path=str(artifact),
+                        severity=Severity.LOW,
+                        layer=6,
+                        suggestion="Ensure artifact is accessible for optional checks"
+                    ))
+                    validation_checks.append({
+                        "artifact": str(artifact),
+                        "status": "failed",
+                        "reason": str(e)
+                    })
+        elif self.verify_artifacts:
+            validation_checks.append({"status": "skipped", "reason": "no artifacts found"})
+
+        target_count = len(targets)
+        declared_artifacts = sum(len(t.get("artifacts", [])) for t in targets) if targets else 0
+        coverage_components = [
+            1.0 if config_path.exists() else 0.0,
+            1.0 if proof_artifacts else 0.0,
+            1.0 if active_tools else 0.0,
+            (declared_artifacts / target_count) if target_count else 0.0,
+        ]
+        coverage_score = round(sum(coverage_components) / len(coverage_components), 2)
+
+        self.result.metadata["layer6_verification"] = {
+            "config_path": str(config_path),
+            "proof_directories_scanned": scanned_dirs,
+            "missing_proof_directories": missing_dirs,
+            "artifact_count": len(proof_artifacts),
+            "targets_declared": target_count,
+            "tools_registered": [t.get("name") for t in tools],
+            "tools_enabled": [t.get("name") for t in active_tools],
+            "validation_checks": validation_checks,
+            "coverage_score": coverage_score,
+        }
+        self.result.scores["layer_6_formal"] = coverage_score
+
     def _compute_scores(self) -> None:
         """Compute compliance scores."""
         # Overall score (inverse of violation count, normalized)
@@ -462,10 +631,14 @@ class ProjectValidator:
 
         # Layer-specific scores
         for layer in self.layers:
-            layer_violations = self.result.get_violations_by_layer(layer)
-            layer_score = max(0.0, 1.0 - (len(layer_violations) / 10.0))
-            if layer == 5 and "layer5_ecology" in self.result.metadata:
-                layer_score = self.result.metadata["layer5_ecology"].get("ecological_health_score", layer_score)
+            existing_score = self.result.scores.get(f"layer_{layer}")
+            if existing_score is not None:
+                layer_score = existing_score
+            else:
+                layer_violations = self.result.get_violations_by_layer(layer)
+                layer_score = max(0.0, 1.0 - (len(layer_violations) / 10.0))
+                if layer == 5 and "layer5_ecology" in self.result.metadata:
+                    layer_score = self.result.metadata["layer5_ecology"].get("ecological_health_score", layer_score)
             self.result.scores[f"layer_{layer}"] = round(layer_score, 2)
 
         # Severity counts
@@ -509,6 +682,20 @@ def format_report_text(result: ValidationResult) -> str:
     lines.append(f"  Medium: {counts.get('medium', 0)}")
     lines.append(f"  Low: {counts.get('low', 0)}")
     lines.append("")
+
+    layer6_meta = result.metadata.get("layer6_verification")
+    if layer6_meta:
+        lines.append("Layer 6 Verification Summary:")
+        lines.append(f"  Proof artifacts: {layer6_meta.get('artifact_count', 0)}")
+        lines.append(f"  Proof dirs scanned: {', '.join(layer6_meta.get('proof_directories_scanned', [])) or 'none'}")
+        lines.append(f"  Tools enabled: {', '.join(layer6_meta.get('tools_enabled', [])) or 'none'}")
+        lines.append(f"  Coverage score: {layer6_meta.get('coverage_score', 0.0):.2f}")
+        if layer6_meta.get("validation_checks"):
+            lines.append("  Validation checks:")
+            for check in layer6_meta.get("validation_checks", []):
+                status = check.get("status", "unknown")
+                lines.append(f"    - {status}: {check.get('artifact', check.get('reason', ''))}")
+        lines.append("")
 
     # Violations
     if result.violations:
@@ -623,6 +810,12 @@ Examples:
         help="Verbose output"
     )
 
+    parser.add_argument(
+        "--verify-artifacts",
+        action="store_true",
+        help="Run optional Layer 6 proof artifact checks"
+    )
+
     args = parser.parse_args()
 
     if args.verbose:
@@ -646,7 +839,8 @@ Examples:
         validator = ProjectValidator(
             project_path=args.project_path,
             severity_threshold=severity,
-            layers=layers
+            layers=layers,
+            verify_artifacts=args.verify_artifacts
         )
 
         result = validator.validate()
