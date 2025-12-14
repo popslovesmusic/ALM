@@ -369,6 +369,9 @@ echo "✅ MGFTS validation passed"
 
 ## Documentation
 
+### Getting Started
+- **[Getting Started Guides](getting_started/README.md)**: Hands-on onboarding plus a first-project walkthrough (`getting_started/first_project_walkthrough.md`).
+
 ### Specifications
 - **[GFTS_SPECIFICATION.md](GFTS_SPECIFICATION.md)**: Complete GFTS/MGFTS specification
 - **[MGFTS_BUILD_INSTRUCTIONS.md](../MGFTS_BUILD_INSTRUCTIONS.md)**: 7-layer architecture details

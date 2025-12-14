@@ -1,5 +1,13 @@
 # MGFTS Changelog
 
+<<<<<<< ours
+=======
+## [1.2.1] - 2025-12-14
+### Added
+- Getting Started documentation set (`getting_started/README.md` and `getting_started/first_project_walkthrough.md`) for onboarding and validation playbooks.
+- README links to the new onboarding guides to surface the workflow early.
+
+>>>>>>> theirs
 ## [1.2.0] - 2025-02-20
 ### Added
 - Layer 7 Ontological Foundation specification detailing schemas, existence predicates, and truth maintenance workflows.
