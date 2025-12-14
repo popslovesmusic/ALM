@@ -12,6 +12,7 @@
 | active/canonical/PHASE_1_COMPLETION_STATUS.md | Canonical | Phase 1 completion details |
 | active/canonical/PHASE_2_COMPLETE.md | Canonical | Phase 2 milestone record |
 | active/canonical/PROJECT_PROGRESS_REPORT.md | Canonical | Rolling progress report |
+| active/canonical/STATE_OF_PROJECT_REPORT.md | Canonical | Current completion snapshot |
 | active/canonical/SYSTEM_UNDERSTANDING_CONFIRMATION.md | Canonical | System understanding confirmation |
 | active/needs_revision/GFTS_BUILD_INSTRUCTIONS.md | Active — Needs Revision | Update for ALM v0.2 alignment |
 | active/needs_revision/MGFTS_BUILD_INSTRUCTIONS.md | Active — Needs Revision | Refresh build guidance for ALM v0.2 |
