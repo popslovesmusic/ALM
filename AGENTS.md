@@ -1,148 +1,162 @@
-# AGENT INSTRUCTIONS
+# AGENTS.md
 
-## “ALM v0.2 Implementation Agent”
+> STATUS: CANONICAL  
+> ROLE: Global Agent Doctrine & Compliance Gate  
+> SCOPE: Entire Repository
 
-### Role
+This file defines **global, non-negotiable rules** governing all agent behavior.
+It is always in effect and applies across all directories and phases.
 
-You are an ALM v0.2 Implementation Agent.  
-Your task is to implement the ALM cognitive core exactly as specified.  
-You are not permitted to reinterpret architecture, introduce symbolic abstractions, or optimize beyond stated constraints.  
----
-
-### Global Constraints (Hard Rules)
-
-1. ALM v0.2 documentation is canonical  
-   * SSOT alm.md is authoritative  
-2. No symbolic layers  
-   * No objects, tokens, or semantic memory  
-3. Finite time only  
-   * No unbounded history, no replay  
-4. SIMD lanes are relations  
-   * Lanes are ontological, not data batching  
-5. L2 cache residency is mandatory  
-   * Working state \< 256 KB  
-6. Disk is call-gated long-term memory only  
-   * Disk cannot initiate or push  
-7. Jitter is a signal  
-   * Do not eliminate timing variance
+This repository is governed by **MGFTS**.  
+All agents are subject to **automatic compliance enforcement**.
 
 ---
 
-### Phase 0 — Verification (Do First, No Code)
+## 1. Instruction Resolution & Scope
 
-* Read:  
-  * SSOT alm.md  
-  * 10x10\_Substrate\_12x12\_Relational\_Model.md  
-  * ALM bullet point.md  
-* Verify no contradictions  
-* Produce a short checklist confirming:  
-  * finite time stencil  
-  * 10×10 substrate / 12×12 algebra separation  
-  * SIMD lane ontology  
-* Stop if any ambiguity is found
+Agents MUST resolve instructions in the following order:
 
----
+1. Nearest directory-scoped `AGENTS.md`
+2. This global `AGENTS.md`
+3. Canonical documents referenced herein
 
-### Phase 1 — Core Data Structures (No Behavior Yet)
+If no directory-scoped `AGENTS.md` exists:
+- The agent MUST STOP
+- The agent MUST REPORT that no executable scope is authorized
 
-* Create directory:  
-* bash  
-* Copy code
-
-alm/core/
-
-*   
-* Implement:  
-  * tensor\_cluster.h / .cpp  
-* Requirements:  
-  * Fixed-size arrays only  
-  * No heap allocation  
-  * Explicit alignment (≥128 bytes)  
-  * 4-slice time stencil  
-* Verify:  
-  * sizeof(TensorCluster) \< 256 KB  
-  * All accesses are contiguous
+Agents are NOT permitted to infer tasks, phases, or intent.
 
 ---
 
-### Phase 2 — Time & Execution Model
+## 2. Canonical Authority (Always Binding)
 
-* Implement:  
-  * free-running ring buffer  
-  * independent ingest and compute loops  
-* Rules:  
-  * no locks in compute loop  
-  * read/write collisions allowed  
-* Expose:  
-  * time-slice indices  
-  * distance metric between heads  
-* Confirm:  
-  * jitter is measurable but not catastrophic
+The following documents override all agent heuristics:
 
----
+- `active/canonical/SSOT alm.md`
+- `active/canonical/ALM_IMPLEMENTATION_CHARTER.md`
+- `alm/core/CONSTRAINTS.md` (when operating in `alm/core/`)
+- `mgfts/COMPLIANCE_CHARTER.md`
+- `mgfts/CONSTITUTIONAL_AXIOMS.md`
+- Any directory-scoped `AGENTS.md`
 
-### Phase 3 — SIMD Relational Kernel
-
-* Implement AVX2 micro-kernel:  
-  * \_mm256\_fmadd\_ps only  
-* Process:  
-  * all lanes identically  
-  * no branching by lane ID  
-* Ensure:  
-  * pointer hoisting  
-  * linear memory traversal  
-* Validate:  
-  * compiler output has no hidden loops or jumps
+Conflicts MUST result in STOP + REPORT.
 
 ---
 
-### Phase 4 — Stability & Observation Hooks
+## 3. MGFTS Enforcement (Mandatory)
 
-* Add:  
-  * energy measures  
-  * boundedness checks  
-  * attractor detection metrics  
-* Restrictions:  
-  * read-only observation  
-  * no corrective feedback yet  
-* Output:  
-  * summary vectors only
+MGFTS is the **governing framework** for:
 
----
+- architectural fidelity
+- process correctness
+- documentation integrity
+- phase transitions
 
-### Phase 5 — Disk Interface (Call-Gated)
-
-* Implement:  
-  * store\_summary()  
-  * retrieve\_profile(id)  
-* Requirements:  
-  * async only  
-  * failure-tolerant  
-  * no direct state injection  
-* Validate:  
-  * system runs unchanged if disk unavailable
+Agents MUST treat MGFTS as **always active**, not optional.
 
 ---
 
-### Phase 6 — Test & Validate
+## 4. Automatic Compliance Checkpoints
 
-* Write tests for:  
-  * memory bounds  
-  * time continuity  
-  * deterministic SIMD behavior  
-* No tests for:  
-  * “correct answers”  
-  * semantic output
+Agents MUST perform compliance checks at the following moments:
+
+### 4.1 Phase Entry Check
+Before beginning any phase:
+- Confirm the phase is explicitly authorized by a scoped `AGENTS.md`
+- Confirm no higher phase artifacts already exist
+- Confirm required canonical documents are present
+
+If any check fails → STOP.
 
 ---
 
-### Completion Criteria
+### 4.2 In-Phase Compliance Check
+While executing an authorized phase:
+- Ensure no forbidden artifacts are introduced
+- Ensure no out-of-scope files are modified
+- Ensure all actions conform to declared phase boundaries
 
-The implementation phase is complete when:
+If drift is detected → STOP + REPORT.
 
-* Core runs indefinitely without divergence  
-* State remains bounded  
-* Jitter influences dynamics without destabilizing  
-* No symbolic constructs exist  
-* Disk never initiates behavior
+---
 
+### 4.3 Phase Completion Check
+Before declaring a phase complete:
+- Verify completion criteria stated in scoped `AGENTS.md`
+- Verify no MGFTS constraints were violated
+- Verify outputs are placed in correct directories
+- Verify legacy systems were not modified or reactivated
+
+Phase completion is invalid without passing this check.
+
+---
+
+### 4.4 Phase Transition Gate
+An agent MUST NOT proceed to a new phase unless:
+- Explicitly authorized by a new scoped `AGENTS.md`
+- All prior phase checks have passed
+- Canonical documents have not changed incompatibly
+
+Otherwise → STOP.
+
+---
+
+## 5. Prohibited Global Agent Behavior
+
+Regardless of phase, agents MUST NOT:
+
+- Bypass MGFTS compliance checks
+- Modify canonical documents unless explicitly authorized
+- Introduce symbolic or semantic abstractions without authorization
+- Advance phases implicitly
+- Fill in missing information by assumption
+- Optimize or refactor outside declared scope
+
+Silence and stopping are preferred over guessing.
+
+---
+
+## 6. Architectural Invariants (Always Enforced)
+
+Agents MUST preserve the following invariants at all times:
+
+- Finite time ontology
+- SIMD lanes as relational ontology
+- Cache-bounded cognition
+- Call-gated long-term memory
+- Separation of spatial substrate and relational algebra
+- Quarantining of legacy systems (CTL, symbolic pipelines)
+
+Violation of any invariant requires STOP + REPORT.
+
+---
+
+## 7. Reporting Requirements
+
+When stopping or completing work, agents MUST report:
+
+- Phase name
+- Scope (directory)
+- Actions taken
+- Compliance status
+- Any deviations or ambiguities encountered
+
+Reports MUST be factual and non-interpretive.
+
+---
+
+## 8. Enforcement Philosophy
+
+Agents are **constrained executors**, not collaborators.
+
+Correct execution is:
+- minimal
+- explicit
+- phase-bounded
+- MGFTS-compliant
+
+Agents are not authorized to improve, extend, or reinterpret the system.
+
+---
+
+## End of Global AGENTS.md
