@@ -157,6 +157,10 @@ class ProjectValidator:
             if 6 in self.layers:
                 self._validate_layer_6_formal()
 
+            # Layer 7: Ontological foundation
+            if 7 in self.layers:
+                self._validate_layer_7_ontology()
+
             # Compute scores
             self._compute_scores()
 
@@ -621,6 +625,137 @@ class ProjectValidator:
         }
         self.result.scores["layer_6_formal"] = coverage_score
 
+    def _validate_layer_7_ontology(self) -> None:
+        """Validate Layer 7: Ontological completeness and truth maintenance."""
+        logger.info("Validating Layer 7: Ontology...")
+
+        vault_path = self.mgfts_path / "GLOBAL_CONCEPT_VAULT.json5"
+        if not vault_path.exists():
+            self.result.add_violation(Violation(
+                code="ONTO-001",
+                message="GLOBAL_CONCEPT_VAULT.json5 missing; cannot evaluate ontology",
+                path=str(vault_path),
+                severity=Severity.HIGH,
+                layer=7,
+                suggestion="Restore mgfts/GLOBAL_CONCEPT_VAULT.json5 from governance templates"
+            ))
+            return
+
+        try:
+            vault = self._load_json5(vault_path)
+        except json.JSONDecodeError as e:
+            self.result.add_violation(Violation(
+                code="ONTO-006",
+                message=f"Invalid JSON in concept vault: {e}",
+                path=str(vault_path),
+                severity=Severity.CRITICAL,
+                layer=7,
+                suggestion="Fix JSON/JSON5 syntax or regenerate from ontology template"
+            ))
+            return
+
+        concepts = vault.get("concepts", [])
+        ontology_rules = vault.get("ontology", {})
+        relationships = vault.get("relationships", [])
+        concept_ids = {concept.get("id") for concept in concepts if concept.get("id")}
+
+        if not concepts:
+            self.result.add_violation(Violation(
+                code="ONTO-002",
+                message="Concept vault has no concepts to validate",
+                path=str(vault_path),
+                severity=Severity.HIGH,
+                layer=7,
+                suggestion="Populate concepts and existence predicates using ontology_record template"
+            ))
+            return
+
+        if not ontology_rules.get("existence_predicates"):
+            self.result.add_violation(Violation(
+                code="ONTO-006",
+                message="Ontology existence_predicates are not defined",
+                path=str(vault_path),
+                severity=Severity.MEDIUM,
+                layer=7,
+                suggestion="Declare ontology.existence_predicates to describe project-wide existence checks"
+            ))
+
+        evidence_warnings: List[str] = []
+        with_predicates = 0
+        with_truth = 0
+
+        for concept in concepts:
+            concept_id = concept.get("id", "<unknown>")
+            existence = concept.get("existence") or {}
+            truth = concept.get("truth_maintenance") or {}
+
+            predicates = existence.get("predicates", [])
+            if predicates:
+                with_predicates += 1
+                for evidence_path in existence.get("evidence", []) or []:
+                    evidence_full = self.project_path / evidence_path
+                    if evidence_path and not evidence_full.exists():
+                        evidence_warnings.append(f"{concept_id}:{evidence_path}")
+            else:
+                self.result.add_violation(Violation(
+                    code="ONTO-002",
+                    message=f"Concept {concept_id} missing existence predicates",
+                    path=str(vault_path),
+                    severity=Severity.HIGH,
+                    layer=7,
+                    suggestion="Add predicates via ontology_record template"
+                ))
+
+            if truth.get("source_of_truth") and truth.get("conflict_resolution"):
+                with_truth += 1
+            else:
+                self.result.add_violation(Violation(
+                    code="ONTO-003",
+                    message=f"Concept {concept_id} missing truth maintenance fields",
+                    path=str(vault_path),
+                    severity=Severity.HIGH,
+                    layer=7,
+                    suggestion="Specify source_of_truth and conflict_resolution in truth_maintenance"
+                ))
+
+        for rel in relationships:
+            if rel.get("from") not in concept_ids or rel.get("to") not in concept_ids:
+                self.result.add_violation(Violation(
+                    code="ONTO-004",
+                    message="Relationship references unknown concept",
+                    path=str(vault_path),
+                    severity=Severity.MEDIUM,
+                    layer=7,
+                    suggestion="Ensure relationship endpoints reference valid concept IDs"
+                ))
+
+        for warning in evidence_warnings:
+            concept_id, evidence_path = warning.split(":", 1)
+            self.result.add_violation(Violation(
+                code="ONTO-005",
+                message=f"Evidence path missing for concept {concept_id}: {evidence_path}",
+                path=str(self.project_path / evidence_path),
+                severity=Severity.LOW,
+                layer=7,
+                suggestion="Update evidence path or provide documented justification"
+            ))
+
+        existence_coverage = round(with_predicates / max(len(concepts), 1), 2)
+        truth_coverage = round(with_truth / max(len(concepts), 1), 2)
+        layer7_score = round((existence_coverage + truth_coverage) / 2, 2)
+
+        self.result.metadata["layer7_ontology"] = {
+            "concepts": len(concepts),
+            "concepts_with_predicates": with_predicates,
+            "concepts_with_truth_maintenance": with_truth,
+            "existence_coverage": existence_coverage,
+            "truth_maintenance_coverage": truth_coverage,
+            "evidence_missing": evidence_warnings,
+            "ontology_rules_defined": bool(ontology_rules)
+        }
+        self.result.scores["layer_7"] = layer7_score
+        self.result.scores["layer_7_ontological"] = layer7_score
+
     def _compute_scores(self) -> None:
         """Compute compliance scores."""
         # Overall score (inverse of violation count, normalized)
@@ -695,6 +830,19 @@ def format_report_text(result: ValidationResult) -> str:
             for check in layer6_meta.get("validation_checks", []):
                 status = check.get("status", "unknown")
                 lines.append(f"    - {status}: {check.get('artifact', check.get('reason', ''))}")
+        lines.append("")
+
+    layer7_meta = result.metadata.get("layer7_ontology")
+    if layer7_meta:
+        lines.append("Layer 7 Ontology Summary:")
+        lines.append(f"  Concepts with predicates: {layer7_meta.get('concepts_with_predicates', 0)}/{layer7_meta.get('concepts', 0)}")
+        lines.append(f"  Concepts with truth maintenance: {layer7_meta.get('concepts_with_truth_maintenance', 0)}/{layer7_meta.get('concepts', 0)}")
+        lines.append(f"  Existence coverage: {layer7_meta.get('existence_coverage', 0.0):.2f}")
+        lines.append(f"  Truth maintenance coverage: {layer7_meta.get('truth_maintenance_coverage', 0.0):.2f}")
+        if layer7_meta.get("evidence_missing"):
+            lines.append("  Evidence paths missing:")
+            for warning in layer7_meta.get("evidence_missing", []):
+                lines.append(f"    - {warning}")
         lines.append("")
 
     # Violations

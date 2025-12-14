@@ -113,6 +113,18 @@
       additionalProperties: true
     },
 
+    ontology: {
+      type: "object",
+      description: "Layer 7 ontology coverage details",
+      properties: {
+        concepts: { type: "integer", minimum: 0 },
+        concepts_with_predicates: { type: "integer", minimum: 0 },
+        concepts_with_truth_maintenance: { type: "integer", minimum: 0 },
+        existence_coverage: { $ref: "#/definitions/score" },
+        truth_maintenance_coverage: { $ref: "#/definitions/score" }
+      }
+    },
+
     summary: {
       type: "object",
       description: "Summary statistics",

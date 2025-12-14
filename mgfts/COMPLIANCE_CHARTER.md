@@ -202,10 +202,11 @@ This Charter establishes the universal compliance standards for all projects gov
 - AI/ML systems with concept learning
 
 **Standards**:
-1. Core concepts MUST be defined in GLOBAL_CONCEPT_VAULT
-2. Concept definitions MUST include existence criteria
-3. Concept relationships MUST be explicit (is-a, has-a, part-of, etc.)
-4. Concept evolution MUST be traceable
+1. Core concepts MUST be defined in `GLOBAL_CONCEPT_VAULT.json5` and validate against `mgfts/meta_schemas/concept_vault.schema.json5`.
+2. Each concept MUST declare `existence.predicates` (>=1) and `truth_maintenance.source_of_truth`/`conflict_resolution` fields.
+3. Concept relationships MUST be explicit (is-a, has-a, part-of, etc.) and reference valid concept IDs.
+4. Concept evolution MUST be traceable through the vault `evolution` log and Aletheia-compliant commit messages.
+5. Contributors SHOULD draft new entries from `mgfts/templates/ontology_record.json5.template` to avoid concealment and schema drift.
 
 **Example Existence Criteria**:
 ```json5
@@ -223,9 +224,9 @@ This Charter establishes the universal compliance standards for all projects gov
 ```
 
 **Validation**:
-- Tool: `ontology_validator`, `concept_coherence_checker`
-- Frequency: On concept vault modification
-- Acceptance: All concepts well-defined
+- Tooling: `scripts/validate_project.py --layers 1,2,7` (ONTO codes), optional `concept_coherence_checker` for deeper graphs.
+- Frequency: On concept vault modification or when ecological (Layer 5) or verification (Layer 6) signals change predicates.
+- Acceptance: All concepts carry existence predicates and truth maintenance data; relationships reference valid concepts; evidence paths resolve or are justified.
 
 ---
 

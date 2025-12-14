@@ -1,0 +1,31 @@
+// Ontology record template for Layer 7 concept definitions
+// Substitute placeholder values before committing into GLOBAL_CONCEPT_VAULT.json5
+{
+  id: "{{CONCEPT_ID}}",
+  name: "{{CONCEPT_NAME}}",
+  category: "{{CATEGORY}}",
+  layer: {{LAYER_NUMBER}},
+  status: "active",
+  existence: {
+    predicates: [
+      "{{PREDICATE_1}}",
+      "{{PREDICATE_2}}"
+    ],
+    ceases_when: ["{{CEASE_CONDITION}}"],
+    evidence: ["{{EVIDENCE_PATH}}"],
+    validation: {
+      method: "{{VALIDATION_METHOD}}", // e.g., schema_check | test_suite | audit
+      frequency: "{{VALIDATION_CADENCE}}", // e.g., per_commit | weekly | release
+      steward: "{{OWNER}}"
+    }
+  },
+  truth_maintenance: {
+    source_of_truth: "{{SOURCE_OF_TRUTH}}", // authoritative doc or repo path
+    assertion_policy: "closed_world", // closed_world | open_world
+    revision_triggers: ["schema change", "governance update"],
+    conflict_resolution: "prefer_evidence" // prefer_evidence | manual_review | last_write_wins
+  },
+  relationships: [
+    { from: "{{CONCEPT_ID}}", to: "{{RELATED_CONCEPT_ID}}", type: "{{RELATION_TYPE}}", description: "{{RELATION_DESC}}" }
+  ]
+}

@@ -1,26 +1,46 @@
 // GLOBAL_CONCEPT_VAULT.json5
 // Core Concept Registry for MGFTS-Governed Projects
 //
-// Version: 1.0.0
+// Version: 1.2.0
 // Layer: 2 (Governance)
 // Status: Foundational
 // Authority: Global Governance
 //
-// Purpose: This vault defines the 8 foundational concepts that underpin
+// Purpose: This vault defines the 9 foundational concepts that underpin
 // the Meta-Global File Template System (MGFTS) and the Constitutional Engine.
 // All project-specific concepts should reference or derive from these.
 
 {
   // Schema reference
-  $schema: "../mgfts/meta_schemas/concept_vault.schema.json5",
+  $schema: "./meta_schemas/concept_vault.schema.json5",
 
   // Metadata
-  vault_version: "1.0.0",
+  vault_version: "1.2.0",
   project: "ALM-MGFTS",
   created: "2025-01-15",
-  last_modified: "2025-01-15",
+  last_modified: "2025-02-20",
 
-  // Core Concepts (8 foundational concepts)
+  ontology: {
+    existence_predicates: [
+      {
+        name: "existence_predicates_declared",
+        description: "All concepts declare at least one computable existence predicate",
+        applies_to: ["CORE-001", "CORE-002", "CORE-003", "CORE-004", "CORE-005", "CORE-006", "CORE-007", "CORE-008", "CORE-009"]
+      },
+      {
+        name: "truth_maintenance_defined",
+        description: "All concepts specify source_of_truth and conflict resolution policies",
+        applies_to: ["CORE-001", "CORE-005", "CORE-006", "CORE-007", "CORE-008", "CORE-009"]
+      }
+    ],
+    truth_maintenance: {
+      source_of_truth: "mgfts/specs/LAYER_7_ONTOLOGY_SPEC.md",
+      revision_triggers: ["concept_added", "existence_predicate_changed", "relationship_updated"],
+      conflict_resolution: "prefer_evidence"
+    }
+  },
+
+  // Core Concepts (9 foundational concepts)
   concepts: [
 
     // ========================================================================
@@ -86,6 +106,30 @@
         "Maintain CHANGELOG.md",
         "Write ADRs for significant decisions"
       ],
+
+      existence: {
+        predicates: [
+          "concealment_metric_defined",
+          "transparency_actions_logged"
+        ],
+        ceases_when: ["principle deprecated OR superseded by new governance"],
+        evidence: [
+          "specs/CONSTITUTIONAL_ENGINE_ARCHITECTURE.v0.1.md",
+          "mgfts/specs/LAYER_7_ONTOLOGY_SPEC.md"
+        ],
+        validation: {
+          method: "governance_review",
+          frequency: "per_release",
+          steward: "Constitutional Engine"
+        }
+      },
+
+      truth_maintenance: {
+        source_of_truth: "mgfts/GLOBAL_CONCEPT_VAULT.json5",
+        assertion_policy: "closed_world",
+        revision_triggers: ["governance_update", "new_layer_added"],
+        conflict_resolution: "prefer_evidence"
+      },
 
       references: [
         "Heidegger, M. (1927). Being and Time (Aletheia as unconcealment)",
@@ -156,6 +200,27 @@
         "Maintain architectural coherence",
         "Refactor to reduce complexity"
       ],
+
+      existence: {
+        predicates: [
+          "action_functional_defined",
+          "coherence_metric_tracked"
+        ],
+        ceases_when: ["principle revoked OR coherence metric abandoned"],
+        evidence: ["mgfts/specs/LAYER_6_FORMAL_VERIFICATION_SPEC.md"],
+        validation: {
+          method: "coherence_calculator",
+          frequency: "per_release",
+          steward: "Governance Review Board"
+        }
+      },
+
+      truth_maintenance: {
+        source_of_truth: "mgfts/specs/LAYER_7_ONTOLOGY_SPEC.md",
+        assertion_policy: "closed_world",
+        revision_triggers: ["architecture_update", "verification_target_added"],
+        conflict_resolution: "prefer_evidence"
+      },
 
       references: [
         "Lagrange, J.L. (1788). Mécanique Analytique",
@@ -238,6 +303,27 @@
         "Include coherence in code review criteria"
       ],
 
+      existence: {
+        predicates: [
+          "coherence_score_defined",
+          "coherence_score_tracked_over_time"
+        ],
+        ceases_when: ["coherence_metric_replaced"],
+        evidence: ["mgfts/meta_schemas/mgfts_report.schema.json5"],
+        validation: {
+          method: "coherence_calculator",
+          frequency: "per_commit",
+          steward: "Quality Engineering"
+        }
+      },
+
+      truth_maintenance: {
+        source_of_truth: "mgfts/specs/LAYER_7_ONTOLOGY_SPEC.md",
+        assertion_policy: "closed_world",
+        revision_triggers: ["metric_formula_change", "layer5_signal_trigger"],
+        conflict_resolution: "prefer_evidence"
+      },
+
       references: [
         "COMPLIANCE_CHARTER.md Section 2.2",
         "State Model: coherence_score computation",
@@ -318,6 +404,27 @@
         "Track concealment trends (should decrease)",
         "Block commits that increase concealment (Mode 1)"
       ],
+
+      existence: {
+        predicates: [
+          "concealment_formula_defined",
+          "concealment_calculator_available"
+        ],
+        ceases_when: ["concealment_metric_retired"],
+        evidence: ["mgfts/specs/LAYER_5_ECOLOGICAL_INTELLIGENCE_SPEC.md"],
+        validation: {
+          method: "concealment_calculator",
+          frequency: "per_commit",
+          steward: "Governance Automation"
+        }
+      },
+
+      truth_maintenance: {
+        source_of_truth: "mgfts/GLOBAL_CONCEPT_VAULT.json5",
+        assertion_policy: "closed_world",
+        revision_triggers: ["metric_threshold_change", "ecology_signal_alert"],
+        conflict_resolution: "prefer_evidence"
+      },
 
       references: [
         "COMPLIANCE_CHARTER.md Section 2.1",
@@ -403,6 +510,30 @@
         "Write meaningful commit messages"
       ],
 
+      existence: {
+        predicates: [
+          "vault_updated_for_new_concepts",
+          "archival_context_recorded"
+        ],
+        ceases_when: ["preservation_protocol_retired"],
+        evidence: [
+          "mgfts/PRESERVATION_PROTOCOL.md",
+          "mgfts/AGENTS.md"
+        ],
+        validation: {
+          method: "preservation_checker",
+          frequency: "per_commit",
+          steward: "Knowledge Management"
+        }
+      },
+
+      truth_maintenance: {
+        source_of_truth: "mgfts/PRESERVATION_PROTOCOL.md",
+        assertion_policy: "closed_world",
+        revision_triggers: ["deprecation_event", "governance_update"],
+        conflict_resolution: "manual_review"
+      },
+
       references: [
         "PRESERVATION_PROTOCOL.md",
         "GLOBAL_CONCEPT_VAULT.json5 (this file)",
@@ -480,6 +611,27 @@
         modification: "Create new version, never edit",
         deprecation: "Mark as superseded, reference new version",
         removal: "Extremely rare; requires project-wide review"
+      },
+
+      existence: {
+        predicates: [
+          "axioms_recorded",
+          "axioms_versioned"
+        ],
+        ceases_when: ["axiom_set_superseded"],
+        evidence: ["mgfts/CONSTITUTIONAL_AXIOMS.md"],
+        validation: {
+          method: "axiom_checker",
+          frequency: "per_commit",
+          steward: "Constitutional Stewards"
+        }
+      },
+
+      truth_maintenance: {
+        source_of_truth: "mgfts/CONSTITUTIONAL_AXIOMS.md",
+        assertion_policy: "closed_world",
+        revision_triggers: ["new_axiom_proposal", "governance_mode_change"],
+        conflict_resolution: "manual_review"
       },
 
       references: [
@@ -564,6 +716,27 @@
         "Allow configurable agent modes",
         "Maintain project index for cross-project governance"
       ],
+
+      existence: {
+        predicates: [
+          "meta_schema_registry_present",
+          "template_registry_present"
+        ],
+        ceases_when: ["meta_controls_removed"],
+        evidence: ["mgfts/meta_schemas/", "mgfts/meta_templates/"],
+        validation: {
+          method: "meta_validator",
+          frequency: "on_governance_change",
+          steward: "Meta-Governance Council"
+        }
+      },
+
+      truth_maintenance: {
+        source_of_truth: "mgfts/meta_schemas/agent_modes.schema.json5",
+        assertion_policy: "closed_world",
+        revision_triggers: ["new_template_type", "governance_rule_change"],
+        conflict_resolution: "prefer_evidence"
+      },
 
       references: [
         "Layer 3: Meta-Governance specification",
@@ -658,6 +831,27 @@
         logic: "Study of valid inference and truth"
       },
 
+      existence: {
+        predicates: [
+          "existence_predicates_declared",
+          "truth_semantics_documented"
+        ],
+        ceases_when: ["ontology_registry_removed"],
+        evidence: ["mgfts/specs/LAYER_7_ONTOLOGY_SPEC.md", "mgfts/meta_schemas/concept_vault.schema.json5"],
+        validation: {
+          method: "ontology_validator",
+          frequency: "on_vault_update",
+          steward: "Ontological Steward"
+        }
+      },
+
+      truth_maintenance: {
+        source_of_truth: "mgfts/GLOBAL_CONCEPT_VAULT.json5",
+        assertion_policy: "closed_world",
+        revision_triggers: ["concept_added", "existence_predicate_changed", "layer6_proof_failure"],
+        conflict_resolution: "prefer_evidence"
+      },
+
       references: [
         "Layer 7: Ontological Foundation specification",
         "GLOBAL_CONCEPT_VAULT.json5 existence_criteria fields",
@@ -734,6 +928,27 @@
         "Align remediation text with Aletheia and GVP",
         "Track ecological debt backlog and refresh intervals"
       ],
+
+      existence: {
+        predicates: [
+          "ecology_config_present",
+          "collectors_enabled"
+        ],
+        ceases_when: ["ecology_signals_disabled"],
+        evidence: ["mgfts/config/layer5_ecology.json5"],
+        validation: {
+          method: "ecology_validator",
+          frequency: "weekly",
+          steward: "Ecology Steward"
+        }
+      },
+
+      truth_maintenance: {
+        source_of_truth: "mgfts/config/layer5_ecology.json5",
+        assertion_policy: "closed_world",
+        revision_triggers: ["collector_change", "threshold_update", "ecology_incident"],
+        conflict_resolution: "prefer_evidence"
+      },
 
       references: [
         "specs/LAYER_5_ECOLOGICAL_INTELLIGENCE_SPEC.md",
@@ -833,6 +1048,12 @@
       version: "1.1.0",
       change: "Added CORE-009 Ecological Intelligence and Layer 5 relationships",
       author: "ALM Constitutional Engine"
+    },
+    {
+      date: "2025-02-20",
+      version: "1.2.0",
+      change: "Introduced Layer 7 ontology fields, existence predicates, and truth maintenance across all concepts",
+      author: "ALM Constitutional Engine"
     }
   ],
 
@@ -842,7 +1063,7 @@
     active_concepts: 9,
     deprecated_concepts: 0,
     layers_covered: [2, 3, 4, 5, 7],
-    last_validation: "2025-02-01",
-    next_review: "2025-04-15"
+    last_validation: "2025-02-20",
+    next_review: "2025-05-01"
   }
 }

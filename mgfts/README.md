@@ -194,24 +194,23 @@ System shall degrade gracefully under load.
 
 ### Layer 7: Ontological Foundation 🏛️
 
-**What:** Existence criteria and truth semantics
+**What:** Existence criteria, truth semantics, and evidence-backed predicates for every concept.
 
-**Example:**
-```json5
-{
-  concept: "User",
-  exists_when: [
-    "has_unique_identifier",
-    "has_authentication_method",
-    "has_permission_set"
-  ]
-}
-```
+**How it works:**
+- Define existence and truth-maintenance blocks for each concept in `GLOBAL_CONCEPT_VAULT.json5` using `mgfts/templates/ontology_record.json5.template`.
+- Validate against `mgfts/meta_schemas/concept_vault.schema.json5` and run `python scripts/validate_project.py . --layers 1,2,7` to enforce ONTO checks (predicates, truth maintenance, relationship integrity, evidence paths).
+- Anchor predicates to evidence paths (specs, reports, configs) so Layer 6 verifications can bolster truth claims.
 
 **Benefits:**
-- Concepts well-defined
-- No ambiguity
-- Ontological grounding
+- Concepts are computably defined with lifecycle rules (exists/ceases).
+- Truth semantics are explicit, reducing concealment and ambiguity.
+- Ontology coverage feeds compliance scoring and reporting alongside ecological and verification signals.
+
+### Layers 5–7 Compliance Interplay
+
+- **Layer 5 (Ecological) → Layer 7 (Ontology):** Stale ecological signals or pattern drift trigger ontology refresh cycles; missing collectors reduce the ontological readiness score.
+- **Layer 6 (Formal Verification) → Layer 7:** Proof artifacts referenced in `truth_maintenance.source_of_truth` strengthen predicate evidence; failed proofs become revision triggers.
+- **Layer 7 → Compliance Scores:** Ontology coverage (existence + truth maintenance) is surfaced as `layer_7_ontological` in reports and blended with ecological and verification metadata for holistic scoring.
 
 ---
 
@@ -359,6 +358,13 @@ fi
 echo "✅ MGFTS validation passed"
 ```
 
+### Ontology Workflow (Layer 7)
+
+1. **Model predicates:** Copy `mgfts/templates/ontology_record.json5.template` and fill in `existence.predicates`, `truth_maintenance`, and relationships for the concept being added or updated.
+2. **Update vault:** Merge the entry into `mgfts/GLOBAL_CONCEPT_VAULT.json5`, keeping evidence paths and revision triggers aligned with Layer 5 ecological signals and Layer 6 verification artifacts.
+3. **Validate:** Run `python scripts/validate_project.py . --layers 1,2,7` to surface ONTO violations (missing predicates, truth maintenance gaps, orphaned relationships, missing evidence paths).
+4. **Report:** Include Layer 7 scores in MGFTS reports; align remediation items with Aletheia (reduce concealment) and GVP (raise coherence).
+
 ---
 
 ## Documentation
@@ -368,12 +374,14 @@ echo "✅ MGFTS validation passed"
 - **[MGFTS_BUILD_INSTRUCTIONS.md](../MGFTS_BUILD_INSTRUCTIONS.md)**: 7-layer architecture details
 - **[CONSTITUTIONAL_ENGINE_ARCHITECTURE.v0.1.md](specs/CONSTITUTIONAL_ENGINE_ARCHITECTURE.v0.1.md)**: Validation engine
 - **[LAYER_5_ECOLOGICAL_INTELLIGENCE_SPEC.md](specs/LAYER_5_ECOLOGICAL_INTELLIGENCE_SPEC.md)**: Ecological pipelines, inputs, and metrics
+- **[LAYER_7_ONTOLOGY_SPEC.md](specs/LAYER_7_ONTOLOGY_SPEC.md)**: Ontology schemas, existence predicates, and truth maintenance processes
 
 ### Governance Files
 - **[AGENTS.md](AGENTS.md)**: Agent behavior rules
 - **[COMPLIANCE_CHARTER.md](COMPLIANCE_CHARTER.md)**: Compliance standards
 - **[PRESERVATION_PROTOCOL.md](PRESERVATION_PROTOCOL.md)**: Preservation rules
 - **[GLOBAL_CONCEPT_VAULT.json5](GLOBAL_CONCEPT_VAULT.json5)**: Concept registry
+- **[concept_vault.schema.json5](meta_schemas/concept_vault.schema.json5)**: Meta-schema validating ontological fields
 
 ### Tools
 - **[create_new_project.py](../scripts/create_new_project.py)**: Project scaffolding
@@ -384,7 +392,7 @@ echo "✅ MGFTS validation passed"
 
 ## Templates
 
-MGFTS provides 10 comprehensive templates:
+MGFTS provides 11 comprehensive templates:
 
 1. **Python Module** (`python_module.py.template`) - Full-featured Python module
 2. **Python Test** (`python_test.py.template`) - Pytest test suite
@@ -396,6 +404,7 @@ MGFTS provides 10 comprehensive templates:
 8. **README** (`README.md.template`) - Project README
 9. **CHANGELOG** (`CHANGELOG.md.template`) - Version history
 10. **Domain Class** (`domain_class.py.template`) - Domain-driven design class
+11. **Ontology Record** (`ontology_record.json5.template`) - Layer 7 concept predicates and truth maintenance scaffold
 
 All templates include:
 - Comprehensive documentation
@@ -516,7 +525,7 @@ chmod +x .git/hooks/pre-commit
 
 ### Version 2.0 (Q4 2025)
 - [ ] Layer 6 implementation (formal verification)
-- [ ] Layer 7 implementation (ontology)
+- [ ] Layer 7 ontology expansion (domain predicate packs, richer TMS tooling)
 - [ ] Machine learning-based pattern detection
 - [ ] Multi-project governance (monorepo support)
 
