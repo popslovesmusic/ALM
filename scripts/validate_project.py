@@ -114,6 +114,17 @@ class ProjectValidator:
             layers_checked=self.layers
         )
 
+    def _load_json5(self, path: Path) -> Dict[str, Any]:
+        """Load a JSON5-like file by stripping line comments for JSON parsing."""
+        config_text = path.read_text()
+        lines = []
+        for line in config_text.split("\n"):
+            if "//" in line:
+                line = line.split("//", 1)[0]
+            lines.append(line)
+        clean_json = "\n".join(lines)
+        return json.loads(clean_json)
+
     def validate(self) -> ValidationResult:
         """Execute full validation.
 
@@ -135,6 +146,10 @@ class ProjectValidator:
             # Layer 3: Meta-Governance
             if 3 in self.layers:
                 self._validate_layer_3_meta_governance()
+
+            # Layer 5: Ecological Intelligence
+            if 5 in self.layers:
+                self._validate_layer_5_ecological()
 
             # Compute scores
             self._compute_scores()
@@ -266,6 +281,11 @@ class ProjectValidator:
         else:
             self._validate_project_config(config_path)
 
+        # Optional ecological configuration hint for Layer 5
+        ecology_path = self.mgfts_path / "config" / "layer5_ecology.json5"
+        if ecology_path.exists():
+            self.result.metadata.setdefault("layer5_ecology", {})["config_path"] = str(ecology_path)
+
         # Check for templates directory
         templates_path = self.mgfts_path / "templates"
         if not templates_path.exists():
@@ -281,19 +301,7 @@ class ProjectValidator:
     def _validate_project_config(self, config_path: Path) -> None:
         """Validate project configuration file."""
         try:
-            # Try to parse as JSON (JSON5 compatibility)
-            config_text = config_path.read_text()
-
-            # Remove comments for basic JSON parsing
-            lines = []
-            for line in config_text.split("\n"):
-                # Remove line comments
-                if "//" in line:
-                    line = line[:line.index("//")]
-                lines.append(line)
-            clean_json = "\n".join(lines)
-
-            config = json.loads(clean_json)
+            config = self._load_json5(config_path)
 
             # Check required fields
             required_fields = ["project", "mgfts", "paths"]
@@ -350,6 +358,100 @@ class ProjectValidator:
         # Check for schema validation
         # (Would integrate with actual schema validator here)
 
+    def _validate_layer_5_ecological(self) -> None:
+        """Validate Layer 5: Ecological intelligence configuration and signals."""
+        logger.info("Validating Layer 5: Ecological intelligence...")
+
+        ecology_path = self.mgfts_path / "config" / "layer5_ecology.json5"
+        if not ecology_path.exists():
+            self.result.add_violation(Violation(
+                code="ECO-001",
+                message="Ecological configuration missing (layer5_ecology.json5)",
+                path=str(ecology_path),
+                severity=Severity.MEDIUM,
+                layer=5,
+                suggestion="Create mgfts/config/layer5_ecology.json5 with collector toggles and thresholds"
+            ))
+            return
+
+        try:
+            ecology_config = self._load_json5(ecology_path)
+        except json.JSONDecodeError as e:
+            self.result.add_violation(Violation(
+                code="ECO-002",
+                message=f"Invalid JSON in ecological configuration: {e}",
+                path=str(ecology_path),
+                severity=Severity.CRITICAL,
+                layer=5,
+                suggestion="Fix JSON/JSON5 syntax before running ecological checks"
+            ))
+            return
+
+        collectors = ecology_config.get("pattern_collectors", [])
+        enabled_collectors = [c for c in collectors if c.get("enabled")]
+        required_collectors = {"governance_pattern", "code_churn_pattern"}
+        missing_collectors = [c for c in required_collectors if c not in {c.get("name") for c in collectors}]
+
+        for collector in missing_collectors:
+            self.result.add_violation(Violation(
+                code="ECO-003",
+                message=f"Required ecological collector missing: {collector}",
+                path=str(ecology_path),
+                severity=Severity.HIGH,
+                layer=5,
+                suggestion="Declare the collector in pattern_collectors and enable it"
+            ))
+
+        for collector in collectors:
+            if collector.get("name") in required_collectors and not collector.get("enabled"):
+                self.result.add_violation(Violation(
+                    code="ECO-004",
+                    message=f"Required ecological collector disabled: {collector.get('name')}",
+                    path=str(ecology_path),
+                    severity=Severity.MEDIUM,
+                    layer=5,
+                    suggestion="Enable the collector to satisfy Layer 5 coverage"
+                ))
+
+        metrics = ecology_config.get("health_metrics", {})
+        if not metrics:
+            self.result.add_violation(Violation(
+                code="ECO-005",
+                message="Health metrics missing in ecological configuration",
+                path=str(ecology_path),
+                severity=Severity.MEDIUM,
+                layer=5,
+                suggestion="Add ecological_health, concealment_surface, and pattern_reuse thresholds"
+            ))
+
+        thresholds_defined = sum(1 for values in metrics.values() if isinstance(values, dict) and values)
+        collector_coverage = len(enabled_collectors) / max(len(collectors), 1)
+        metric_coverage = thresholds_defined / max(len(metrics), 1)
+        ecological_health_score = round((collector_coverage + metric_coverage) / 2, 2)
+
+        # Warn if ecological health is below target thresholds
+        ecological_target = metrics.get("ecological_health", {}).get("target", 0.0)
+        warn_below = metrics.get("ecological_health", {}).get("warn_below", 0.0)
+        if ecological_target and ecological_health_score < warn_below:
+            self.result.add_violation(Violation(
+                code="ECO-006",
+                message=("Ecological health score below warn threshold; enable more collectors or define thresholds "
+                         "to align with Aletheia/GVP."),
+                path=str(ecology_path),
+                severity=Severity.LOW,
+                layer=5,
+                suggestion="Increase active collectors and set metric targets to raise ecological health"
+            ))
+
+        self.result.metadata["layer5_ecology"] = {
+            "collectors_total": len(collectors),
+            "collectors_enabled": len(enabled_collectors),
+            "thresholds_defined": thresholds_defined,
+            "ecological_health_score": ecological_health_score,
+            "config_path": str(ecology_path),
+        }
+        self.result.scores["layer_5_ecological_health"] = ecological_health_score
+
     def _compute_scores(self) -> None:
         """Compute compliance scores."""
         # Overall score (inverse of violation count, normalized)
@@ -362,6 +464,8 @@ class ProjectValidator:
         for layer in self.layers:
             layer_violations = self.result.get_violations_by_layer(layer)
             layer_score = max(0.0, 1.0 - (len(layer_violations) / 10.0))
+            if layer == 5 and "layer5_ecology" in self.result.metadata:
+                layer_score = self.result.metadata["layer5_ecology"].get("ecological_health_score", layer_score)
             self.result.scores[f"layer_{layer}"] = round(layer_score, 2)
 
         # Severity counts
@@ -431,7 +535,6 @@ def format_report_text(result: ValidationResult) -> str:
 
     lines.append("\n" + "=" * 80)
     return "\n".join(lines)
-
 
 def format_report_json(result: ValidationResult) -> str:
     """Format validation result as JSON."""

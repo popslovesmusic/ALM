@@ -158,11 +158,9 @@ The engine must support (at minimum) these analysis dimensions:
    - Drift detection (optional, v0.1 can stub this).
 
 5. **Layer 5 — Ecological / Ecosystem**
-   - (Optional for v0.1)
-     - If multiple projects are scanned:
-       - Shared concepts
-       - Cross-project conflicts
-       - Unused or duplicated structures
+   - Validate ecological intelligence configuration (`mgfts/config/layer5_ecology.json5`).
+   - Score pattern coverage and health metrics (ecological_health, concealment_surface, pattern_reuse_ratio, signal_freshness_days).
+   - Surface warnings when required collectors are disabled or thresholds are missing, referencing Aletheia/GVP remediation text.
 
 6. **Layer 6 — Formal**
    - Logical consistency checks (can be minimal / deferred to future tools).

@@ -160,17 +160,17 @@ System shall degrade gracefully under load.
 
 ### Layer 5: Ecological Intelligence 🌿
 
-**What:** Pattern recognition and emergent wisdom
+**What:** Pattern recognition and emergent wisdom across projects and governance artifacts.
 
 **Features:**
-- Automatic pattern detection
-- Collective learning
-- Ecosystem health metrics
+- Pattern detection pipelines that ingest governance signals, telemetry, and template reuse (see `specs/LAYER_5_ECOLOGICAL_INTELLIGENCE_SPEC.md`).
+- Layer 5 configuration toggles for pattern collectors and health thresholds (`config/layer5_ecology.json5`).
+- Ecosystem health metrics (ecological health, concealment surface, pattern reuse ratio, signal freshness, cross-layer alignment).
 
 **Benefits:**
-- System learns from itself
-- Patterns emerge naturally
-- Organic evolution
+- System learns from itself while honoring Aletheia (surface stale or missing signals) and GVP (maximize coherent evolution).
+- Patterns emerge naturally and are reported through Constitutional/Reporting engines with actionable warnings.
+- Organic evolution guided by reusable templates, healthy telemetry, and ecological scorecards.
 
 ---
 
@@ -367,6 +367,7 @@ echo "✅ MGFTS validation passed"
 - **[GFTS_SPECIFICATION.md](GFTS_SPECIFICATION.md)**: Complete GFTS/MGFTS specification
 - **[MGFTS_BUILD_INSTRUCTIONS.md](../MGFTS_BUILD_INSTRUCTIONS.md)**: 7-layer architecture details
 - **[CONSTITUTIONAL_ENGINE_ARCHITECTURE.v0.1.md](specs/CONSTITUTIONAL_ENGINE_ARCHITECTURE.v0.1.md)**: Validation engine
+- **[LAYER_5_ECOLOGICAL_INTELLIGENCE_SPEC.md](specs/LAYER_5_ECOLOGICAL_INTELLIGENCE_SPEC.md)**: Ecological pipelines, inputs, and metrics
 
 ### Governance Files
 - **[AGENTS.md](AGENTS.md)**: Agent behavior rules

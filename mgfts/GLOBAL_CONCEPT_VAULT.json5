@@ -664,6 +664,82 @@
         "Heidegger, M. (1927). Being and Time",
         "Quine, W.V.O. (1948). On What There Is"
       ]
+    },
+
+    // ========================================================================
+    // CONCEPT 9: Ecological Intelligence (Layer 5)
+    // ========================================================================
+    {
+      id: "CORE-009",
+      name: "Ecological Intelligence",
+      aliases: ["Layer 5", "Ecosystem Health", "Pattern Ecology"],
+      category: "governance",
+      status: "active",
+      layer: 5,
+      introduced: "2025-02-01",
+
+      definition: "The capacity of the governance system to detect, score, and respond to emergent patterns across projects and governance artifacts, ensuring ecological health through Aletheia-compliant transparency and GVP-aligned coherence.",
+
+      components: {
+        pattern_collectors: "Detectors that analyze governance drift, template reuse, churn, and incident resonance",
+        data_inputs: "Telemetry, governance files, reports, and template usage signals",
+        health_metrics: "Ecological health, concealment surface, pattern reuse ratio, signal freshness, cross-layer alignment",
+        reporting: "Layer 5 scorecards embedded in MGFTS reports with remediation guidance"
+      },
+
+      properties: [
+        "Cross-layer: correlates Layer 2–4 scores with ecological signals",
+        "Temporal: tracks freshness and incident resonance of signals",
+        "Preventative: surfaces warnings before incoherence propagates",
+        "Measurable: uses defined thresholds to score ecosystem health"
+      ],
+
+      examples: [
+        "Governance drift detector flags stale COMPLIANCE_CHARTER.md",
+        "Pattern reuse ratio drops below 0.7 after template deviations",
+        "Signal freshness warning when ecological signals exceed 30 days",
+        "Incident resonance alerts when churn spikes precede incidents"
+      ],
+
+      anti_examples: [
+        "Ignoring ecological signals during incident response",
+        "Running validation without configured Layer 5 thresholds",
+        "Missing pattern collectors for governance or churn analysis",
+        "Unreported ecological debt despite repeated warnings"
+      ],
+
+      measurement: {
+        metric: "Ecological Health",
+        formula: "(collector_coverage + metric_threshold_coverage) / 2",
+        thresholds: {
+          ecological_health: { target: 0.8, warn_below: 0.6 },
+          concealment_surface: { ceiling: 0.35 },
+          pattern_reuse_ratio: { target: 0.75 }
+        },
+        tool: "validate_project.py Layer 5 hooks",
+        reference: "specs/LAYER_5_ECOLOGICAL_INTELLIGENCE_SPEC.md"
+      },
+
+      related_concepts: [
+        "CORE-001: Aletheia Principle",
+        "CORE-002: Generalized Variational Principle",
+        "CORE-003: Coherence Field",
+        "CORE-004: Concealment Functional",
+        "CORE-005: Concept Preservation System"
+      ],
+
+      implementation: [
+        "Configure mgfts/config/layer5_ecology.json5 with required collectors",
+        "Include ecological metrics in MGFTS reports and dashboards",
+        "Align remediation text with Aletheia and GVP",
+        "Track ecological debt backlog and refresh intervals"
+      ],
+
+      references: [
+        "specs/LAYER_5_ECOLOGICAL_INTELLIGENCE_SPEC.md",
+        "scripts/validate_project.py Layer 5 validation hooks",
+        "MGFTS README Layer 5 section"
+      ]
     }
 
   ],
@@ -729,6 +805,18 @@
       to: "CORE-004",   // Concealment
       type: "inversely_related",
       description: "High coherence typically correlates with low concealment"
+    },
+    {
+      from: "CORE-009", // Ecological Intelligence
+      to: "CORE-001",   // Aletheia
+      type: "supports",
+      description: "Ecological metrics surface concealed drift and stale signals"
+    },
+    {
+      from: "CORE-009", // Ecological Intelligence
+      to: "CORE-002",   // GVP
+      type: "optimizes",
+      description: "Pattern collectors steer the ecosystem toward coherent states"
     }
   ],
 
@@ -739,16 +827,22 @@
       version: "1.0.0",
       change: "Initial vault created with 8 core concepts",
       author: "ALM Constitutional Engine"
+    },
+    {
+      date: "2025-02-01",
+      version: "1.1.0",
+      change: "Added CORE-009 Ecological Intelligence and Layer 5 relationships",
+      author: "ALM Constitutional Engine"
     }
   ],
 
   // Metadata
   metadata: {
-    total_concepts: 8,
-    active_concepts: 8,
+    total_concepts: 9,
+    active_concepts: 9,
     deprecated_concepts: 0,
-    layers_covered: [2, 3, 4, 7],
-    last_validation: "2025-01-15",
+    layers_covered: [2, 3, 4, 5, 7],
+    last_validation: "2025-02-01",
     next_review: "2025-04-15"
   }
 }

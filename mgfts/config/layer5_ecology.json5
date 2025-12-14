@@ -1,0 +1,39 @@
+// Layer 5 Ecological Intelligence Configuration
+// Layer: 5 (Ecological)
+// Status: Draft operational defaults
+// Authority: MGFTS Governance (Aletheia + GVP aligned)
+// Schema: ../meta_schemas/layer5_ecology.schema.json5 (optional stub)
+
+{
+  $schema: "../meta_schemas/layer5_ecology.schema.json5",
+  version: "0.2.0",
+  last_modified: "2025-02-01",
+
+  pattern_collectors: [
+    { name: "governance_pattern", enabled: true, description: "Detect governance drift and stale charters" },
+    { name: "code_churn_pattern", enabled: true, description: "Correlate churn with validation/test signals" },
+    { name: "incident_resonance", enabled: false, description: "Link incident timelines with governance signals" }
+  ],
+
+  data_inputs: {
+    governance: ["mgfts/AGENTS.md", "mgfts/COMPLIANCE_CHARTER.md", "mgfts/GLOBAL_CONCEPT_VAULT.json5"],
+    telemetry: ["logs/validation", "logs/incidents"],
+    templates: ["mgfts/templates/*"],
+    reports: ["docs/MGFTS_REPORT.json", "docs/MGFTS_REPORT.md"]
+  },
+
+  health_metrics: {
+    ecological_health: { target: 0.8, warn_below: 0.6 },
+    concealment_surface: { ceiling: 0.35 },
+    pattern_reuse_ratio: { target: 0.75, warn_below: 0.6 },
+    signal_freshness_days: { ceiling: 30 },
+    cross_layer_alignment: { target: 0.65, warn_below: 0.5 }
+  },
+
+  reporting: {
+    emit_layer5_block: true,
+    include_audit_trail: true,
+    output_paths: ["docs/MGFTS_REPORT.md", "docs/MGFTS_REPORT.json"],
+    remediation_notes: "Align ecological warnings with Aletheia (reduce concealment) and GVP (maximize coherence)."
+  }
+}

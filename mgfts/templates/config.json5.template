@@ -40,7 +40,7 @@
       {{LAYER_2}},  // Governance
       {{LAYER_3}},  // Meta-Governance
       // {{LAYER_4}},  // Transcendental (optional)
-      // {{LAYER_5}},  // Ecological (optional)
+      {{LAYER_5}},  // Ecological (recommended for pattern health)
       // {{LAYER_6}},  // Formal Verification (optional)
       // {{LAYER_7}},  // Ontological (optional)
     ],
@@ -51,6 +51,26 @@
       severity_threshold: "{{SEVERITY_THRESHOLD}}", // critical|high|medium|low
     },
     agent_mode: "{{AGENT_MODE}}", // strict_compliance|guided_development|exploratory|emergency_override
+
+    // Layer 5 ecological intelligence toggles
+    ecology: {
+      enabled: {{ECOLOGY_ENABLED}},
+      pattern_collectors: [
+        { name: "governance_pattern", enabled: {{GOVERNANCE_PATTERN_ENABLED}} },
+        { name: "code_churn_pattern", enabled: {{CODE_CHURN_PATTERN_ENABLED}} },
+        { name: "incident_resonance", enabled: {{INCIDENT_RESONANCE_ENABLED}} },
+      ],
+      health_metrics: {
+        ecological_health: { target: {{ECOLOGICAL_TARGET}}, warn_below: {{ECOLOGICAL_WARN_BELOW}} },
+        concealment_surface: { ceiling: {{CONCEALMENT_SURFACE_CEILING}} },
+        pattern_reuse_ratio: { target: {{PATTERN_REUSE_TARGET}}, warn_below: {{PATTERN_REUSE_WARN}} },
+        signal_freshness_days: { ceiling: {{SIGNAL_FRESHNESS_CEILING}} },
+      },
+      reporting: {
+        emit_layer5_block: {{EMIT_LAYER5_BLOCK}},
+        include_audit_trail: {{INCLUDE_ECOLOGY_AUDIT}},
+      },
+    },
   },
 
   // {{SECTION_NAME}} Configuration
