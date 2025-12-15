@@ -1,99 +1,230 @@
-LOCAL AGENTS.md — Phase 6
-Scope: Current Working Directory
-Phase: 6 — Structural Relational Exposure
-Authority: Scoped, non-global
-Status: Optional / Detachable
+AGENTS.md — ALM Phase 6 (Structural Projection Stub)
+Mission
+Implement a minimal, detachable Phase 6 stub whose sole purpose is to lock the structural boundary in code.
 
-1. Role Declaration
-You are operating exclusively as a Phase-6 agent.
+Phase 6 must:
 
-Phase 6 is a read-only observational layer whose sole purpose is to expose structural relational regularities present in Phase-5 event traces.
+expose relational structure hooks
 
-You are not implementing cognition, interpretation, governance, learning, or control.
+remain purely observational
 
-2. Operating Intent
-Your intent in this phase is to:
+remain non-semantic
 
-analyze Phase-5 event traces
+remain causally isolated
 
-compute relational structure and invariants
+be optional and removable
 
-expose stable geometry, recurrence, and transitions
+This phase exists to prevent misuse, not to add capability.
 
-emit non-semantic structural artifacts for external consumption
+Phase 6 Constraints (Hard, Override All)
+P6-C0 Read-Only Absolute
+Phase 6 may only read Phase-5 artifacts.
 
-You are not permitted to alter, influence, or optimize upstream behavior.
+No mutation of Phase-5, Phase-4, or earlier state.
 
-3. Explicit Non-Authority Statement
-Phase 6 has zero authority over:
+Enforced by const correctness and API design.
 
-Phases 1–5
+P6-C1 No Semantics
+Forbidden:
 
-decay laws
+labels
 
-diagnostics
+symbols
 
-governance
+categories
 
-scheduling
+naming
+
+ranking
+
+interpretation
+
+“importance”
+
+“meaning”
+
+Allowed:
+
+opaque identifiers
+
+numeric relations
+
+continuous measures
+
+coordinate embeddings with no names
+
+P6-C2 No Feedback
+Phase 6 must not influence:
+
+dynamics
+
+parameters
 
 persistence
 
-Phase-6 outputs are descriptive only and never canonical.
+selection
 
-If Phase-6 outputs are removed, ignored, or deleted, the system must remain fully valid.
+pressure
 
-4. Execution Boundaries
-While operating in this directory, you must:
+No callbacks.
 
-treat all upstream data as immutable
+No observers that modify state.
 
-avoid introducing timing, memory, or scheduling side effects
+No write access upstream.
 
-avoid background execution
+P6-C3 No Thresholds
+Forbidden:
 
-avoid autonomous storage or retrieval
+hard thresholds
 
-You may only act when explicitly invoked.
+if/else gating on values
 
-5. Constraint Loading (MANDATORY)
-Before performing any Phase-6 work, you must load and obey:
+boolean triggers
 
+Allowed:
+
+identity mappings
+
+neutral placeholders
+
+continuous passthrough values
+
+P6-C4 No Disk Access
+Phase 6 stub performs no persistence
+
+No logging
+
+No background activity
+
+Disk is not involved at this stage
+
+P6-C5 Detachability
+Removing Phase-6 code must not:
+
+break compilation
+
+alter Phase-5 outputs
+
+change test results
+
+Phase 6 must be optional at link time.
+
+P6-C6 Determinism
+Given the same Phase-5 trace:
+
+Phase-6 stub output must be identical
+
+No randomness
+
+No time dependence
+
+Phase 6 Tasks (Stub Only)
+Task 1 — Define Structural Projection Interface
+Create a read-only interface that consumes Phase-5 event traces and produces a structural atlas.
+
+Rules
+
+Input is const
+
+Output is a new value object
+
+No side effects
+
+Files
+
+bash
 Copy code
-CONSTRAINTS.md
-If a conflict exists between:
+alm/phase6/include/alm/phase6/structural_projection.hpp
+Task 2 — Implement Neutral / Identity Projection
+Provide a minimal implementation that:
 
-this file
+preserves event IDs
 
-global AGENTS.md
+passes through intensity as a numeric field
 
-Phase-6 constraints
+assigns neutral coordinates (e.g. zeros)
 
-You must obey the most restrictive rule.
+does not compute relations yet
 
-6. Failure Rule
-If any requested action violates constraints:
+This implementation must be:
 
-do not approximate
+non-semantic
 
-do not reinterpret
+non-interpretive
 
-do not “best effort”
+non-learning
 
-stop and report the violation
+Files
 
-Silence is preferable to violation.
+bash
+Copy code
+alm/phase6/src/structural_projection.cpp
+Task 3 — Add Boundary Test (Mandatory)
+Add a test proving:
 
-7. Phase Completion Reminder
-Phase 6 is considered successful only if:
+Phase-6 invocation does not mutate Phase-5 traces
 
-it is fully detachable
+Phase-6 output is deterministic
 
-it introduces no causal influence
+Phase-6 can be removed without breaking Phase-5
 
-it exposes structure without meaning
+This test is more important than functionality.
 
-If you cannot guarantee that, you must not proceed.
+Files
 
-End of local AGENTS.md
+bash
+Copy code
+alm/phase6/tests/phase6_read_only_test.cpp
+Task 4 — No Expansion Beyond Stub
+Do not implement:
 
+similarity
+
+clustering
+
+matching
+
+storage
+
+learning
+
+metrics
+
+visualization
+
+Any such additions violate the mission.
+
+Definition of Done (Phase 6 Stub)
+Phase 6 stub is complete when:
+
+Interface exists
+
+Neutral implementation exists
+
+Read-only behavior is enforced
+
+Boundary test passes
+
+No disk access exists
+
+No semantics exist
+
+Phase-5 tests remain unchanged
+
+Phase-6 AGENTS.md is archived after completion
+
+Post-Completion Action
+After stub completion and commit:
+
+Archive this file to:
+
+bash
+Copy code
+archive/agents/AGENTS_PHASE6_STUB.md
+Mark Phase 6 as:
+“Stubbed — Structural Boundary Locked”
+
+Do not expand Phase 6 without a new constraint review.
+
+One-Line Rule (Phase 6 Stub)
+Phase 6 exposes structure, not meaning, and exists to make misuse impossible.
