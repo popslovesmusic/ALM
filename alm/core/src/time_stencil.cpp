@@ -10,7 +10,9 @@ TimeStencil::TimeStencil(TensorCluster& cluster)
       rotation_epoch_(0),
       future_write_count_(0),
       future_write_offset_(0),
-      future_had_overwrite_(false) {}
+      future_had_overwrite_(false),
+      last_compute_ns_(0),
+      last_ingest_ns_(0) {}
 
 void TimeStencil::ingest_write_future(Value value, std::size_t count) {
     const std::size_t span = slice_span();
@@ -30,6 +32,12 @@ void TimeStencil::ingest_write_future(Value value, std::size_t count) {
     }
 
     future_write_count_.fetch_add(count, std::memory_order_relaxed);
+
+    const auto now = std::chrono::steady_clock::now().time_since_epoch();
+    const auto nanos =
+        static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(now)
+                                       .count());
+    last_ingest_ns_.store(nanos, std::memory_order_relaxed);
 }
 
 TimeStencil::PressureSnapshot TimeStencil::tick_compute() {
@@ -42,6 +50,15 @@ TimeStencil::PressureSnapshot TimeStencil::tick_compute() {
     const bool captured_overwrite =
         future_had_overwrite_.exchange(false, std::memory_order_relaxed);
 
+    const auto now = std::chrono::steady_clock::now().time_since_epoch();
+    const auto nanos_now =
+        static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(now)
+                                       .count());
+    const std::uint64_t last_compute =
+        last_compute_ns_.exchange(nanos_now, std::memory_order_relaxed);
+    const std::uint64_t last_ingest =
+        last_ingest_ns_.load(std::memory_order_relaxed);
+
     rotate_once();
 
     rotation_epoch_.fetch_add(1, std::memory_order_relaxed);
@@ -50,7 +67,11 @@ TimeStencil::PressureSnapshot TimeStencil::tick_compute() {
     return PressureSnapshot{.rotation_index = tick_id,
                              .rotation_epoch = captured_epoch,
                              .writes_captured = captured_writes,
-                             .had_overwrite = captured_overwrite};
+                             .had_overwrite = captured_overwrite,
+                             .compute_delta_ns =
+                                 last_compute == 0 ? 0 : nanos_now - last_compute,
+                             .ingest_delta_ns =
+                                 last_ingest == 0 ? 0 : nanos_now - last_ingest};
 }
 
 void TimeStencil::rotate_once() {
