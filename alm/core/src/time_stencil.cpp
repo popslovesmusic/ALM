@@ -75,17 +75,22 @@ TimeStencil::PressureSnapshot TimeStencil::tick_compute() {
 }
 
 void TimeStencil::rotate_once() {
-    const std::size_t recycled_index = i_stable_;
+    const std::size_t recycled_index =
+        i_stable_.load(std::memory_order_relaxed);
+    const std::size_t recent_index = i_recent_.load(std::memory_order_relaxed);
+    const std::size_t now_index = i_now_.load(std::memory_order_relaxed);
+    const std::size_t future_index = i_future_.load(std::memory_order_relaxed);
 
-    i_stable_ = i_recent_;
-    i_recent_ = i_now_;
-    i_now_ = i_future_;
-    i_future_ = recycled_index;
+    i_stable_.store(recent_index, std::memory_order_release);
+    i_recent_.store(now_index, std::memory_order_release);
+    i_now_.store(future_index, std::memory_order_release);
+    i_future_.store(recycled_index, std::memory_order_release);
 }
 
 TimeStencil::Value* TimeStencil::future_slice() {
     const std::size_t span = slice_span();
-    return cluster_->data + i_future_ * span;
+    const std::size_t future_index = i_future_.load(std::memory_order_acquire);
+    return cluster_->data + future_index * span;
 }
 
 std::size_t TimeStencil::slice_span() const {

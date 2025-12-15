@@ -1,126 +1,199 @@
-ALM v0.2 Phase 2 — Time & Execution Model: Agent Instructions
-Overview
-In this phase, you will implement the free-running time stencil and execution model for the ALM v0.2 cognitive core. The goal is to create independent ingest and compute loops while ensuring the system can handle timing drift (jitter) and maintain stable performance.
+AGENTS.md — Phase 3: Operator Kernel + SIMD-Adaptive Execution
+Mission
+Implement Phase 3: the Physics Glue Operator Kernel and SIMD-adaptive execution envelope.
 
-Key Objectives
-Free-Running Model: Implement a model that allows independent ingest and compute threads, with timing drift allowed but measured.
+Phase 3 introduces:
 
-Rotation Mechanism: Establish a four-slice time stencil to handle history and prediction within the cognitive model.
+a minimal, explicit operator set (continuous dynamics),
 
-Jitter Management: Design and test the system's response to timing drift and drift recovery mechanisms.
+a kernel interface that updates the TensorCluster slice(s) without semantics,
 
-Phase 2 Constraints:
-These constraints must be adhered to when designing the Time & Execution model.
+runtime CPU SIMD capability detection and one-time dispatch to the best kernel (SSE/AVX/AVX2),
 
-Real-Time Core Constraints
-No Blocking: Ensure there are no blocking syscalls or mutex locks within the compute loop. Disk I/O must not happen during compute cycles.
+deterministic tests verifying correctness across scalar and SIMD implementations.
 
-No Heap Allocation: All memory required by the model should be preallocated during initialization. No dynamic allocation should occur during computation.
+No meaning, no tokens, no language. This remains non-semantic ALM.
 
-Deterministic Control Flow: Ensure that the control flow in the compute loop is deterministic and free from lane-dependent branching.
+Non-Negotiable Constraints
+Phase Boundaries
+Phase 2 is frozen. Do not change TimeStencil semantics or metrics contracts unless a test proves a bug.
 
-Time Model Constraints
-Time Stencil: The model must implement a fixed 4-slice stencil with explicit time progression through index rotation. This stencil will consist of:
+No new “lookahead” ring buffers or transport models.
 
-Stable History
+ALM Constraints
+No semantics: no symbol formation, parsing, classification, “tokenizer,” or meaning assignment.
 
-Recent Past
+No correction/regulation: do not add feedback loops that change behavior based on Phase-2 metrics.
 
-Now
+Analog intent: implement continuous dynamics; discrete structure exists only as an execution strategy.
 
-Future (Staged)
+Performance/Engineering Constraints
+Single dispatch: SIMD selection happens at init; do not branch inside the hot inner loop.
 
-Time Advancement: Time should advance via pointer swapping, not using memcpy. This ensures that slices are updated directly without extra memory copying, maintaining both efficiency and precision.
+No heap allocation in the kernel.
 
-Memory and Cache Constraints
-Working Set Size: The working set must fit within private L2 cache:
+Preserve TensorCluster alignment and L2 residency intent.
 
-Target size: < 200 KB for primary state.
+Kernel must operate on linear memory with predictable access.
 
-Max size: < 256 KB for the complete working state.
+Scope: What to Build
+A) Define the Physics Glue Operator Set (Minimal)
+Implement a first operator set that is:
 
-Alignment: Ensure memory structures used in the SIMD kernel are at least 128 bytes aligned for efficient prefetching.
+stable
 
-Jitter Constraints
-Free-Running Model: The ingest and compute loops should be asynchronous with drift allowed. Jitter should be measurable and should not destabilize the core system.
+non-semantic
 
-Bulldozer Bound: If necessary, the read/write heads should be advanced, but the advancement must be bounded and not exceed the required future window for staged computations.
+composable
 
-Key Metrics to Collect
-Jitter Metrics:
+easy to validate
 
-Measure timing drift between the ingest and compute loops.
+Required operators (start here):
 
-Capture how jitter affects the stability of the computation over time.
+Decay / Damping
+x := x * (1 - d) (per lane coefficient allowed)
 
-Performance Metrics:
+Coupling / Mixing (linear)
+x := x + Σ_j (C_ij * y_j) with a small fixed neighborhood or lane-local coupling matrix
 
-Time Stencil Efficiency: Measure the effectiveness of the 4-slice stencil and verify that time progresses smoothly.
+Diffusion (spatial neighbor)
+x[cell] := x[cell] + κ * (avg(neighbors) - x[cell])
 
-Throughput: Capture the number of writes ingested and processed per cycle.
+Notes:
 
-Resource Utilization:
+Coefficients are “physics parameters,” not semantics.
 
-Track L2 cache usage and ensure the active state stays within memory constraints.
+Keep matrices small and fixed-size for Phase 3.
 
-Monitor the number of simultaneous active threads to evaluate computational efficiency.
+B) Kernel Interface Contract
+Create a kernel interface like:
 
-Error Metrics:
+Inputs:
 
-Overflow Detection: Track when the future slice write index exceeds the allocated space (overflow conditions).
+pointer(s) to slice memory (e.g., now, future) from TensorCluster
 
-Rotational Integrity: Ensure the rotation mechanism operates correctly and efficiently, with no loss of data integrity.
+immutable coefficients (decay, coupling weights, diffusion rate)
 
-Buffer Overwrite: Monitor and record when the buffer experiences an overwrite (when the write head overwrites previous data).
+slice span metadata (cells, registers, lanes)
 
-System Stability:
+Output:
 
-Record any instances where drift becomes catastrophic or the system goes into an unstable state.
+writes results into the designated output slice (usually future), destructively (no memset required)
 
-Track recovery or corrective actions the system takes in case of a failure.
+Do not couple the kernel to TimeStencil directly. The kernel is pure compute.
 
-Phase 2 Implementation Tasks
-Time Stencil Creation:
+C) SIMD Capability Detection (Runtime)
+Implement a small module that determines:
 
-Implement a TimeStencil class to handle the 4-slice time stencil, including:
+CPU supports AVX2? (CPUID)
 
-Method for writing to the future slice.
+OS supports YMM state? (XGETBV / XCR0)
 
-Method for rotating the slices after each cycle.
+Select one implementation:
 
-Mechanism to capture pressure metrics and handle drift.
+scalar fallback
 
-Asynchronous Ingest and Compute Loops:
+SSE (optional)
 
-Create independent loops for ingesting new data and processing it in parallel, ensuring there is no blocking and that they can run asynchronously.
+AVX
 
-Implement a mechanism to handle the jitter drift, such as measuring drift and adjusting the system accordingly.
+AVX2 (target)
 
-Metrics Collection:
+Use a function pointer or std::function set once at init.
 
-Implement logging and reporting for the key metrics listed above, storing the results in a system log or a memory-mapped file for later analysis.
+D) SIMD Implementations
+Implement at least:
 
-Testing:
+scalar reference kernel (always exists, used for correctness tests)
 
-Ensure that no lane-dependent branching occurs during the compute loop.
+AVX2 kernel (primary target)
 
-Test that the time stencil correctly rotates and maintains consistency during execution.
+Optional:
 
-Confirm that jitter and drift are both measurable and managed, and that system behavior is consistent even when jitter is introduced.
+SSE/AVX kernels if you want broader coverage, but do not overbuild.
 
-End of Phase 2: Completion Criteria
-Time Stencil: The 4-slice stencil is functional, with rotation implemented and pressure metrics captured.
+E) Correctness Tests
+Add tests that:
 
-Asynchronous Execution: Both ingest and compute loops are fully asynchronous, with drift management in place.
+run scalar kernel and AVX2 kernel on the same seeded input
 
-Metrics: Key metrics, including jitter, performance, and error rates, are tracked and logged.
+compare outputs within a tolerance
 
-Error Handling: Any errors (e.g., overflow, buffer overwrite) are captured, with recovery mechanisms tested.
+validate:
 
-System Stability: The system runs without instability, even under heavy jitter or data overflow conditions.
+deterministic results
 
-Post-Phase 2 Actions:
-Archive the current agents.md after completing this task, to maintain version control and proper documentation.
+invariants (no NaNs if coefficients are safe)
 
-Begin preparations for Phase 3.
+linear memory traversal (no out-of-bounds)
 
+Do not build a benchmark framework yet.
+
+Deliverables
+Phase 3 is “complete enough to proceed” when:
+
+Kernel interface exists
+
+Scalar kernel passes correctness tests
+
+AVX2 kernel matches scalar within tolerance
+
+SIMD detection selects correct kernel on supported CPUs
+
+Documentation exists for:
+
+operator definitions
+
+coefficient schema
+
+dispatch rules
+
+Phase 3 constraints
+
+Required File Outputs (Suggested Locations)
+alm/core/include/alm/core/simd_capabilities.hpp
+
+alm/core/src/simd_capabilities.cpp
+
+alm/core/include/alm/core/operators.hpp
+
+alm/core/src/operators.cpp (if needed)
+
+alm/core/include/alm/core/kernel.hpp
+
+alm/core/src/kernel_scalar.cpp
+
+alm/core/src/kernel_avx2.cpp
+
+alm/core/tests/kernel_equivalence_test.cpp
+
+active/canonical/PHASE_3_PLAN.md (short)
+
+Post-Task Archiving Rule
+After Phase 3 tasks are completed and committed:
+
+archive this Phase-3 folder-specific AGENTS.md into archive/agents/AGENTS_PHASE3.md
+
+replace it with a stub or remove it, to prevent scope drift.
+
+Phase 3 Constraints Document (Create/Update)
+Create active/canonical/PHASE_3_CONSTRAINTS.md with:
+
+“No semantics / no correction”
+
+“Single dispatch”
+
+“Scalar truth, SIMD acceleration”
+
+“Kernel operates on linear layout”
+
+“R730 target, adaptive execution”
+
+First Implementation Target (Recommended)
+Start with the simplest kernel that still exercises SIMD:
+
+decay + diffusion (no coupling matrix yet)
+
+then add coupling once equivalence testing is stable
+
+This reduces debugging surface area.

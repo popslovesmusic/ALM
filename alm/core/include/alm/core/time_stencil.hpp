@@ -33,10 +33,10 @@ private:
     std::size_t slice_span() const;
 
     TensorCluster* cluster_;
-    std::size_t i_stable_;
-    std::size_t i_recent_;
-    std::size_t i_now_;
-    std::size_t i_future_;
+    std::atomic<std::size_t> i_stable_;
+    std::atomic<std::size_t> i_recent_;
+    std::atomic<std::size_t> i_now_;
+    std::atomic<std::size_t> i_future_;
 
     std::atomic<std::size_t> rotation_count_;
     std::atomic<std::size_t> rotation_epoch_;
