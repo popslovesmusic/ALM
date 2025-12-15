@@ -87,6 +87,42 @@ void TimeStencil::rotate_once() {
     i_future_.store(recycled_index, std::memory_order_release);
 }
 
+TimeStencil::Value* TimeStencil::now_slice() {
+    const std::size_t span = slice_span();
+    const std::size_t now_index = i_now_.load(std::memory_order_acquire);
+    return cluster_->data + now_index * span;
+}
+
+const TimeStencil::Value* TimeStencil::now_slice() const {
+    const std::size_t span = slice_span();
+    const std::size_t now_index = i_now_.load(std::memory_order_acquire);
+    return cluster_->data + now_index * span;
+}
+
+TimeStencil::Value* TimeStencil::recent_slice() {
+    const std::size_t span = slice_span();
+    const std::size_t recent_index = i_recent_.load(std::memory_order_acquire);
+    return cluster_->data + recent_index * span;
+}
+
+const TimeStencil::Value* TimeStencil::recent_slice() const {
+    const std::size_t span = slice_span();
+    const std::size_t recent_index = i_recent_.load(std::memory_order_acquire);
+    return cluster_->data + recent_index * span;
+}
+
+TimeStencil::Value* TimeStencil::stable_slice() {
+    const std::size_t span = slice_span();
+    const std::size_t stable_index = i_stable_.load(std::memory_order_acquire);
+    return cluster_->data + stable_index * span;
+}
+
+const TimeStencil::Value* TimeStencil::stable_slice() const {
+    const std::size_t span = slice_span();
+    const std::size_t stable_index = i_stable_.load(std::memory_order_acquire);
+    return cluster_->data + stable_index * span;
+}
+
 TimeStencil::Value* TimeStencil::future_slice() {
     const std::size_t span = slice_span();
     const std::size_t future_index = i_future_.load(std::memory_order_acquire);

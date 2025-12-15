@@ -25,12 +25,17 @@ struct TimeStencil {
 
     PressureSnapshot tick_compute();
 
+    Value* now_slice();
+    const Value* now_slice() const;
+    Value* recent_slice();
+    const Value* recent_slice() const;
+    Value* stable_slice();
+    const Value* stable_slice() const;
+    Value* future_slice();
+    std::size_t slice_span() const;
+
 private:
     void rotate_once();
-
-    Value* future_slice();
-
-    std::size_t slice_span() const;
 
     TensorCluster* cluster_;
     std::atomic<std::size_t> i_stable_;
