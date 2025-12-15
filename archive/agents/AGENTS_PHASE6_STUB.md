@@ -1,4 +1,5 @@
 AGENTS.md — ALM Phase 6 (Structural Projection Stub)
+Status: Stubbed — Structural Boundary Locked (archived from `alm/phase 6`).
 Mission
 Implement a minimal, detachable Phase 6 stub whose sole purpose is to lock the structural boundary in code.
 
