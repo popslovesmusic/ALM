@@ -60,7 +60,7 @@ You may only act when explicitly invoked.
 Before performing any Phase-6 work, you must load and obey:
 
 Copy code
-PHASE_6_CONSTRAINTS.md
+CONSTRAINTS.md
 If a conflict exists between:
 
 this file
@@ -72,7 +72,7 @@ Phase-6 constraints
 You must obey the most restrictive rule.
 
 6. Failure Rule
-If any requested action violates Phase-6 constraints:
+If any requested action violates constraints:
 
 do not approximate
 
