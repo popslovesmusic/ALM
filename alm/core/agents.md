@@ -1,140 +1,105 @@
-AGENTS.md — Phase 4 Instructions (Continuation)
-Phase 4 Name
-Structural Persistence & Selection Pressure
+AGENTS.md — ALM Phase 4 (Continuation)
+Role
+You are implementing Phase 4 of the ALM core:
+Structural Persistence & Selection Pressure.
 
-Phase 4 Purpose (Operational)
-Phase 4 introduces competition among structures that already exist.
+Phase 4 is pre-semantic and physics-only.
 
-Nothing new is invented.
-Nothing is named.
-Nothing is chosen.
+Absolute Constraints (Read First)
+You MUST NOT:
 
-Structures are allowed to:
+introduce semantics, symbols, labels, or identifiers
 
-persist
+introduce thresholds, branching, or if/else on data
 
-diffuse
+introduce control loops, optimization, or “fixing”
 
-crowd each other
+modify Phase-3 operator semantics
 
-decay
+modify TimeStencil rotation semantics
 
-Only those that survive physical pressure remain.
+normalize, clamp, or gate values
 
-Phase 4 Scope (Strict)
-Phase 4 may:
+promote persistence to state
 
-measure persistence
+You MAY:
 
-apply smooth selection pressure
+measure continuous observables
 
-let structures crowd and suppress each other
+apply smooth, continuous pressure
 
-record outcomes
+allow structures to decay, diffuse, or dominate naturally
 
-Phase 4 may not:
+record metrics passively
 
-decide winners
+If unsure, do less.
 
-threshold behavior
+Current State (Do Not Redo)
+Completed:
 
-promote memory
+Phase-3 residual dynamics (sealed)
 
-label patterns
+SIMD adaptivity (sealed)
 
-introduce semantics
+TimeStencil accessors (sealed)
 
-Phase 4 Work Units (Do in Order)
-Step 1 — Persistence Probe (Observation Only)
-Goal
-Quantify how long and how coherently structure survives across time slices.
+Phase-4 PersistenceProbe (measurement only)
 
-Implementation
-Create a persistence probe that reads:
+You must build on top of these, not replace them.
 
-stable
+Phase 4 Tasks (Execute in Order)
+Task 1 — Selection Pressure Operator
+Objective
+Introduce continuous physical pressure so structures compete without decisions.
 
-recent
+Requirements
+Branchless
 
-now
+Continuous (no thresholds)
 
-and computes continuous observables, such as:
+Lane-pair preserving
 
-Correlation(now, recent)
+Parameterized only by observables
 
-Correlation(now, stable)
+No mutation of observables themselves
 
-Drift magnitude (now − stable)
+Allowed Mechanisms (Choose ≥1)
+Crowding-modulated decay
+(higher local energy → higher decay coefficient)
 
-Residual energy density
+Diffusion flattening
+(strong gradients spread, weak ones fade)
 
-Rules
-No thresholds
-
-No classification
-
-No branching
-
-No mutation of tensors
-
-Metrics only
-
-Deliverables
-swift
-Copy code
-alm/core/include/alm/core/persistence_probe.hpp
-alm/core/src/persistence_probe.cpp
-alm/core/tests/persistence_probe_smoke_test.cpp
-Step 2 — Selection Pressure (Physics Only)
-Goal
-Allow structures to suppress each other without decisions.
-
-Allowed Pressure Mechanisms
-Crowding-Driven Decay
-
-Higher local energy → higher decay rate
-
-Implemented as a smooth multiplier
-
-Diffusion Competition
-
-Strong gradients spread
-
-Weak structures flatten
-
-Bandwidth Pressure
-
-High total activity → reduced effective update magnitude
-
-Must be smooth and branchless
-
-Forbidden
-If/else logic
-
-Thresholds
-
-Max/min clamping
-
-Explicit “selection”
+Smooth global activity normalization
+(e.g. divide by 1 + α * total_energy)
 
 Deliverables
 swift
 Copy code
 alm/core/include/alm/core/selection_pressure.hpp
 alm/core/src/selection_pressure.cpp
-alm/core/tests/selection_pressure_smoke_test.cpp
-Step 3 — Phase 4 Kernel Integration
-Goal
-Combine Phase-3 residual dynamics + Phase-4 pressure into a single tick.
+Include only:
 
-Kernel Responsibilities
-Read stable, recent, now
+pure functions
 
-Apply:
+no side effects
 
-residual persistence weighting
+no logging inside hot paths
 
-selection pressure
+Task 2 — Phase-4 Kernel Integration
+Objective
+Combine:
+
+Phase-3 residual dynamics
+
+Persistence observables
+
+Selection pressure
+
+Into a single Phase-4 tick.
+
+Rules
+Read from stable, recent, now
 
 Write only to future
 
@@ -142,82 +107,84 @@ Preserve paired lanes
 
 Preserve neutrality
 
-Rules
+No normalization
+
 Branchless
 
-Vectorizable
-
 Scalar + SIMD compatible
-
-No normalization
 
 Deliverables
 swift
 Copy code
 alm/core/include/alm/core/phase4_kernel.hpp
 alm/core/src/phase4_kernel.cpp
-alm/core/tests/phase4_neutrality_test.cpp
-Step 4 — Competition Smoke Test
-Goal
-Demonstrate emergent competition without explicit logic.
+Task 3 — Tests (Mandatory)
+Test 1: Neutrality Preservation
+Flat input
 
-Test Setup
+Paired symmetry
+
+Output remains flat
+
+bash
+Copy code
+alm/core/tests/phase4_neutrality_test.cpp
+Test 2: Competition Smoke Test
 Initialize two local structures
 
 Allow system to evolve
 
-Observe:
+Observe divergence in persistence
 
-one persists longer
-
-one decays faster
-
-No assertions about “which”
+Do NOT assert a winner
 
 Only assert:
 
 no NaNs
 
-neutrality preserved
+dynamics occurred
 
-dynamics occur
+invariants preserved
 
-Deliverable
 bash
 Copy code
 alm/core/tests/phase4_competition_smoke_test.cpp
-Step 5 — Phase 4 Seal
-Documentation
-Create:
+Task 4 — Documentation Seal
+When all tests pass, create:
 
 bash
 Copy code
 active/canonical/PHASE_4_COMPLETE.md
-Must state:
+Must include:
 
 What Phase 4 adds
 
-What it explicitly does not do
+What Phase 4 explicitly does NOT do
 
-That system remains pre-semantic
+Statement that system remains pre-semantic
 
-Archival
+Task 5 — Archival
 After completion:
 
-Archive Phase-4 AGENTS.md
+Archive this AGENTS.md to:
 
-Lock Phase-4 code except bug fixes
+bash
+Copy code
+archive/agents/AGENTS_PHASE4.md
+Remove or replace active AGENTS.md
 
-Phase 4 Completion Criteria
+This prevents drift.
+
+Definition of Done (Strict)
 Phase 4 is complete when:
 
-Persistence is measurable
-
-Selection pressure is continuous and physical
+Selection pressure exists
 
 Competition emerges without thresholds
 
-Neutrality preserved
+Persistence is measured, not asserted
+
+Neutrality is preserved
 
 Phase-3 tests still pass
 
@@ -225,5 +192,22 @@ Phase-4 tests pass
 
 No semantics appear
 
-One-Line Phase-4 Rule
-Phase 4 lets structure compete, but never choose.
+AGENTS.md is archived
+
+One-Line Rule
+Phase 4 lets structure compete, but never decide.
+
+Notes to Agent
+If you feel the urge to:
+
+classify
+
+choose
+
+stabilize
+
+optimize
+
+interpret
+
+Stop. You are leaving Phase 4.
