@@ -1,199 +1,170 @@
-AGENTS.md — Phase 3: Operator Kernel + SIMD-Adaptive Execution
-Mission
-Implement Phase 3: the Physics Glue Operator Kernel and SIMD-adaptive execution envelope.
+Phase-3 Objective (Non-Interpretive)
+Implement ALM’s first true compute layer, whose sole responsibility is:
 
-Phase 3 introduces:
+Evolving interaction-generated residuals across time slices using physically plausible operators.
 
-a minimal, explicit operator set (continuous dynamics),
+Phase-3 does not:
 
-a kernel interface that updates the TensorCluster slice(s) without semantics,
+decide meaning
 
-runtime CPU SIMD capability detection and one-time dispatch to the best kernel (SSE/AVX/AVX2),
+select symbols
 
-deterministic tests verifying correctness across scalar and SIMD implementations.
+correct errors
 
-No meaning, no tokens, no language. This remains non-semantic ALM.
+stabilize outcomes
 
-Non-Negotiable Constraints
-Phase Boundaries
-Phase 2 is frozen. Do not change TimeStencil semantics or metrics contracts unless a test proves a bug.
+perform cognition
 
-No new “lookahead” ring buffers or transport models.
+Phase-3 only evolves structure already present.
 
-ALM Constraints
-No semantics: no symbol formation, parsing, classification, “tokenizer,” or meaning assignment.
+2. Fundamental Operating Principle
+ALM computation is governed by this invariant:
 
-No correction/regulation: do not add feedback loops that change behavior based on Phase-2 metrics.
+Only deviations that survive paired cancellation and persist across time slices are allowed to influence future state.
 
-Analog intent: implement continuous dynamics; discrete structure exists only as an execution strategy.
+This is enforced mechanically, not logically.
 
-Performance/Engineering Constraints
-Single dispatch: SIMD selection happens at init; do not branch inside the hot inner loop.
+3. Data Model (Locked)
+The agent must not modify:
 
-No heap allocation in the kernel.
+TensorCluster layout
 
-Preserve TensorCluster alignment and L2 residency intent.
+SIMD lane count
 
-Kernel must operate on linear memory with predictable access.
+TimeStencil rotation semantics
 
-Scope: What to Build
-A) Define the Physics Glue Operator Set (Minimal)
-Implement a first operator set that is:
+Free-running ingest / compute separation
 
-stable
+Phase-3 operates on top of Phase-2 infrastructure.
 
-non-semantic
+4. Lane Pairing Rule (New, Mandatory)
+Definition
+Each effective ALM signal is represented as a paired lane:
 
-composable
+Copy code
+LanePair(i) = (lane[2i], lane[2i+1])
+Residual(i) = lane[2i] − lane[2i+1]
+Enforcement
+Operators must consume pairs
 
-easy to validate
+Operators must emit paired output
 
-Required operators (start here):
+Single-lane reads or writes are forbidden
 
-Decay / Damping
-x := x * (1 - d) (per lane coefficient allowed)
+5. Phase-3 Operator Class (Allowed)
+Agents may implement only operators from this class:
 
-Coupling / Mixing (linear)
-x := x + Σ_j (C_ij * y_j) with a small fixed neighborhood or lane-local coupling matrix
+A. Residual Extraction
+Computes paired differences
 
-Diffusion (spatial neighbor)
-x[cell] := x[cell] + κ * (avg(neighbors) - x[cell])
+No thresholds
 
-Notes:
+No conditionals
 
-Coefficients are “physics parameters,” not semantics.
+B. Envelope / Accumulation
+Integrates residual magnitude over:
 
-Keep matrices small and fixed-size for Phase 3.
+time slices
 
-B) Kernel Interface Contract
-Create a kernel interface like:
+neighboring cells
 
-Inputs:
+Uses FMA-friendly accumulation
 
-pointer(s) to slice memory (e.g., now, future) from TensorCluster
+C. Decay
+Monotonic
 
-immutable coefficients (decay, coupling weights, diffusion rate)
+Local
 
-slice span metadata (cells, registers, lanes)
+Parameterized but fixed during execution
 
-Output:
+D. Diffusion
+Spatial only
 
-writes results into the designated output slice (usually future), destructively (no memset required)
+No teleportation
 
-Do not couple the kernel to TimeStencil directly. The kernel is pure compute.
+No nonlocal jumps
 
-C) SIMD Capability Detection (Runtime)
-Implement a small module that determines:
+6. Operator Execution Model
+Each compute tick:
 
-CPU supports AVX2? (CPUID)
+Read i_now slice only
 
-OS supports YMM state? (XGETBV / XCR0)
+Operate on paired lanes
 
-Select one implementation:
+Write results exclusively to i_future
 
-scalar fallback
+Do not zero or normalize
 
-SSE (optional)
+Allow overwrite if pressure exists
 
-AVX
+Important:
+Phase-3 kernels must be branchless.
 
-AVX2 (target)
+7. SIMD Requirements
+Use AVX2 (or detected SIMD width)
 
-Use a function pointer or std::function set once at init.
+Paired lanes must map cleanly to vector lanes
 
-D) SIMD Implementations
-Implement at least:
+All operators must vectorize cleanly
 
-scalar reference kernel (always exists, used for correctness tests)
+Scalar fallbacks only if SIMD unavailable
 
-AVX2 kernel (primary target)
+Runtime SIMD detection is allowed
+Operator semantics must not change
 
-Optional:
+8. Phase-3 Metrics (Collection Only)
+The agent must collect, not act on:
 
-SSE/AVX kernels if you want broader coverage, but do not overbuild.
+Residual energy per tick
 
-E) Correctness Tests
-Add tests that:
+Residual persistence across slices
 
-run scalar kernel and AVX2 kernel on the same seeded input
+Pair symmetry violations
 
-compare outputs within a tolerance
+Operator output variance
 
-validate:
+Diffusion spread rate
 
-deterministic results
+Metrics are:
 
-invariants (no NaNs if coefficients are safe)
+Observational
 
-linear memory traversal (no out-of-bounds)
+Logged
 
-Do not build a benchmark framework yet.
+Non-interfering
 
-Deliverables
-Phase 3 is “complete enough to proceed” when:
+9. Forbidden Actions (Hard Stop)
+The agent must not:
 
-Kernel interface exists
+Introduce thresholds
 
-Scalar kernel passes correctness tests
+Introduce conditionals based on values
 
-AVX2 kernel matches scalar within tolerance
+Clamp outputs
 
-SIMD detection selects correct kernel on supported CPUs
+Normalize tensors
 
-Documentation exists for:
+Inject constants
 
-operator definitions
+Create control loops
 
-coefficient schema
+Modify TimeStencil logic
 
-dispatch rules
+“Fix” instability
 
-Phase 3 constraints
+If instability appears, it is data.
 
-Required File Outputs (Suggested Locations)
-alm/core/include/alm/core/simd_capabilities.hpp
+10. Deliverables (Phase-3 Completion)
+The agent must produce:
 
-alm/core/src/simd_capabilities.cpp
+One minimal Phase-3 operator kernel
 
-alm/core/include/alm/core/operators.hpp
+One SIMD-vectorized implementation
 
-alm/core/src/operators.cpp (if needed)
+One correctness test (symmetry preservation)
 
-alm/core/include/alm/core/kernel.hpp
+One stress test (pressure + overwrite)
 
-alm/core/src/kernel_scalar.cpp
+Metrics log output
 
-alm/core/src/kernel_avx2.cpp
-
-alm/core/tests/kernel_equivalence_test.cpp
-
-active/canonical/PHASE_3_PLAN.md (short)
-
-Post-Task Archiving Rule
-After Phase 3 tasks are completed and committed:
-
-archive this Phase-3 folder-specific AGENTS.md into archive/agents/AGENTS_PHASE3.md
-
-replace it with a stub or remove it, to prevent scope drift.
-
-Phase 3 Constraints Document (Create/Update)
-Create active/canonical/PHASE_3_CONSTRAINTS.md with:
-
-“No semantics / no correction”
-
-“Single dispatch”
-
-“Scalar truth, SIMD acceleration”
-
-“Kernel operates on linear layout”
-
-“R730 target, adaptive execution”
-
-First Implementation Target (Recommended)
-Start with the simplest kernel that still exercises SIMD:
-
-decay + diffusion (no coupling matrix yet)
-
-then add coupling once equivalence testing is stable
-
-This reduces debugging surface area.
+No documentation expansion required yet.
