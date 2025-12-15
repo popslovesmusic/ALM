@@ -1,241 +1,126 @@
-# AGENTS_PHASE_2.md
+ALM v0.2 Phase 2 — Time & Execution Model: Agent Instructions
+Overview
+In this phase, you will implement the free-running time stencil and execution model for the ALM v0.2 cognitive core. The goal is to create independent ingest and compute loops while ensuring the system can handle timing drift (jitter) and maintain stable performance.
 
-> STATUS: ACTIVE (when copied to alm/core/AGENTS.md)  
-> PHASE: 2 — Finite-Time Motion (Stencil-Only, No Ring Buffer)  
-> SCOPE: alm/core/  
-> GOVERNANCE: MGFTS (Mandatory)  
-> REVIEW GATE: REQUIRED BEFORE PUSH
+Key Objectives
+Free-Running Model: Implement a model that allows independent ingest and compute threads, with timing drift allowed but measured.
 
-This phase implements **time and ingest motion** inside the finite 4-slice stencil.
-It explicitly rejects the ring-buffer/queue model.
+Rotation Mechanism: Establish a four-slice time stencil to handle history and prediction within the cognitive model.
 
-The Phase 2 objective is to make **time move** and to allow **free-running write pressure**
-into the staged future slice, with measurable **jitter/proprioception**.
+Jitter Management: Design and test the system's response to timing drift and drift recovery mechanisms.
 
-No cognition kernel. No semantics. No disk. No AVX2.
+Phase 2 Constraints:
+These constraints must be adhered to when designing the Time & Execution model.
 
----
+Real-Time Core Constraints
+No Blocking: Ensure there are no blocking syscalls or mutex locks within the compute loop. Disk I/O must not happen during compute cycles.
 
-## 0. Canonical Inputs (Read-Only, Must Obey)
+No Heap Allocation: All memory required by the model should be preallocated during initialization. No dynamic allocation should occur during computation.
 
-Agents MUST obey in this order:
+Deterministic Control Flow: Ensure that the control flow in the compute loop is deterministic and free from lane-dependent branching.
 
-1. `active/canonical/ALM_IMPLEMENTATION_CHARTER.md`
-2. `alm/core/constraints_phase_2.md`
-3. `active/canonical/SSOT alm.md`
-4. `active/canonical/10x10_Substrate_12x12_Relational_Model.md`
+Time Model Constraints
+Time Stencil: The model must implement a fixed 4-slice stencil with explicit time progression through index rotation. This stencil will consist of:
 
-If any conflict or ambiguity exists: STOP and REPORT.
+Stable History
 
----
+Recent Past
 
-## 1. Phase Authorization (Hard Boundary)
+Now
 
-The agent is authorized to implement **Phase 2 only**.
+Future (Staged)
 
-Phase 2 includes:
-- slice index management (finite-time stencil)
-- pointer rotation (time progression without copying)
-- free-running ingest writes into `staged_future`
-- measurement of write pressure / jitter metrics
-- deterministic harness for testing
+Time Advancement: Time should advance via pointer swapping, not using memcpy. This ensures that slices are updated directly without extra memory copying, maintaining both efficiency and precision.
 
-Phase 2 excludes:
-- any ring buffer / queue
-- any feature extraction or FFT/windowing
-- any SIMD kernel work
-- any disk persistence/retrieval
-- any semantics or naming of lanes/cells beyond numeric indices
+Memory and Cache Constraints
+Working Set Size: The working set must fit within private L2 cache:
 
-The agent MUST STOP at Phase 2 completion.
+Target size: < 200 KB for primary state.
 
----
+Max size: < 256 KB for the complete working state.
 
-## 2. Core Concept (New Model — Read Carefully)
+Alignment: Ensure memory structures used in the SIMD kernel are at least 128 bytes aligned for efficient prefetching.
 
-### 2.1 The Stencil IS the Buffer
-There is **no separate transport buffer**.
+Jitter Constraints
+Free-Running Model: The ingest and compute loops should be asynchronous with drift allowed. Jitter should be measurable and should not destabilize the core system.
 
-The existing `TensorCluster` (Phase 1) holds exactly 4 time slices, and those slices are the
-only temporal memory allowed inside the core.
+Bulldozer Bound: If necessary, the read/write heads should be advanced, but the advancement must be bounded and not exceed the required future window for staged computations.
 
-### 2.2 Free-Running Writes Create "Pressure"
-Ingest writes directly into the slice designated `staged_future`.
-Compute reads from `now` and rotates slices at tick boundaries.
+Key Metrics to Collect
+Jitter Metrics:
 
-Ingest and compute are not synchronized. Collisions (“screen tearing”) are allowed and are treated as signal.
+Measure timing drift between the ingest and compute loops.
 
-### 2.3 Jitter / Proprioception is Measured, Not Eliminated
-We must measure:
-- how much of `staged_future` was written since the last rotation
-- how often overwrites occur
-- whether ingest outpaces compute
+Capture how jitter affects the stability of the computation over time.
 
-These metrics are exported as numbers; they do not change behavior in Phase 2.
+Performance Metrics:
 
----
+Time Stencil Efficiency: Measure the effectiveness of the 4-slice stencil and verify that time progresses smoothly.
 
-## 3. Directory / File Plan (Create Exactly)
+Throughput: Capture the number of writes ingested and processed per cycle.
 
-Create or modify files only within `alm/core/`:
+Resource Utilization:
 
-### 3.1 New headers / sources
-- `alm/core/include/alm/core/time_stencil.hpp`
-- `alm/core/src/time_stencil.cpp`
+Track L2 cache usage and ensure the active state stays within memory constraints.
 
-### 3.2 New tests
-- `alm/core/tests/time_stencil_rotation_test.cpp`
-- `alm/core/tests/staged_future_pressure_test.cpp`
+Monitor the number of simultaneous active threads to evaluate computational efficiency.
 
-### 3.3 Allowed edits
-- You MAY add minimal declarations to `tensor_cluster.hpp` if required
-  (e.g., helper constants), but MUST NOT introduce behavior or accessors.
+Error Metrics:
 
----
+Overflow Detection: Track when the future slice write index exceeds the allocated space (overflow conditions).
 
-## 4. Implementation Requirements
+Rotational Integrity: Ensure the rotation mechanism operates correctly and efficiently, with no loss of data integrity.
 
-### 4.1 Define a TimeStencil Controller (No Semantics)
-Implement a small controller struct/class, e.g.:
+Buffer Overwrite: Monitor and record when the buffer experiences an overwrite (when the write head overwrites previous data).
 
-- `TimeStencil` (or `StencilController`)
-- Holds:
-  - `TensorCluster* cluster` (or reference)
-  - 4 slice indices:
-    - `i_stable`
-    - `i_recent`
-    - `i_now`
-    - `i_future`
+System Stability:
 
-These indices are just numeric roles; no additional meaning is introduced.
+Record any instances where drift becomes catastrophic or the system goes into an unstable state.
 
-### 4.2 Rotation Must Be Pointer/Index-Only (No Copying)
-Implement:
+Track recovery or corrective actions the system takes in case of a failure.
 
-- `rotate_once()`
+Phase 2 Implementation Tasks
+Time Stencil Creation:
 
-Rotation rule:
+Implement a TimeStencil class to handle the 4-slice time stencil, including:
 
-- `stable ← recent`
-- `recent ← now`
-- `now ← future`
-- `future ← old stable` (recycled)
+Method for writing to the future slice.
 
-No data copy. No memset. No “clear future.”
+Method for rotating the slices after each cycle.
 
-### 4.3 Staged Future Write Tracking (Pressure)
-Implement a write-tracking mechanism that is:
+Mechanism to capture pressure metrics and handle drift.
 
-- lock-free or minimal-atomic
-- does not block compute
-- does not allocate
+Asynchronous Ingest and Compute Loops:
 
-Required counters (minimum):
-- `future_write_epoch` (monotonic tick id or counter)
-- `future_write_count` (how many write events since last rotate)
-- `future_write_span` (optional: min/max index written)
+Create independent loops for ingesting new data and processing it in parallel, ensuring there is no blocking and that they can run asynchronously.
 
-At minimum, implement:
-- `mark_future_write(n_values_written)` called by ingest
-- rotation captures snapshot and resets counters for next epoch
+Implement a mechanism to handle the jitter drift, such as measuring drift and adjusting the system accordingly.
 
-### 4.4 Ingest Simulation (Phase 2 Only)
-Implement a minimal ingest function that writes into `staged_future`:
+Metrics Collection:
 
-- `ingest_write_future(float value, size_t count)` OR similar
-- It writes into the *current* future slice's contiguous `data[]`
+Implement logging and reporting for the key metrics listed above, storing the results in a system log or a memory-mapped file for later analysis.
 
-Rules:
-- It may overwrite previously written values (allowed)
-- It must update pressure counters
-- It must not clear or initialize the future slice globally
+Testing:
 
-In Phase 2, this ingest function is a test harness; it is not real device I/O.
+Ensure that no lane-dependent branching occurs during the compute loop.
 
-### 4.5 Deterministic Tick Harness
-Implement a deterministic function:
+Test that the time stencil correctly rotates and maintains consistency during execution.
 
-- `tick_compute()` which:
-  - reads pressure counters
-  - rotates the stencil
-  - returns a small metric struct (for tests)
+Confirm that jitter and drift are both measurable and managed, and that system behavior is consistent even when jitter is introduced.
 
-No kernel math. No semantics.
+End of Phase 2: Completion Criteria
+Time Stencil: The 4-slice stencil is functional, with rotation implemented and pressure metrics captured.
 
----
+Asynchronous Execution: Both ingest and compute loops are fully asynchronous, with drift management in place.
 
-## 5. Tests (Mandatory)
+Metrics: Key metrics, including jitter, performance, and error rates, are tracked and logged.
 
-### 5.1 Rotation Correctness
-Test that after one rotate:
-- the previous `now` index becomes `recent`
-- the previous `recent` becomes `stable`
-- the previous `future` becomes `now`
-- the recycled index is re-used as `future`
+Error Handling: Any errors (e.g., overflow, buffer overwrite) are captured, with recovery mechanisms tested.
 
-Test must confirm:
-- indices form a permutation of {0,1,2,3}
-- rotation repeats correctly over multiple ticks
+System Stability: The system runs without instability, even under heavy jitter or data overflow conditions.
 
-### 5.2 Pressure Measurement
-Test that:
-- ingest writes increment write counters
-- compute tick captures and resets counters
-- pressure values are consistent across multiple cycles
+Post-Phase 2 Actions:
+Archive the current agents.md after completing this task, to maintain version control and proper documentation.
 
-### 5.3 No Illegal Constructs
-Confirm by inspection/guardrails:
-- no ring buffer types exist
-- no queue
-- no vector growth
-- no disk I/O
-- no SIMD intrinsics
+Begin preparations for Phase 3.
 
----
-
-## 6. Explicit Prohibitions (Hard Stops)
-
-The agent MUST NOT:
-
-- Implement a ring buffer, queue, circular sample buffer, or any head-distance system
-- Create “frames,” “window sizes,” or “lookahead buffers”
-- Add feature extraction (FFT, entropy scan, etc.)
-- Add lane naming or semantic grouping
-- Add accessors to TensorCluster
-- Add `clear()` methods or future-slice initialization policies
-- Add multithreading (optional later); tests must be deterministic
-- Proceed to Phase 3 (SIMD kernel)
-
-If any of these appear necessary, STOP and REPORT.
-
----
-
-## 7. Review Gate (Do Not Push)
-
-After producing a diff:
-
-1. STOP.
-2. Output:
-   - list of files changed
-   - a summary of rotation + pressure mechanisms
-   - confirmation: “NO RING BUFFER IMPLEMENTED”
-3. Await human review.
-
-Do not push or merge until review is complete.
-
----
-
-## 8. Completion Criteria (Definition of Done)
-
-Phase 2 is complete when:
-
-- TimeStencil controller exists
-- Rotation works and is tested
-- Staged-future pressure counters work and are tested
-- No ring buffer exists anywhere
-- No behavior beyond time motion + write tracking exists
-- Agent stops after reporting outputs
-
----
-
-## End of Phase 2 Instructions
