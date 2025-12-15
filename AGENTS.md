@@ -16,13 +16,13 @@ All agents are subject to **automatic compliance enforcement**.
 
 Agents MUST resolve instructions in the following order:
 
-1. Nearest directory-scoped `AGENTS.md`
+1. Nearest 'AGENTS.md` in working directory
 2. This global `AGENTS.md`
 3. Canonical documents referenced herein
 
-If no directory-scoped `AGENTS.md` exists:
+If no directory `AGENTS.md` exists:
 - The agent MUST STOP
-- The agent MUST REPORT that no executable scope is authorized
+- The agent MUST REPORT that no executable 'AGENTS.md' is authorized
 
 Agents are NOT permitted to infer tasks, phases, or intent.
 
