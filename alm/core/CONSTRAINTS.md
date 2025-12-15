@@ -1,244 +1,95 @@
-PHASE 4 — HARD CONSTRAINTS
-Phase Name: Structural Persistence & Selection Pressure
-System: ALM (Analog Latent Model)
+1) Phase Boundary Integrity
+Do not modify Phase-4 kernel semantics, persistence probes, selection pressure logic, or tests.
 
-These constraints are non-negotiable.
-They override convenience, optimization, and future plans.
+Do not modify any files under alm/core.
 
-C0 — Phase Boundary Lock
-Phase 3 code is frozen
+Phase 5 is observer-only with respect to Phases 1–4.
 
-Phase 3 operator semantics may not be altered
-
-TimeStencil rotation semantics may not be altered
-
-Only read access to Phase-3 outputs is allowed
-
-Bug fixes only, with:
-
-explicit justification
-
-regression tests
-
-C1 — No Semantics (Absolute)
-Phase 4 must not introduce:
-
-symbols
-
-tokens
-
-labels
-
-categories
-
-identifiers
-
-pattern names
-
-classifiers
-
-“this represents X” logic
-
-Anything that can be named is out of scope.
-
-C2 — No Discrete Decisions
+2) No Semantics / No Labels
 Forbidden:
 
-thresholds
+symbols, tokens, categories
 
-if/else branching on data
+naming events (“this is X”)
 
-step functions
+classifiers or recognizers
 
-top-k selection
+linguistic or symbolic interpretation
 
-winner-take-all logic
-
-boolean gates driven by metrics
+pattern meaning attribution
 
 Allowed:
 
-smooth, continuous functions only
+opaque event IDs
 
-monotonic response curves
+event coordinates (time, location, intensity)
 
-linear or gently nonlinear operators
+feature vectors with no names
 
-C3 — No Control Loops
-Phase 4 must not:
+3) Discrete Events Are Derivatives Only
+Phase 5 may produce discrete events, but only as derivatives of continuous Phase-4 observables.
 
-steer the system toward outcomes
+Events must arise from:
 
-stabilize states intentionally
+persistence
 
-suppress “undesirable” behavior
+drift
 
-correct deviations
+coherence
 
-Selection must emerge only from physical pressure.
+energy gradients
 
-C4 — Physical Selection Only
-Allowed sources of selection pressure:
+Events must not be injected, invented, or hard-triggered.
 
-finite bandwidth (write pressure)
-
-decay
-
-diffusion
-
-crowding / interference
-
-resource competition
-
+4) No Thresholds
 Forbidden:
 
-scoring
+hard thresholds
 
-ranking
+step functions
 
-reward functions
+boolean gates
 
-penalties
+if/else branching on metric values
 
-optimization objectives
+Allowed:
 
-C5 — Locality Constraint
-All Phase-4 effects must be:
+smooth, continuous onset functions
 
-local in space (cell / neighborhood)
+soft event intensity
 
-local in time (adjacent slices only)
+probabilistic or graded emergence
 
-Forbidden:
+5) No Feedback Into Core
+Phase 5 must never:
 
-global coordination logic
+influence Phase-4 parameters
 
-centralized arbitration
+alter decay, diffusion, or pressure
 
-global “mode switches”
+inject signals upstream
 
-A smooth global scalar (e.g., total energy normalization) is allowed only if:
+apply back-pressure
 
-continuous
+Phase 5 is read-only with respect to ALM core.
 
-branchless
+6) Disk Discipline (Strict)
+Disk may act as long-term memory if and only if:
 
-non-directive
+disk access is explicitly called
 
-C6 — Lane-Pair Invariance
-All Phase-4 kernels must:
+disk cannot initiate activity
 
-operate on lane pairs
+disk cannot influence computation
 
-preserve symmetry when input is symmetric
+no background writes
 
-emit paired outputs only
+no autonomous retrieval
 
-If a symmetric input produces asymmetric output → bug.
+Disk participation must be auditable and testable.
 
-C7 — Neutrality Preservation
-If:
+7) Determinism
+Given the same Phase-4 observable stream, Phase-5 must produce:
 
-inputs are flat
+the same event trace (within defined numeric tolerance)
 
-or perfectly paired
-
-or fully canceling
-
-Then:
-
-outputs must remain flat
-
-Phase 4 must never generate structure from nothing.
-
-C8 — Observation Without Intervention
-Metrics may be:
-
-measured
-
-recorded
-
-logged
-
-Metrics must never:
-
-influence computation
-
-gate execution
-
-alter coefficients
-
-trigger logic
-
-Observation is passive only.
-
-C9 — No Memory Promotion
-Phase 4 must not:
-
-declare something “persistent” as a state
-
-promote structures to special storage
-
-freeze or pin patterns
-
-Persistence is measured, not asserted.
-
-C10 — No Cognition Leakage
-Forbidden concepts:
-
-intention
-
-representation
-
-meaning
-
-prediction as decision
-
-self-model
-
-goal-directed behavior
-
-Phase 4 remains pre-semantic.
-
-C11 — Hardware Agnosticism
-Phase-4 behavior must be invariant under:
-
-scalar execution
-
-AVX2 execution
-
-different SIMD widths
-
-Hardware may change performance, not behavior.
-
-C12 — Failure Is Data
-If Phase-4 exhibits:
-
-instability
-
-collapse
-
-dominance
-
-extinction
-
-oscillation
-
-This is valid output, not an error.
-
-Do not “fix” it.
-
-Phase 4 Completion Definition
-Phase 4 is complete when:
-
-structures persist or dissolve solely via physical pressure
-
-competition occurs without thresholds or labels
-
-neutrality is preserved
-
-Phase-3 tests still pass
-
-no semantic artifacts appear
-
-Phase-4 AGENTS.md is archived

@@ -1,213 +1,236 @@
-AGENTS.md — ALM Phase 4 (Continuation)
-Role
-You are implementing Phase 4 of the ALM core:
-Structural Persistence & Selection Pressure.
+AGENTS.md — ALM Phase 5: Discrete Event Surfaces & Trace Persistence (Pre-Semantic)
+Mission
+Implement Phase 5: extraction of discrete, indexable event traces derived from Phase-4 structural dynamics, without introducing semantics, interpretation, or feedback.
 
-Phase 4 is pre-semantic and physics-only.
+Phase 5 outputs remain pre-semantic.
+The system must not interpret events—only surface, record, and retrieve them as opaque traces.
 
-Absolute Constraints (Read First)
-You MUST NOT:
+Phase 5 Constraints (Hard, Override All Prior Guidance)
+1) Phase Boundary Integrity
+Do not modify Phase-4 kernel semantics, persistence probes, selection pressure logic, or tests.
 
-introduce semantics, symbols, labels, or identifiers
+Do not modify any files under alm/core.
 
-introduce thresholds, branching, or if/else on data
+Phase 5 is observer-only with respect to Phases 1–4.
 
-introduce control loops, optimization, or “fixing”
+2) No Semantics / No Labels
+Forbidden:
 
-modify Phase-3 operator semantics
+symbols, tokens, categories
 
-modify TimeStencil rotation semantics
+naming events (“this is X”)
 
-normalize, clamp, or gate values
+classifiers or recognizers
 
-promote persistence to state
+linguistic or symbolic interpretation
 
-You MAY:
+pattern meaning attribution
 
-measure continuous observables
+Allowed:
 
-apply smooth, continuous pressure
+opaque event IDs
 
-allow structures to decay, diffuse, or dominate naturally
+event coordinates (time, location, intensity)
 
-record metrics passively
+feature vectors with no names
 
-If unsure, do less.
+3) Discrete Events Are Derivatives Only
+Phase 5 may produce discrete events, but only as derivatives of continuous Phase-4 observables.
 
-Current State (Do Not Redo)
-Completed:
+Events must arise from:
 
-Phase-3 residual dynamics (sealed)
+persistence
 
-SIMD adaptivity (sealed)
+drift
 
-TimeStencil accessors (sealed)
+coherence
 
-Phase-4 PersistenceProbe (measurement only)
+energy gradients
 
-You must build on top of these, not replace them.
+Events must not be injected, invented, or hard-triggered.
 
-Phase 4 Tasks (Execute in Order)
-Task 1 — Selection Pressure Operator
-Objective
-Introduce continuous physical pressure so structures compete without decisions.
+4) No Thresholds
+Forbidden:
 
-Requirements
-Branchless
+hard thresholds
 
-Continuous (no thresholds)
+step functions
 
-Lane-pair preserving
+boolean gates
 
-Parameterized only by observables
+if/else branching on metric values
 
-No mutation of observables themselves
+Allowed:
 
-Allowed Mechanisms (Choose ≥1)
-Crowding-modulated decay
-(higher local energy → higher decay coefficient)
+smooth, continuous onset functions
 
-Diffusion flattening
-(strong gradients spread, weak ones fade)
+soft event intensity
 
-Smooth global activity normalization
-(e.g. divide by 1 + α * total_energy)
+probabilistic or graded emergence
+
+5) No Feedback Into Core
+Phase 5 must never:
+
+influence Phase-4 parameters
+
+alter decay, diffusion, or pressure
+
+inject signals upstream
+
+apply back-pressure
+
+Phase 5 is read-only with respect to ALM core.
+
+6) Disk Discipline (Strict)
+Disk may act as long-term memory if and only if:
+
+disk access is explicitly called
+
+disk cannot initiate activity
+
+disk cannot influence computation
+
+no background writes
+
+no autonomous retrieval
+
+Disk participation must be auditable and testable.
+
+7) Determinism
+Given the same Phase-4 observable stream, Phase-5 must produce:
+
+the same event trace (within defined numeric tolerance)
+
+Phase 5 Work Plan (Do in This Order)
+Step 1 — Event Surface Extraction (No Interpretation)
+Create an EventExtractor that surfaces event candidates from Phase-4 observables.
+
+Each event record may contain:
+
+event ID (opaque)
+
+timestamp
+
+spatial index
+
+intensity (continuous)
+
+feature vector (unnamed)
+
+No classification. No meaning.
 
 Deliverables
-swift
+
+bash
 Copy code
-alm/core/include/alm/core/selection_pressure.hpp
-alm/core/src/selection_pressure.cpp
-Include only:
+alm/layer5/include/alm/layer5/event_extractor.hpp
+alm/layer5/src/event_extractor.cpp
+Step 2 — Event Trace Buffer (RAM Only)
+Implement a bounded, append-only event trace ring for:
 
-pure functions
+replay
 
-no side effects
+audit
 
-no logging inside hot paths
+deterministic testing
 
-Task 2 — Phase-4 Kernel Integration
-Objective
-Combine:
-
-Phase-3 residual dynamics
-
-Persistence observables
-
-Selection pressure
-
-Into a single Phase-4 tick.
-
-Rules
-Read from stable, recent, now
-
-Write only to future
-
-Preserve paired lanes
-
-Preserve neutrality
-
-No normalization
-
-Branchless
-
-Scalar + SIMD compatible
+No disk access here.
 
 Deliverables
-swift
-Copy code
-alm/core/include/alm/core/phase4_kernel.hpp
-alm/core/src/phase4_kernel.cpp
-Task 3 — Tests (Mandatory)
-Test 1: Neutrality Preservation
-Flat input
-
-Paired symmetry
-
-Output remains flat
 
 bash
 Copy code
-alm/core/tests/phase4_neutrality_test.cpp
-Test 2: Competition Smoke Test
-Initialize two local structures
+alm/layer5/include/alm/layer5/event_trace.hpp
+alm/layer5/src/event_trace.cpp
+Step 3 — Long-Term Storage Interface (Called-Only)
+Implement a minimal disk interface:
 
-Allow system to evolve
+Allowed calls:
 
-Observe divergence in persistence
+store_trace(trace_chunk)
 
-Do NOT assert a winner
+retrieve(query)
 
-Only assert:
+Forbidden:
 
-no NaNs
+background writes
 
-dynamics occurred
+implicit persistence
 
-invariants preserved
+disk-driven triggers
 
-bash
-Copy code
-alm/core/tests/phase4_competition_smoke_test.cpp
-Task 4 — Documentation Seal
-When all tests pass, create:
+Deliverables
 
 bash
 Copy code
-active/canonical/PHASE_4_COMPLETE.md
-Must include:
+alm/layer5/include/alm/layer5/long_term_memory.hpp
+alm/layer5/src/long_term_memory.cpp
+Step 4 — Phase 5 Tests (Proofs)
+Add tests that prove:
 
-What Phase 4 adds
+No Feedback
 
-What Phase 4 explicitly does NOT do
+Phase-5 cannot mutate any Phase-4 or earlier state.
 
-Statement that system remains pre-semantic
+Determinism
 
-Task 5 — Archival
-After completion:
+Same input → same event trace.
 
-Archive this AGENTS.md to:
+No Threshold Use
+
+Static + runtime confirmation of smooth functions only.
+
+Disk Discipline
+
+Disk access occurs only through explicit calls.
+
+Deliverables
 
 bash
 Copy code
-archive/agents/AGENTS_PHASE4.md
-Remove or replace active AGENTS.md
+alm/layer5/tests/event_determinism_test.cpp
+alm/layer5/tests/disk_call_discipline_test.cpp
+Step 5 — Minimal Documentation
+Create:
 
-This prevents drift.
+bash
+Copy code
+active/canonical/PHASE_5_PLAN.md
+Include:
 
-Definition of Done (Strict)
-Phase 4 is complete when:
+what constitutes an “event”
 
-Selection pressure exists
+what is explicitly forbidden
 
-Competition emerges without thresholds
+disk discipline rules
 
-Persistence is measured, not asserted
+Phase 5 completion criteria
 
-Neutrality is preserved
+Definition of Done (Phase 5)
+Phase 5 is complete when:
 
-Phase-3 tests still pass
+discrete events exist without semantics
 
-Phase-4 tests pass
+event traces are reproducible
 
-No semantics appear
+disk is used only when called
 
-AGENTS.md is archived
+no feedback into core exists
 
-One-Line Rule
-Phase 4 lets structure compete, but never decide.
+Phase-4 tests still pass
 
-Notes to Agent
-If you feel the urge to:
+Phase-5 tests pass
 
-classify
+Phase-5 AGENTS.md is archived
 
-choose
+Post-Completion Archiving Rule
+After Phase 5 is complete and committed:
 
-stabilize
+archive this AGENTS.md to
+archive/agents/AGENTS_PHASE5.md
 
-optimize
+replace/remove active AGENTS.md to prevent drift
 
-interpret
+One-Line Rule (Phase 5)
+Phase 5 may surface events, but it may not interpret them or influence physics.
 
-Stop. You are leaving Phase 4.
