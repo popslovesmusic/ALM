@@ -1,170 +1,209 @@
-Phase-3 Objective (Non-Interpretive)
-Implement ALM’s first true compute layer, whose sole responsibility is:
+AGENTS.md — ALM Phase 4: Structural Persistence + Selection Pressure (Pre-Semantic)
+Mission
+Implement Phase 4: emergent structural persistence and selection pressure on top of the sealed Phase-3 lane-paired operator.
 
-Evolving interaction-generated residuals across time slices using physically plausible operators.
+Phase 4 outputs are still non-semantic. The system must not interpret structures—only let them persist, dissolve, or dominate under physical constraints.
 
-Phase-3 does not:
+Phase 4 Constraints (Hard, Override All Prior Guidance)
+1) Phase Boundary Integrity
+Do not modify Phase-3 operator semantics, lane-pair rules, SIMD dispatch policy, or Phase-3 tests.
 
-decide meaning
+Do not modify TimeStencil contracts except bug fixes with explicit justification and regression tests.
 
-select symbols
+2) No Semantics / No Labels
+Forbidden:
 
-correct errors
+tokens, symbols, “phrases,” categories
 
-stabilize outcomes
+naming structures (“this is X”)
 
-perform cognition
+classifier logic
 
-Phase-3 only evolves structure already present.
+any explicit pattern recognition producing discrete IDs
 
-2. Fundamental Operating Principle
-ALM computation is governed by this invariant:
+Allowed:
 
-Only deviations that survive paired cancellation and persist across time slices are allowed to influence future state.
+measuring persistence, energy, recurrence
 
-This is enforced mechanically, not logically.
+applying purely physical constraints (decay, diffusion, crowding)
 
-3. Data Model (Locked)
-The agent must not modify:
+3) No Control Loops
+Phase 4 may introduce selection pressure, but not “control.”
+Forbidden:
 
-TensorCluster layout
+branching behavior based on metrics thresholds
 
-SIMD lane count
+“if energy > T then …”
 
-TimeStencil rotation semantics
+gating or clamping “bad states”
 
-Free-running ingest / compute separation
+Selection must be emergent, continuous, and local.
 
-Phase-3 operates on top of Phase-2 infrastructure.
+4) Locality
+All Phase 4 effects must be local:
 
-4. Lane Pairing Rule (New, Mandatory)
-Definition
-Each effective ALM signal is represented as a paired lane:
+per cell / neighbor region
 
-Copy code
-LanePair(i) = (lane[2i], lane[2i+1])
-Residual(i) = lane[2i] − lane[2i+1]
-Enforcement
-Operators must consume pairs
+per lane-pair group
+No global “mode switching.”
 
-Operators must emit paired output
+5) Physical Pressure Only
+Selection pressure must come from:
 
-Single-lane reads or writes are forbidden
+limited bandwidth (finite write capacity)
 
-5. Phase-3 Operator Class (Allowed)
-Agents may implement only operators from this class:
+finite memory (fixed tensor cluster)
 
-A. Residual Extraction
-Computes paired differences
+decay competition
 
-No thresholds
+diffusion crowding
+Not from explicit scoring/ranking.
 
-No conditionals
+Phase 4 Work Plan (Do in This Order)
+Step 1 — Persistence Observables (No Thresholds)
+Create a PersistenceProbe module that computes continuous observables from Phase-3 outputs.
 
-B. Envelope / Accumulation
-Integrates residual magnitude over:
+Compute and record (continuous values):
 
-time slices
+Residual Energy Density per cell (already implicit in Phase 3; compute in Phase 4 without changing Phase 3)
 
-neighboring cells
+Persistence: correlation of now vs recent vs stable
 
-Uses FMA-friendly accumulation
+e.g., p = dot(now, recent) and p2 = dot(now, stable) (continuous, no thresholds)
 
-C. Decay
-Monotonic
+Drift: difference between now and stable
 
-Local
+Recurrence field: energy that remains coherent across ≥2 rotations (as a continuous measure)
 
-Parameterized but fixed during execution
+Deliverables:
 
-D. Diffusion
-Spatial only
+alm/core/include/alm/core/persistence_probe.hpp
 
-No teleportation
+alm/core/src/persistence_probe.cpp
 
-No nonlocal jumps
+Step 2 — Selection Pressure as Continuous Competition
+Introduce only continuous operators that cause structures to compete:
 
-6. Operator Execution Model
-Each compute tick:
+Allowed mechanisms:
 
-Read i_now slice only
+Crowding / Competition Term
 
-Operate on paired lanes
+locally increases effective decay when energy density is high (continuous function, no threshold)
 
-Write results exclusively to i_future
+example: effective_decay = base_decay + k * energy_density
 
-Do not zero or normalize
+Diffusion Crowding
 
-Allow overwrite if pressure exists
+strong gradients spread and flatten weaker ones over time
+
+Resource Budget
+
+limit per-tick “effective update magnitude” by smooth normalization factor (not hard clamp)
+
+e.g., multiply updates by 1 / (1 + α * total_energy) (global scalar is allowed if smooth and non-branching)
 
 Important:
-Phase-3 kernels must be branchless.
 
-7. SIMD Requirements
-Use AVX2 (or detected SIMD width)
+No if/else
 
-Paired lanes must map cleanly to vector lanes
+No step functions
 
-All operators must vectorize cleanly
+No “top-k” selection
 
-Scalar fallbacks only if SIMD unavailable
+No discrete winners
 
-Runtime SIMD detection is allowed
-Operator semantics must not change
+Deliverables:
 
-8. Phase-3 Metrics (Collection Only)
-The agent must collect, not act on:
+alm/core/include/alm/core/selection_pressure.hpp
 
-Residual energy per tick
+alm/core/src/selection_pressure.cpp
 
-Residual persistence across slices
+Step 3 — Phase 4 Integration Kernel (Still Lane-Paired)
+Create a Phase-4 kernel that:
 
-Pair symmetry violations
+reads now/recent/stable slices
 
-Operator output variance
+applies selection pressure smoothly
 
-Diffusion spread rate
+writes to future
 
-Metrics are:
+records observables
 
-Observational
+This kernel must remain:
 
-Logged
+branchless
 
-Non-interfering
+vectorizable
 
-9. Forbidden Actions (Hard Stop)
-The agent must not:
+lane-paired consistent
 
-Introduce thresholds
+Deliverables:
 
-Introduce conditionals based on values
+alm/core/include/alm/core/phase4_kernel.hpp
 
-Clamp outputs
+alm/core/src/phase4_kernel.cpp
 
-Normalize tensors
+optional AVX2 variant if needed, but start scalar-first.
 
-Inject constants
+Step 4 — Phase 4 Tests (Proofs)
+Add tests that prove:
 
-Create control loops
+No structure from null
 
-Modify TimeStencil logic
+if slices are symmetric/flat, future stays flat (Phase 4 preserves neutrality)
 
-“Fix” instability
+Competition emerges without thresholds
 
-If instability appears, it is data.
+initialize two structures locally; observe one dissipates under crowding while the other persists (continuous measures, not discrete labels)
 
-10. Deliverables (Phase-3 Completion)
-The agent must produce:
+Invariants preserved
 
-One minimal Phase-3 operator kernel
+no NaNs under stress
 
-One SIMD-vectorized implementation
+no regression in Phase 3 tests
 
-One correctness test (symmetry preservation)
+Deliverables:
 
-One stress test (pressure + overwrite)
+alm/core/tests/phase4_neutrality_test.cpp
 
-Metrics log output
+alm/core/tests/phase4_competition_smoke_test.cpp
 
-No documentation expansion required yet.
+Step 5 — Minimal Documentation
+Create:
+
+active/canonical/PHASE_4_PLAN.md
+
+Include:
+
+which observables exist
+
+which pressure terms exist
+
+what is explicitly forbidden (semantics, labeling, threshold gating)
+
+Phase 4 completion criteria
+
+Definition of Done (Phase 4)
+Phase 4 is complete when:
+
+persistence probe exists and is tested
+
+selection pressure exists and is tested
+
+Phase-4 kernel exists and preserves neutrality
+
+competition emerges under smooth pressure (no thresholds)
+
+Phase 3 regression tests still pass
+
+Phase-4 plan doc exists
+
+Phase-4 AGENTS.md is archived
+
+Post-Completion Archiving Rule
+After Phase 4 is complete and committed:
+
+archive this AGENTS.md to archive/agents/AGENTS_PHASE4.md
+
+replace/remove the active AGENTS.md to prevent drift
+

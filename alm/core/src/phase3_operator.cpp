@@ -9,7 +9,18 @@ constexpr int kLaneOffsetsEvenHigh[8] = {16, 18, 20, 22, 24, 26, 28, 30};
 constexpr int kLaneOffsetsOddHigh[8] = {17, 19, 21, 23, 25, 27, 29, 31};
 }
 
-Phase3Operator::Phase3Operator(TimeStencil& stencil) : stencil_(&stencil) {}
+Phase3Operator::Phase3Operator(TimeStencil& stencil) : stencil_(&stencil)
+#if defined(__AVX2__)
+                                                    ,
+                                                    avx2_supported_(
+                                                        __builtin_cpu_supports("avx2") &&
+                                                        __builtin_cpu_supports("fma"))
+#else
+                                                    ,
+                                                    avx2_supported_(false)
+#endif
+{
+}
 
 Phase3Metrics Phase3Operator::tick() {
     auto* now = stencil_->now_slice();
@@ -17,7 +28,8 @@ Phase3Metrics Phase3Operator::tick() {
     const auto* recent = stencil_->recent_slice();
 
 #if defined(__AVX2__)
-    Phase3Metrics metrics = tick_avx2(now, recent, future);
+    Phase3Metrics metrics =
+        avx2_supported_ ? tick_avx2(now, recent, future) : tick_scalar(now, recent, future);
 #else
     Phase3Metrics metrics = tick_scalar(now, recent, future);
 #endif

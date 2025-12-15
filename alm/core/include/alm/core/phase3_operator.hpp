@@ -35,4 +35,5 @@ class Phase3Operator {
 
     TimeStencil* stencil_;
     std::vector<Phase3Metrics> metrics_log_;
+    bool avx2_supported_;
 };
