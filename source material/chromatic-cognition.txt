@@ -1,0 +1,25 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/REPORT.md b/REPORT.md
+
++# Chromatic-Cognition Project Analysis
++
++## Project Purpose and Focus
++The repository contains browser-based prototypes for audio experimentation built around phi (Φ) field synthesis, control-protocol work/physics (CPWP) analysis, and causal tensor logging. The HTML tools expose UI controls for starting a Web Audio context, configuring phi-mode generators, loading audio or image perturbations, and recording analytical logs—highlighting an emphasis on interactive sound design, parameter tracking, and experimental documentation.
++
++## Key Artifacts
++- **soundlab.html** – A primary CPWP Audio Parameter Control interface with phi-mode selection (tone, AM/FM modulation, interval stacks, harmonic series), base frequency, duration, drive curve, and preset loading. It includes image/audio loading for sonification, CPWP work logging tips, and keyboard knob controls for fine or coarse adjustments.【F:soundlab.html†L297-L337】
++- **audio-experiment-complete.html** – An “Audio Experiment Index” combining configuration management, phi synthesis parameters, and experiment metadata entry (duration, image file, notes) to drive runs that integrate CPWP analysis and sonification workflows.【F:audio-experiment-complete.html†L185-L229】
++- **causal-conscience-final.html** – A “Causal Conscience Architecture” UI that maintains a continuous phi field, accepts image/audio perturbations, and exposes parameter groups for phi core settings, perturbation controls, ethical field dynamics, and tensor memory; it also logs causal tensor activity and provides recording/export controls.【F:causal-conscience-final.html†L292-L329】【F:causal-conscience-final.html†L313-L330】
++- **cpwp-analysis.csv** – Sample CPWP analysis log capturing timestamped parameter changes (e.g., drive/high adjustments) with derived force, work, and cumulative work values to quantify control effort during a session.【F:cpwp-analysis.csv†L1-L10】
++- **phi_tone_run_01.json** – Example run log describing an image-sonification experiment (radial scan over `happy_wave.png`) with phi-based audio parameters, emotional perturbation metrics, runtime measurements, and a detailed log data array for complex signal components.【F:phi_tone_run_01.json†L1-L40】
++- **Additional HTML variants** – Files such as `audio-parameter-control.html`, `audio-parameter-control-final-tight.html`, and `audio-parameter-control-merged-config-wired.html` mirror the CPWP Audio Parameter Control system with iterative UI/layout refinements and the same phi-mode generation workflow. Auxiliary assets (`soundlab_v1.html`, `soundlab_v1.zip`) provide earlier packaged versions of the sound lab interface.
++
++## Observations
++- Core functionality centers on phi-inspired synthesis modes, Web Audio-driven modulation, and interactive control surfaces optimized for keyboard-driven “knob” adjustments.
++- CPWP concepts (force, work, total work) are baked into both UI messaging and logged telemetry, indicating an analytical framing of user parameter changes.
++- The causal-conscience tool extends the phi field concept into a tensor/ethics metaphor, combining perturbation inputs with adjustable attractor and memory parameters while enabling exportable recordings.
++
++## Open Questions
++1. Should there be a canonical entry point (e.g., `index.html`) linking the multiple experiment UIs, or are these intentionally standalone prototypes?
++2. Are there expected audio/image assets or documentation references missing from the repository to fully exercise the sonification and perturbation loaders?
+ 

@@ -1,0 +1,53 @@
+ 
++# Chromatic-Cognition2 Deep-Dive Report
++
++## Overview
++Chromatic-Cognition2 delivers a modular, browser-based CPWP (Chromatic Parameter Work Platform) that merges real-time audio processing, parametric logging, and exploratory Φ-mode synthesis. The system composes its UI from HTML partials, styles it with a neon-inspired theme, and orchestrates interactivity through ES modules that share a common Web Audio signal chain. Supporting JSON captures document prior parameter runs and scanning experiments.
++
++## Layout and Content Inventory
++- **Entry point:** `soundlab_v2.html` wires together partials for config loading, transport controls, EQ, saturation, image sonification, visualizers, and logging/matrix views, then boots the JavaScript module stack via `js/soundlab-main.js`.
++- **HTML partials:**
++  - `partials/config-loader.html` exposes a dropdown and preview for loading stored run configurations.
++  - `partials/transport-controls.html` provides audio start/generate/stop, file and image loaders, Φ mode controls, status readouts, and shortcut hints.
++  - `partials/eq-panel.html` and `partials/saturation-panel.html` supply three-knob EQ and saturation controls.
++  - `partials/image-sonification.html` holds the canvas, mode selection, scan controls, and frequency range inputs for image-to-sound mapping.
++  - `partials/visualizers.html` hosts spectrum and waveform canvases.
++  - `partials/log-and-matrix.html` renders the parameter work log, export buttons, and coupling matrix grid.
++- **Styling:**
++  - `css/soundlab-theme.css` defines the neon green/cyan palette, typography, layout spacing, and generic helpers (hidden inputs, responsive tweaks).
++  - `css/soundlab-controls.css` arranges transport controls, Φ fields, knob grid, focus/selection affordances, and shortcut legend styling.
++  - `css/soundlab-visuals.css` handles visualizer cards, canvases, log panel animations, matrix grid, and image layout responsiveness.
++- **Documentation:**
++  - `docs/soundlab-functional-map.md` inventories DOM IDs and script/function dependencies after modularization.
++  - `docs/soundlab-validation-report.md` summarizes a post-modularization verification pass and observed behaviors.
++- **Data artifacts:**
++  - `phi_tone_run_01.json` and `phi_tone_run_01_with_history.json` (plus a duplicated variant) capture input parameters, emotional perturbation metrics, runtime analytics, and log traces for Φ tone experiments.
++  - `LICENSE` carries GPLv3 terms.
++
++## JavaScript Architecture
++- **`soundlab-main.js`:** Injects partials asynchronously (with inline fallbacks for offline use), then sequences matrix priming, logging setup, and event handler binding to ensure dependent DOM exists before listeners attach.
++- **`soundlab-utils.js`:** Houses shared helpers—golden ratio constant, frequency range parsing/normalization, drive-curve mapping (linear/log/exp), config adaptation for alternate key names, clamped range selection, and knob rotation math.
++- **`soundlab-logging.js`:** Maintains an in-memory CPWP log with force/work accumulation, renders recent entries, flashes UI feedback, and exports CSV/JSON while preserving elapsed timing from session start. It also builds a shortcut legend by scraping `data-shortcut` attributes.
++- **`soundlab-config.js`:** Responds to config dropdown changes by fetching JSON, normalizing keys, rendering matrix cells from provided coupling weights, applying parameter defaults to Φ/image controls, and snapshotting the active config onto `window.currentConfig`.
++- **`soundlab-audio-core.js`:** Creates the Web Audio graph (oscillator or buffer source → EQ biquads → waveshaper → gain → analyser → destination), tracks parameter state, renders live spectrum/waveform canvases, and exposes utilities for knob bounds, saturation curve generation, EQ readiness messaging, tone generation, file playback, and synthetic coupling-matrix generation.
++- **`soundlab-events.js`:** Centralizes UI wiring: global Ctrl+Shift shortcuts, button click handlers, scan-speed display updates, logging exports, and rich knob interactions (mouse drag with sensitivity modifiers, keyboard arrow adjustments, focus/selection styling). It logs every knob delta and pushes changes into the audio graph in real time while guarding against uninitialized EQ chains.
++- **`soundlab-phi.js`:** Implements Φ-themed synthesis modes—pure tone, AM, FM, interval stacking, and harmonic series—using envelopes shaped by the selected drive curve and range constraints. Tracks last-used parameters for restoration, surfaces diagnostics, and auto-stops synthesis after mode-specific durations.
++- **`soundlab-image.js`:** Drives image sonification: loads images into a canvas with size limits, exposes scan modes (spectral bands, harmonic bursts, FM mapping of RGB averages, additive granular), schedules per-column scanning at adjustable speeds, and routes synthesized oscillators through the shared gain node. It manages playback toggling, scan indicators, and resource cleanup.
++
++## Execution Flow
++1. **Bootstrapping:** On DOM ready, partials load, the coupling matrix initializes, logging UI populates, and global event handlers bind.
++2. **Audio startup:** Users must activate the audio context via Start; this enables tone generation, file loading, and prepares the EQ/saturation chain and analyser loops.
++3. **Interaction:** Knob adjustments (mouse/keyboard) log parameter work, rotate UI indicators, and apply values to biquads or waveshaper curves. Shortcut legend reflects available key combos.
++4. **Φ modes:** Selecting and running a Φ mode spawns oscillators tailored to the chosen algorithm, envelopes them according to drive curves/duration, and auto-updates status/readiness/restore controls.
++5. **Image sonification:** Loading an image reveals the panel; playback scans columns according to the chosen algorithm, mapping pixel brightness/RGB to oscillator frequencies, modulation depth, or granular bursts. Playback controls, scan speed, and frequency bounds influence the synthesis output.
++6. **Logging and exports:** Every param change contributes to a running work tally and scrollable log display, with CSV/JSON export options and real-time matrix visualization (live procedural or config-driven).
++
++## Observations and Extension Ideas
++- **Strengths:** Cohesive modularization, offline fallbacks for partials, rich accessibility cues (aria labels, keyboard shortcuts), and layered synthesis modes (Φ and image-based) showcase a creative Web Audio sandbox.
++- **Extension opportunities:**
++  - Persist user-created presets and logs to IndexedDB for session recovery and sharing.
++  - Add MIDI/OSC input to drive knobs or Φ parameters for performance use.
++  - Introduce convolution/reverb and dynamic compression stages to complement EQ/saturation.
++  - Expand image sonification with bidirectional scanning, region selection, or motion-based re-sonification of video frames.
++  - Provide guided tutorials or demo configs that showcase each Φ mode and image algorithm with audio examples.
+ 

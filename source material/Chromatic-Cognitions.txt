@@ -1,0 +1,42 @@
+ 
++# Chromatic-Cognition Project Analysis
++
++## Overview
++This repository contains several standalone HTML prototypes and supporting data files exploring phi-based synthesis, control protocols, and a "Causal Conscience" interaction model. Each page offers a different slice of the overall concept, ranging from lightweight config viewers to full audio engines with visualization and logging.
++
++## audio-experiment-complete.html
++- **Purpose & UI:** A full-featured experiment console with configuration management, phi synthesis controls, image sonification tools, and multiple visualizers arranged in panels styled with a retro-green motif.【F:audio-experiment-complete.html†L1-L120】【F:audio-experiment-complete.html†L221-L316】
++- **Audio/Image engine:** Implements a phi-focused audio pipeline with configurable synthesis modes, duration, and drive curves, plus an image sonification engine supporting spectral, harmonic, FM, and additive scans with adjustable scan speed and frequency ranges.【F:audio-experiment-complete.html†L364-L449】【F:audio-experiment-complete.html†L255-L294】
++- **CPWP analysis:** Tracks parameter changes as "work" events, updating a log, counters, and CSV/JSON export functions to quantify control energy over time.【F:audio-experiment-complete.html†L360-L415】【F:audio-experiment-complete.html†L318-L320】
++- **Thoughts & extensions:** Centralize duplicate logic (e.g., config loading vs. parameter logging), add presets for image modes, and integrate WebAudio scheduling safeguards to avoid overlapping oscillators during rapid scans.
++
++## audio-parameter-control.html
++- **Purpose:** Minimal loader that fetches a selected config JSON and displays it verbatim, serving as a debugging bridge between saved runs and UI experiments.【F:audio-parameter-control.html†L25-L47】 
++- **Ideas:** Expand into a validation tool that flags missing fields or schema drift before configs feed richer UIs.
++
++## audio-parameter-control-final-tight.html (and merged/soundlab variants)
++- **Purpose & UI:** A dense control surface with knob clusters, matrix displays, and visualizers wrapped in the CPWP aesthetic; includes dropdown config loading that mirrors the phi_tone run schema and populates scan/spectral controls automatically.【F:audio-parameter-control-final-tight.html†L1-L80】【F:audio-parameter-control-final-tight.html†L250-L299】
++- **Config wiring:** Duplicate listeners parse `phi_tone_run_01_with_history.json`, update mode/speed/frequency inputs, and cache the loaded config for later processing.【F:audio-parameter-control-final-tight.html†L262-L340】
++- **Thoughts & extensions:** Deduplicate repeated loader blocks, isolate knob behavior into reusable components, and standardize file naming to reduce divergence across `final-tight`, `merged-config-wired`, and `soundlab` versions.
++
++## cpwp-config-loader-preview.html
++- **Purpose:** Compact previewer that summarizes a chosen config (run ID, image file, scan mode, work-order count) without rendering the full audio UI.【F:cpwp-config-loader-preview.html†L26-L63】
++- **Ideas:** Add schema validation and link-outs to the richer control pages to streamline data flow.
++
++## Causal Conscience (causal-conscience-final/complete.html)
++- **Purpose & UI:** Interaction model for a "phi field" with ethical/perturbation sliders, presenting parameters for field density, harmonic spread, decay, perturbation mix, and ethical weights via clickable rows and sliders.【F:causal-conscience-final.html†L320-L379】
++- **Interaction model:** Keyboard-driven parameter adjustments respect fine/coarse modifiers and immediately update displays; file inputs support injecting audio/image perturbations to influence the field.【F:causal-conscience-final.html†L640-L699】
++- **Thoughts & extensions:** Connect parameter changes to audible synthesis (similar to the audio experiment page), add data persistence for conscience states, and define how ethical weights influence modulation algorithms.
++
++## Data files
++- **cpwp-analysis.csv:** Logged control events with time, parameter deltas, and cumulative work values suitable for plotting or ML-derived ergonomics metrics.【F:cpwp-analysis.csv†L1-L10】
++- **phi_tone_run_01.json / phi_tone_run_01_with_history.json:** Config schemas capturing input images, scan settings, emotional perturbations, and historical work orders with per-session metrics and samples—used by the loaders above.【F:phi_tone_run_01.json†L1-L35】【F:phi_tone_run_01_with_history.json†L1-L80】
++- **soundlab_v1.zip:** Archived artifact likely bundling an earlier UI iteration; consider unpacking and consolidating differences into the maintained HTML variants.
++
++## Forward-looking ideas
++- Unify the phi audio engine and config parsing across all UIs to avoid code drift and simplify testing.
++- Layer automated schema validation plus migration helpers so historical `work_orders` remain compatible with new controls.
++- Add automated visual/audio regression harnesses (e.g., snapshotting visualizers and analyzing generated waveforms) to monitor changes across prototypes.
+ 
+EOF
+)

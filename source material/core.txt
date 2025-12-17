@@ -1,0 +1,23 @@
+ 
++# Chromatic Cognition Core – Text & Documentation Synthesis
++
++## Project Function and Purpose
++- **Core Objective:** Deliver a deterministic Rust engine that models cognition as a 4D RGB tensor field with certainty weights, enabling color-space operations, training workflows, and semantic retrieval via a dream pool indexed with HNSW/linear fallbacks.【F:README.md†L3-L110】【F:spec.md†L3-L37】
++- **Operational Scope:** CPU-first design with parallelized tensor math, visualization, logging, and configuration-driven execution; portable to GPU later (Candle).【F:README.md†L7-L195】【F:spec.md†L5-L25】
++
++## Synthesized Insights from Text & Markdown Corpus
++- **Design Specifications:**
++  - `README.md` details engine features (chromatic tensor structure, primitive ops, gradient rendering, awareness/prediction) and demonstrates hybrid semantic retrieval workflows and configuration patterns.【F:README.md†L7-L200】
++  - `spec.md` captures baseline architectural requirements for tensors, operations, visualization, training, and TOML configuration, emphasizing deterministic, parallel CPU execution.【F:spec.md†L10-L37】【F:spec.md†L18-L33】
++  - `CHRONICLE_SPEC.md` defines the Phase 6A chronicle layer for deterministic, append-only cycle logging with CSV/SQLite persistence, strict serialization rules, and aggregation helpers to support reproducible analytics.【F:CHRONICLE_SPEC.md†L1-L94】
++
++- **Progress & Health Reports:**
++  - `SESSION_FINAL_SUMMARY.md` records Option B implementation at ~80% completion with 196/196 passing tests, highlighting delivered caching, memory budgeting, HNSW module readiness, MMR speedups, and remaining integrations (HNSW + memory budget wiring).【F:SESSION_FINAL_SUMMARY.md†L1-L142】
++  - `PROJECT_AUDIT.md` provides a Phase 6D audit: 0.2.0 state with 223 tests passing, strong tensor/meta systems, but flagged issues like HNSW index invalidation on evictions, architecture drift, and code duplication in `SimpleDreamPool`.【F:PROJECT_AUDIT.md†L1-L160】
++
++- **Phase & Methodology Records:** Numerous phase milestone files (e.g., `PHASE_3B_PLAN.md`, `PHASE_4_STATUS.md`, `PHASE_7_SPECIFICATION.md`, `PHASE_7_COGNITIVE_INTEGRATION_COMPLETE.md`), analysis guides (`ANALYSIS_METHODOLOGY.md`, `COMPREHENSIVE_CODE_ANALYSIS.md`), and validation reports (`TEMPORAL_TREND_VALIDATION.md`, `DREAM_POOL_VALIDATION_RESULTS.md`) document iterative goals, optimization plans, and experiment outcomes, demonstrating a staged roadmap from core tensor work through meta-awareness and production readiness.
++
++## Open Questions / Follow-Ups
++1. What is the authoritative plan for integrating HNSW and memory budgeting into `SimpleDreamPool`, given lingering blockers around `id_map` access and eviction-induced index resets?【F:SESSION_FINAL_SUMMARY.md†L77-L125】【F:PROJECT_AUDIT.md†L23-L160】
++2. Should unresolved documentation conflicts (e.g., noted in `CHANGELOG.md`) be prioritized to ensure the audit’s concerns are addressed and release packaging remains trustworthy?【F:PROJECT_AUDIT.md†L23-L30】
+ 

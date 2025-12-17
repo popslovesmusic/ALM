@@ -1,0 +1,13 @@
+ 
++# Chromatic-Cognition Narrative Synthesis
++
++The repository reads like a lab journal for phi-inspired audio experiments. The **CPWP Audio Parameter Control System** (soundlab.html) opens with a ready-made control deck—dropdown configs, a bold ⚡ heading, and keyboard-friendly knobs—to launch phi tones, AM/FM modulations, interval stacks, and harmonic series while toggling drive curves and durations, all wrapped in on-screen tips about fine versus coarse adjustments.【F:soundlab.html†L296-L339】
++
++The **Audio Experiment Index** extends that toolkit into a story-driven dashboard: a status line invites you to start the audio engine, a configuration manager catalogs runs, and side-by-side panels gather phi synthesis choices, experiment notes, and image uploads. From there, the page fans out into image sonification modes (spectral, harmonic, FM, additive), multi-scope visualizers, and a CPWP analysis log that tracks events, work totals, and export options—essentially a control room for orchestrating and recording phi-driven sessions.【F:audio-experiment-complete.html†L185-L334】
++
++A more metaphoric branch appears in **causal-conscience-final.html**, where a “Continuous Phi Field” is framed with perturbation inputs and ethical dynamics. Users start or stop the field, load image or audio perturbations, and then sculpt core parameters—base frequency, density, harmonic spread, phi decay—alongside perturbation mix controls, all under a banner that mixes physics notation with UI guidance about arrow-key adjustments.【F:causal-conscience-final.html†L291-L352】
++
++Data artifacts deepen the narrative: `cpwp-analysis.csv` records timestamped parameter nudges (notably repeated “high” adjustments) with derived force, work, and cumulative totals, offering a quantifiable trace of control effort during a session.【F:cpwp-analysis.csv†L1-L40】 Meanwhile, `phi_tone_run_01.json` captures a single run in rich detail—radial scanning of `happy_wave.png` over a phi-tuned frequency band, emotional perturbation scores, runtime metrics, and a log array of complex signal measurements—showing how the prototypes bind perceptual inputs to phi-based synthesis and analytics.【F:phi_tone_run_01.json†L1-L76】
++
++Across these textual artifacts, the project sketches an exploratory environment: browser UIs experiment with phi fields, perturbations, and CPWP logging, while the accompanying logs and CSVs turn subjective tweaking into structured, exportable evidence.
+ 

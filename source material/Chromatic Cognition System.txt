@@ -1,0 +1,47 @@
+ 
++# Chromatic Cognition System – Recursive Project Analysis
++
++## Workspace Overview
++- **Mission**: Unified framework that stores knowledge as fixed-size RGB/UMS tensors, generates WGSL code, monitors cognitive health via CSI, and targets anomaly detection workflows.【F:README.md†L10-L18】
++- **Workspace layout**: Three crates — `chromatic_core` (CSA, spectral bridge, meta-awareness, neural tools), `wgsl_trainer` (WGSL code generator with tokenizer and transformer), and `chromatic_shared` (CSI + shared types).【F:README.md†L24-L43】
++
++## chromatic_shared (Shared Types & CSI)
++- **Purpose**: Exposes the Chromatic Spiral Indicator (CSI) plus common types for other crates.【F:chromatic_shared/src/lib.rs†L1-L18】
++- **CSI mechanics**: Maintains a ring buffer of `RGBState` samples and computes rotation rate (α), radial decay (β), energy variance (σ²), and spiral pattern classification, returning diagnostic actions (log, sonify, trigger checks/errors, or continue).【F:chromatic_shared/src/csi/mod.rs†L12-L139】
++- **Interfaces**: Provides `CSIObserver` trait so other components can observe, compute metrics, and run diagnostics uniformly.【F:chromatic_shared/src/csi/mod.rs†L157-L176】
++- **Opportunities**:
++  - Add GPU-backed metric kernels to align with future renderer.
++  - Extend `DiagnosticAction` to emit structured events consumable by trainers and visualization layers.
++
++## chromatic_core (Chromatic Semantic Archive & Engine)
++- **Architecture**: Deterministic Rust engine modeling cognition as an RGB tensor field, organized around tensor, operations, config, and logging modules exposed through `lib.rs`.【F:chromatic_core/docs/ARCHITECTURE.md†L3-L27】
++- **CSA layout**: Fixed 3×12×12×3 lattice: spectral stacks × hue categories × modulation slots × RGB channels, synchronized with the modality mapper for deterministic routing.【F:chromatic_core/docs/ARCHITECTURE.md†L29-L42】
++- **Index management**: Dream pool rebuilds HNSW/linear indexes when churn exceeds 10% to keep retrieval fresh while bounding rebuild cost.【F:chromatic_core/docs/ARCHITECTURE.md†L43-L48】
++- **Key modules**:
++  - **Tensor** (`src/tensor/`): `ChromaticTensor`, statistics, normalization/manipulation ops, and gradient projection utilities, all parallelized with Rayon for performance.【F:chromatic_core/docs/ARCHITECTURE.md†L52-L79】
++  - **Config** (`src/config.rs`): Loads engine settings with defaults (64×64×8 tensor, seed 42, CPU device).【F:chromatic_core/docs/ARCHITECTURE.md†L80-L87】
++  - **Logging** (`src/logging.rs`): JSONL operation/training logs for observability.【F:chromatic_core/docs/ARCHITECTURE.md†L88-L97】
++  - **Training** (`src/training.rs`): Provides MSE loss and tensor metrics for optimization loops.【F:chromatic_core/docs/ARCHITECTURE.md†L98-L127】
++- **Data flow**: Config → tensor init → operations (with CSI taps) → optional gradient export/logging → loss computation and logging.【F:chromatic_core/docs/ARCHITECTURE.md†L106-L127】
++- **Scalability & determinism**: Memory layout is explicitly documented (~512KB per 64×64×8 tensor), and Rayon patterns are used for CPU parallelism with a future path to Candle/GPU kernels while preserving API stability.【F:chromatic_core/docs/ARCHITECTURE.md†L131-L188】
++- **Opportunities**:
++  - Implement checkpointable CSA state (noted in AGENTS) with deterministic serialization for rapid recovery.
++  - Add auto-scaling hooks so HNSW/linear crossover is profiled live rather than static.
++  - Fold CSI feedback deeper into tensor operations (e.g., adaptive saturation/complement based on diagnostic actions).
++
++## wgsl_trainer (WGSL Shader Generator)
++- **Current capabilities**: CLI orchestrates config loading, dataset handling, tokenizer (290 tokens), transformer model (~44.4M params), and training/early stopping loops with detailed logging.【F:wgsl_trainer/TRAINING_EXECUTION_SUMMARY.md†L9-L82】
++- **Present limitation**: Training loop lacks backpropagation, optimizer steps, checkpointing, and LR scheduling, leaving losses flat (train 7.04, val 5.86) and models untrained.【F:wgsl_trainer/TRAINING_EXECUTION_SUMMARY.md†L83-L190】
++- **Opportunities**:
++  - Implement backward pass, optimizer (AdamW), gradient clipping, and checkpoint/save/load.
++  - Integrate CSI into the trainer loop (per workspace roadmap) for adaptive LR and health-aware halting.
++  - Expand dataset and tokenizer with shader semantics to move beyond placeholder behaviors.
++
++## Cross-Crate Integration & Trajectory
++- **CSI as shared nervous system**: Readme highlights CSI as a core health monitor; chromatic_core already integrates it for operation monitoring, and wgsl_trainer is positioned to consume it for training stability control.【F:README.md†L47-L67】【F:PHASE_3_COMPLETE.md†L9-L53】
++- **Self-generation loop**: Workspace mission combines CSA retrieval, shader generation, and health monitoring to produce code the system needs while detecting anomalies; the trainer’s missing backprop is the main blocker to completing this loop.【F:README.md†L10-L43】【F:wgsl_trainer/TRAINING_EXECUTION_SUMMARY.md†L83-L190】
++- **Future directions**:
++  - Complete Phase 4 by wiring CSI-driven adaptive learning in the trainer and adding GPU renderer for real-time visualization.
++  - Pursue Phase 8 hardening items (checkpointing, memory-safety audit, deployment) to operationalize the system.
++  - Extend medical imaging pipeline by coupling spectral dissonance detection with CSI-informed confidence gating for clinical robustness.【F:README.md†L10-L18】【F:README.md†L59-L67】
+ 

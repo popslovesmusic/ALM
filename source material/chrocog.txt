@@ -1,0 +1,43 @@
+ 
++# Chromatic-Cognition (Soundlab) Project Analysis
++
++## Overview
++- The repository bundles a FastAPI-based backend, a D-ASE (Analog Engine) C++ extension, and a browser UI for controlling audio/phasic modulation. The main server (`server/main.py`) coordinates the D-ASE engine bootstrap, static asset serving, REST endpoints, WebSocket streams, and orchestration classes such as audio, presets, metrics, latency, and Auto-Φ learners.
++- A separate `sase_amp_fixed` directory holds the AVX2-optimized C++ core with pybind11 bindings; build steps live in `setup.py` and the top-level `Makefile` targets.
++- The frontend entry point (`soundlab_v2.html`) assembles controls, meters, and partial HTML fragments to drive the UI experience against the backend APIs.
++- Existing integrity and validation reports highlight missing modules, misplaced tests, and build layout issues that shape the current risk profile.
++
++## Backend (server/)
++- `server/main.py` is a monolithic integration point that loads the D-ASE engine, creates the FastAPI app, exposes static/UI routes, reports engine status/benchmarking, and wires together subsystems such as AudioServer, preset store, metrics streaming, Auto-Φ/Criticality balancing, state memory/classification, predictive models, session recording, timeline playback, data export, node/cluster synchronization, hardware/hybrid bridges, and visualization. It performs a self-test via `ab_snapshot` and logs D-ASE CPU features on startup before attaching middleware and endpoints. Application-wide callbacks interconnect the audio path with learners and balancers to react to metrics in real time.【F:server/main.py†L1-L183】
++- Additional backend modules (e.g., `audio_server.py`, `metrics_streamer.py`, `auto_phi.py`, `criticality_balancer.py`, `state_memory.py`, `session_recorder.py`, `data_exporter.py`, `node_sync.py`, `cluster_monitor.py`) are orchestrated from `SoundlabServer` inside `main.py`, giving a single class that spins up all optional features based on flags. Route definitions include UI serving (`/`, `/ui`, partials, CSS/JS), status probes (`/api/status`, `/engine/status`), and a benchmark endpoint that exercises D-ASE or performs a numpy fallback workload.【F:server/main.py†L65-L170】
++- Opportunities: split `main.py` into cohesive modules (app initialization, engine loader, routes, orchestration class) per the `server/agents.md` refactor outline; create missing facades (`audio_engine.py`, `metrics_computer.py`, `soundlab_server.py`) referenced by validation scripts; add package-level exports in `server/__init__.py` to ease imports; ensure callbacks use async-safe patterns to avoid blocking event loop.
++
++## Engine Core (sase_amp_fixed/)
++- `sase_amp_fixed/setup.py` defines a cross-platform pybind11 extension build for the D-ASE analog engine, targeting AVX2/FMA with FFTW support and optional OpenMP. It enumerates compiler flags per OS, links FFTW, and expects `analog_universal_node_engine_avx2.cpp` plus `python_bindings.cpp` as sources. Build guidance and dependency requirements are embedded in the header docstring, with test commands to import the compiled module and print CPU capabilities.【F:sase_amp_fixed/setup.py†L1-L120】
++- The Makefile wraps these steps with `build-ext` and `setup` targets, coordinating dependency installation, extension compilation, and verification that `dase_engine` can import and report CPU features. Paths assume the C++ sources remain in the `sase amp fixed` folder, and cleanup targets remove build artifacts.【F:Makefile†L1-L120】
++- Opportunities: relocate or mirror `setup.py` at repo root to match AGENT expectations, automate FFTW detection/installation, and add CI to build/test the extension across platforms.
++
++## Frontend (soundlab_v2.html, partials/, css/, js/, static/)
++- `soundlab_v2.html` loads theme/control/visual CSS, embeds inline styles for VU meters, recording indicators, preset browser UI, and includes partial HTML snippets for configuration and transport controls. It exposes interactive controls (recording, presets, FFT size, export, noise gain, A/B comparison) to drive backend APIs and WebSocket streams. UI components rely on partials under `partials/` and supporting scripts/CSS under `js/` and `css/` directories.【F:soundlab_v2.html†L1-L80】
++- Opportunities: bundle assets via a build tool for cache busting, modularize JavaScript controllers per WebSocket channel, and add automated UI tests or snapshots; consider accessibility audits for controls and color contrast.
++
++## Validation & Testing
++- The validation script (`validate_soundlab_v1_final.py`) prepares report/log directories, checks dependency presence, benchmarks the audio engine through an expected `AudioEngine` wrapper, validates metrics via `MetricsComputer`, and exercises WebSocket connectivity to `/ws/metrics`. It currently fails because referenced modules (`server.audio_engine`, `server.metrics_computer`) are missing, and test directories lack `__init__.py`, preventing discovery.【F:validate_soundlab_v1_final.py†L1-L120】【F:INTEGRITY_AUDIT_REPORT.md†L13-L119】
++- Tests are organized into `tests/` subfolders (golden, hardware, integration, perf, regression, release, security, unit, validation), but most subpackages lack initialization files, aligning with audit findings on discovery gaps.【F:INTEGRITY_AUDIT_REPORT.md†L13-L119】
++- Opportunities: add missing `__init__.py` files to all test subdirectories; implement stubs/wrappers for missing modules to satisfy validation; expand automated tests for WebSockets, data export, and hybrid hardware paths.
++
++## Documentation & Governance
++- The top-level `AGENTS.md` defines a division of labor across agents (Core Compiler, Python Bridge, WebSocket Controller, Frontend Renderer, etc.) and sets coding guidelines such as self-tests, docstring headers, deterministic float precision, and latency budgets. It outlines communication endpoints and storage conventions for sessions/state/logs.【F:AGENTS.md†L1-L74】
++- `server/agents.md` further prescribes a modular refactor plan for the backend, emphasizing minimal diffs, preserved logging, relative imports, and a target layout (`init_engine.py`, `init_app.py`, route modules, `soundlab_server.py`).【F:server/agents.md†L1-L89】
++- `INTEGRITY_AUDIT_REPORT.md` captures repository health (6.5/10), missing core modules, misplaced tests, and recommendations for build script alignment and module creation, providing a roadmap for hardening the codebase.【F:INTEGRITY_AUDIT_REPORT.md†L13-L119】
++- Opportunities: align documentation with actual module layout (or execute the planned refactor), maintain CHANGELOG/RELEASE_NOTES updates, and connect audit recommendations to tracked issues.
++
++## Roadmap Ideas
++1. **Backend modularization:** Execute the `server/agents.md` plan to break down `main.py`, introduce `soundlab_server.py`, and centralize FastAPI app creation for testability and reuse.【F:server/agents.md†L1-L89】【F:server/main.py†L1-L170】
++2. **Engine packaging:** Relocate/build `setup.py` at root and integrate CI to compile/test `dase_engine` on Linux/macOS/Windows; add binary wheels to speed onboarding.【F:sase_amp_fixed/setup.py†L1-L120】【F:Makefile†L77-L114】
++3. **Validation parity:** Ship lightweight wrappers for `audio_engine` and `metrics_computer`, plus `__init__.py` files in all test suites to restore validation coverage.【F:validate_soundlab_v1_final.py†L69-L120】【F:INTEGRITY_AUDIT_REPORT.md†L13-L119】
++4. **Frontend modernization:** Bundle assets (Vite/Webpack), add WebSocket reconnection logic, telemetry visualizations, and automated UI checks to ensure the control surface stays in sync with backend state.【F:soundlab_v2.html†L1-L80】
++5. **Observability & performance:** Harden logging for each subsystem, add structured metrics export, and ensure the latency budget (<10 ms audio, <100 ms UI) from `AGENTS.md` is verifiable via integration tests and benchmarks.【F:AGENTS.md†L29-L64】【F:server/main.py†L65-L170】
+ 
+EOF
+)
