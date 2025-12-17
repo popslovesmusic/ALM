@@ -1,6 +1,0 @@
-{
-  "not_words": ["not", "no", "never", "none", "n't"],
-  "negation_window": 3,
-  "question_polarity": 0,
-  "default_polarity": 1
-}
