@@ -135,7 +135,7 @@ This was the phase of rigorous definition, where philosophical insights were pai
 
 *   **Residual-Based Update (`Δ*`)**: The fundamental principle was "only the difference produced by interaction survives." This necessitated defining a "mixed field input" (`U*`) and then calculating the residual as `Δ* = U* - k*`. This ensures that in a perfectly balanced state, the residual is zero, and the system is neutral.
 *   **Dual-Frequency Integration**: We needed both fast (angular/interaction) and slow (radial/persistence) components. The fast component (`kf`) would drive angular motion and react to new inputs, while the slow component (`ks`) would integrate the "energy" of the fast component, driving radial changes and embodying persistence.
-*   **Skew-Symmetric Rotation Matrix (`A`)**: To ensure continuous, deterministic angular motion in the fast component without branching, a constant skew-symmetric matrix was chosen. This provides a simple, energy-conserving rotation mechanism across registers.
+*   **Skew-Symmetric Rotation Matrix (`A`)**: To ensure continuous, deterministic angular motion in the fast component without branching, a constant skew-symmetric matrix was chosen. This provides a simple, energy-preserving rotation mechanism across registers.
     ```
     A = [  0 -ω  0  0 ]
         [  ω  0 -ω  0 ]
@@ -221,7 +221,7 @@ This became a recurring theme: any global aggregation or complex indexing risked
 **Key Design Decisions:**
 
 *   **Whitelist/Blacklist Approach:** Instead of broadly permitting instructions and trying to catch violations, we opted for a strict whitelist of *allowed* intrinsics and an even stricter blacklist of *forbidden* ones. This forced developers to work within the ALM's ontological bounds.
-    *   **Allowed:** Primarily arithmetic (`_mm256_add_ps`, `_mm256_mul_ps`, `_mm256_fmadd_ps`) and basic loads/stores (`_mm256_load_ps`, `_mm256_store_ps`, `_mm256_set1_ps`). These preserve lane independence and uniform execution.
+    *   **Allowed:** Primarily arithmetic (`_mm256_add_ps`, `_mm256_sub_ps`, `_mm256_mul_ps`, `_mm256_fmadd_ps`) and basic loads/stores (`_mm256_load_ps`, `_mm256_store_ps`, `_mm256_set1_ps`). These preserve lane independence and uniform execution.
     *   **Forbidden:** This list was crucial. It specifically targeted instructions that introduce lane-dependent behavior (`_mm256_cmp_ps`, `_mm256_blendv_ps`, masks), break fixed lane semantics (`_mm256_permute*`, `_mm256_shuffle*`), or violate simultaneity/introduces privilege (`horizontal adds`, `scalar extraction for control`).
 *   **Loop Structure Rules:** Fixed iteration counts (`for (int block = 0; block < 4; ++block)`) and absolute prohibition of lane-dependent branching. This ensures every lane sees the same control flow.
 *   **Memory Rules:** Reiterating 32-byte alignment for all vectors and forbidding dynamic allocation within the kernel. This prevents cache thrashing and unpredictable latency.
@@ -362,5 +362,85 @@ void rotate_time_stencil(StateContext* ctx) {
 
 **Question/Challenge 3.4.1: How do we rigorously test the "No Write-Through Test" and "FUTURE Non-Control Test" to guarantee that kernel modifications don't accidentally violate these temporal invariants?**
 This required meticulous instrumentation within our `INVARIANT_REGRESSION_TESTS.md` to monitor unintended writes and validate the continuous, non-gating behavior of the `FUTURE` slice.
+
+---
+
+### 3.5 Pressure & Decay Laws (Constraint, Not Content)
+
+**Motivation:** One of ALM's foundational breaks from traditional AI was its rejection of explicit "objective functions" and "optimization." Instead, ALM evolves under pressure, where meaning is defined by what *survives* persistent external forces. To solidify this, we needed precise, quantifiable laws governing how environmental "pressure" and intrinsic "decay" shaped the system's dynamics without ever becoming content or control. `PRESSURE_AND_DECAY_LAWS.md` became the definitive statement of this critical relationship.
+
+**Key Design Decisions:**
+
+*   **Pressure as Rate Modulation, Not Structure:** This was the paramount principle. Pressure (`P_ow` for overwrite, `P_bw` for bandwidth) would *only* modulate the rates of change (decay, coupling strength), never directly alter the structural laws, select lanes, gate execution, or introduce thresholds. This was our defense against pressure becoming a hidden control mechanism.
+*   **Orthogonal Pressure Fields:** Pressure was explicitly defined as existing *outside* payload lanes – as external scalar or vector fields. This maintained strict orthogonality with semantic content, a principle that would be further formalized in `PRESSURE_SIGNAL_ORTHOGONALITY.md`.
+*   **Effective Decay Law (Mathematical Formulation):** A continuous and monotone mathematical function was derived for the effective decay rate (`λ_k^eff`), showing how baseline decay (`λ_k`) is compounded by overwrite and bandwidth pressures:
+    `λ_k^eff(c) = λ_k * (1 + a_ow * P_ow(c) + a_bw * P_bw(c))`
+    This ensured pressure scaled decay rates lawfully and continuously.
+*   **Slow-State Update Integration:** The `λ_k^eff` was directly integrated into the slow component's update law: `ks'(c) = (1 - λ_k^eff(c)) * ks(c) + η_s * E_k(c)`. This precisely linked decay and pressure to persistence.
+*   **Coupling Strength Modulation:** Pressure could also scale neighbor coupling strength (`β_k^eff`), making cells more or less receptive to their neighbors based on environmental stress, but *never* changing the topology itself.
+*   **Hard Prohibitions Against Gating & Polarity Change:** Explicit rules forbade pressure from ever leading to conditional logic (`if (P_ow > threshold)`) or altering sign relationships, which would break the antisymmetric pairing invariants.
+*   **Pressure Is Not an Objective:** The document reiterated that pressure is a *physical constraint*, not a goal, reward, loss, or selector, preventing misinterpretation of its role.
+
+**Challenges & Trade-offs:**
+
+*   **Mathematical Precision:** Deriving continuous, monotone functions for decay and coupling that remained branchless and strictly adhered to the philosophical constraints was a significant mathematical exercise.
+*   **Preventing "Creep":** The concept of pressure, being external and influential, had to be carefully managed to prevent it from "creeping" into the semantic space and indirectly becoming a form of control. This required constant vigilance and cross-referencing with other canonical documents.
+*   **Educating on Non-Traditional "Adaptation":** Developers often struggled with the idea of adaptation occurring purely through rate modulation, without explicit thresholds or conditional responses. The paradigm shift was substantial.
+
+**Code Example: Simplified Pressure Application in Slow-State Update (Conceptual)**
+
+This snippet extends the previous `kf`/`ks` update, incorporating pressure and focus (from `JITTER_FOCUS_TRANSFER.md`) into the decay and coupling terms.
+
+```cpp
+// ... (inside the kernel loop for each AVX2 block) ...
+
+    __m256 kf_current_v = _mm256_load_ps(&kf_in[block * 8]);
+    __m256 ks_current_v = _mm256_load_ps(&ks_in[block * 8]);
+
+    // Assume pressure_ow_v, pressure_bw_v are __m256 vectors of P_ow(c) and P_bw(c) (per cell, broadcast)
+    // Assume focus_intensity_v is an __m256 vector of F(c) (per cell, broadcast)
+    // Assume lambda_k_v, alpha_ow_v, alpha_bw_v, beta_k_v, beta_focus_v are __m256 constant coefficient vectors
+
+    // 1. Calculate Effective Decay Rate (lambda_k_eff)
+    // lambda_k^eff(c) = lambda_k * (1 + a_ow * P_ow(c) + a_bw * P_bw(c))
+    __m256 term_ow = _mm256_mul_ps(alpha_ow_v, pressure_ow_v);
+    __m256 term_bw = _mm256_mul_ps(alpha_bw_v, pressure_bw_v);
+    __m256 pressure_sum = _mm256_add_ps(_mm256_set1_ps(1.0f), _mm256_add_ps(term_ow, term_bw));
+    __m256 effective_lambda_v = _mm256_mul_ps(lambda_k_v, pressure_sum);
+
+    // Hard constraint check: effective_lambda_v must be < 1.0f. Enforced by coefficient choice, NOT clamping.
+    // e.g., static_assert in init_coefficients that 1.0f + a_ow*P_ow_max + a_bw*P_bw_max < 1.0f / lambda_k_max
+
+    // 2. Calculate Effective Neighbor Coupling (beta_j_eff) - potentially modulated by focus
+    // beta_j_eff(c) = beta_j * (1 + b * F(c))
+    __m256 focus_mod_beta_v = _mm256_fmadd_ps(beta_focus_v, focus_intensity_v, _mm256_set1_ps(1.0f));
+    __m256 effective_beta_v_j = _mm256_mul_ps(beta_j_v, focus_mod_beta_v);
+    // This effective_beta_v_j would then be used in the Mixed Input calculation (U*)
+
+    // ... (rest of Mixed Input (U*) and Residual (Delta*) calculations as before) ...
+
+    // 3. Slow Update Law (Persistence Accumulation + Decay)
+    __m256 fast_energy_proxy_v = _mm256_mul_ps(kf_current_v, kf_current_v); // rho(x) = x^2
+
+    __m256 decay_factor_v = _mm256_sub_ps(_mm256_set1_ps(1.0f), effective_lambda_v); // (1 - lambda_k_eff)
+    __m256 new_ks_v = _mm256_mul_ps(decay_factor_v, ks_current_v);
+    new_ks_v = _mm256_fmadd_ps(_mm256_set1_ps(eta_s), fast_energy_proxy_v, new_ks_v);
+    _mm256_store_ps(&ks_out[block * 8], new_ks_v);
+}
+```
+
+**Table 3.5.1: Pressure Interaction with Core Laws**
+
+| Feature            | Allowed Interaction                                    | Forbidden Interaction                                        |
+| :----------------- | :----------------------------------------------------- | :----------------------------------------------------------- |
+| **Decay Rate**     | Modulate `λ_k` multiplicatively, continuously.         | Conditional decay, hard cutoffs, thresholds.                 |
+| **Coupling Strength** | Modulate `β_k` multiplicatively, continuously.         | Change neighborhood topology, select neighbors.              |
+| **Control Flow**   | None. Pressure must not affect `if/else`, loops, etc.  | Gating, branching, selecting lanes/registers.                |
+| **Content**        | None. Pressure cannot be stored in payload lanes.      | Writing pressure values directly into R,G,B,I lanes.         |
+| **Polarity**       | Maintain antisymmetry; pressure must not flip signs.   | Changing the sign of values based on pressure.               |
+| **Interpretation** | Physical constraint, rate modulator.                   | Goal, objective, reward, selector, semantic meaning.         |
+
+**Question/Challenge 3.5.1: How do we strictly verify that pressure, despite its mathematical integration into the kernel, remains truly orthogonal to the signal and never inadvertently introduces control or semantic content?**
+This led to the subsequent, even more stringent, `PRESSURE_SIGNAL_ORTHOGONALITY.md` document, which enforced the non-negotiable divide between constraint and content.
 
 ---
