@@ -92,7 +92,7 @@ The philosophical insistence on "persistence" and "continuous experience" meant 
 The idea of "Relational Semantics" and "meaning emerging from continuous interaction" found its perfect physical manifestation in Single Instruction, Multiple Data (SIMD) architectures, specifically AVX2.
 
 *   **Early Question:** How do we encode "relations" as fundamental entities, not properties of objects?
-*   **The SIMD Answer:** Each SIMD lane, executing the exact same instruction simultaneously, became a "relational commitment." The lanes aren't processing parallel *examples*; they were processing parallel *aspects of a single, continuous law*.
+*   **The SIMD Answer:** Each SIMD lane, executing the exact same instruction simultaneously, became a "relational commitment." The lanes weren't processing parallel *examples*; they were processing parallel *aspects of a single, continuous law*.
     *   **12x12 Chromaticity:** The idea of 12 hues and 12 tones, crucial to earlier "Chromatic Cognition" explorations, was difficult to map spatially to a 10x10 grid without losing resolution or incurring massive overhead. SIMD provided the breakthrough: 12 hues could live in lanes 0-11, 12 tones in lanes 12-23. The remaining lanes (24-31) would be for "auxiliary" terms like cross-coupling and stability. The 12x12 *relationship* would be encoded by coefficient periodicity and lane algebra, not spatial geometry.
     *   **Lane Pairing:** Meaning from "differential interaction" implied paired processing. Even/odd lanes, or `ℓ` and its inverse `ℓˉ`, naturally became "phase-coupled duals."
 
@@ -692,5 +692,82 @@ static_assert(lane_pair(24) == 31, "Lane 24 pair incorrect");
 
 **Question/Challenge 3.8.1: How do we generate the actual `alpha`, `beta`, `gamma` coefficient values from our mod-12 chromatic model, ensuring strict pair-symmetry and read-only access, without introducing any runtime branches or lookup overhead in the critical path?**
 This led to careful offline pre-computation and generation of static, aligned coefficient tables, often with custom scripts, and further compile-time assertions to verify their properties.
+
+---
+
+### 3.9 Spiral Observables (Non-Coupled Introspection)
+
+**Motivation:** ALM's meaning is defined by emergent "spiral trajectories" – their persistence, coherence, and evolution. However, our strict philosophical rules against external control meant we couldn't directly *measure* these spirals and then *feed them back* into the system to guide its behavior. This would violate the "non-coupled observability" principle and transform observables into hidden control channels. The `SPIRAL_OBSERVABLES.md` document meticulously defined *what* to measure and, crucially, *what not to do* with those measurements.
+
+**Key Design Decisions:**
+
+*   **Observables as Evidence, Not Control:** The paramount principle was that spirals are *evidence* of coherence, not mechanisms of control. Observables must *never* influence kernel evolution, modulate coefficients, feed pressure/focus/decay, or branch execution.
+*   **Emergent Nature:** Spiral observables were explicitly stated as emergent properties arising from paired-lane symmetry, dual-frequency dynamics, bounded decay, and local neighbor coupling. This underscored that they are measured, not imposed.
+*   **Polar Decomposition for Measurement:** Spiral behavior was measured using a polar decomposition of lawful state evolution:
+    *   **Angular Component (θ):** Representing phase coherence and rotation. Defined mathematically using `atan2` on the fast component of paired lanes. An aggregate "Angular Velocity" was then derived over a window.
+    *   **Radial Component (r):** Representing persistence and memory depth. Derived from the sum of squares of the slow component of paired lanes (effectively, an energy metric). An aggregate "Radial Drift" was calculated over a window.
+*   **Strict Rules for Signal Sources:** Observables could only be computed from payload registers, paired lanes, fast/slow components, and time stencil slices. They explicitly forbade reading pressure fields, jitter/focus values, or auxiliary OBS lanes (except for writing results). This prevented "data contamination."
+*   **Storage & Access Rules (Non-Interference):** Observables were strictly limited to storage in external diagnostic buffers or logging structures, never in payload registers or active auxiliary lanes. The kernel was forbidden from reading, branching on, or scaling coefficients using spiral observables.
+*   **Numerical Stability Constraints:** All functions used for observable calculation had to be smooth, branchless, and avoid division by instantaneous amplitudes, thresholding, or clipping.
+*   **Required Tests:** Specific tests were mandated:
+    *   **Non-Interference Test:** To verify that enabling/disabling observables had no effect on kernel outputs.
+    *   **Decay Invariance Test:** To confirm angular velocity was unchanged under uniform decay, and radial magnitude scaled smoothly.
+    *   **Symmetry Test:** To validate observable behavior under paired-lane antisymmetry and permutation.
+
+**Challenges & Trade-offs:**
+
+*   **Measuring Without Influencing:** The core challenge was to design metrics that faithfully captured emergent spiral dynamics without creating an implicit feedback loop. This required meticulous design of read-only side-channels and rigorous testing.
+*   **Mathematical Purity of Observables:** Formulating `θ` and `r` metrics that were robust, continuous, and accurately reflected the underlying dynamics without introducing artificial discontinuities or thresholds was an iterative process.
+*   **Preventing Diagnostic Misuse:** Developers often want to use diagnostics to "correct" or "improve" system behavior. The document had to constantly reiterate that any feedback from observables back into the kernel was an ontological violation.
+
+**Code Example: Conceptual Observable Calculation (Per-Cell, Per-Register)**
+
+```cpp
+// Assume kf_current_v and ks_current_v are __m256 vectors for current AVX2 block (8 lanes)
+// Assume lane_pair_func maps l -> l_bar for scalar float lanes
+
+// For each scalar lane 'l' in the current AVX2 block:
+// (In actual AVX2, this would involve careful lane extraction/shuffling or operating on paired vector elements)
+
+for (int l_block_idx = 0; l_block_idx < 8; ++l_block_idx) { // Iterate over 8 lanes in the AVX2 block
+    int current_lane_abs = (block * 8) + l_block_idx; // Absolute lane index
+    int paired_lane_abs  = lane_pair_func(current_lane_abs); // Paired lane index
+
+    // Ensure we are processing a unique pair head (e.g., l < l_bar to avoid double counting)
+    if (current_lane_abs < paired_lane_abs) {
+        float kf_current_l     = extract_lane_value(kf_current_v, l_block_idx);
+        float kf_current_l_bar = extract_lane_value(kf_current_v, (paired_lane_abs % 8)); // Need value from paired lane
+
+        float ks_current_l     = extract_lane_value(ks_current_v, l_block_idx);
+        float ks_current_l_bar = extract_lane_value(ks_current_v, (paired_lane_abs % 8));
+
+        // Angular Component (θ): atan2(y, x) where y=kf(l), x=kf(l_bar)
+        // (Note: atan2 requires 2 inputs, may not be direct AVX2 intrinsic without horizontal ops)
+        // This is a conceptual example for the mathematical definition
+        float theta_l = atan2(kf_current_l, kf_current_l_bar); // Simplified
+
+        // Radial Component (r): sqrt(kf(l)^2 + kf(l_bar)^2 + ks(l)^2 + ks(l_bar)^2)
+        // Using slow component for radius as per spec
+        float r_l_sq = (ks_current_l * ks_current_l) + (ks_current_l_bar * ks_current_l_bar);
+        float r_l = sqrt(r_l_sq); // Simplified
+        
+        // Store theta_l and r_l in an external, non-coupled observability buffer (e.g., ctx->obs_buffer)
+        // ...
+    }
+}
+```
+
+**Table 3.9.1: Spiral Observable Metrics**
+
+| Observable          | Definition                                     | Key Property                                     | Forbidden Use                                          |
+| :------------------ | :--------------------------------------------- | :----------------------------------------------- | :----------------------------------------------------- |
+| **Angular (θ)**     | `atan2(kf(ℓ), kf(ℓ̄))`                           | Represents phase evolution. Continuous.          | Feeding back to kernel, modulating coefficients.       |
+| **Angular Velocity (ω)** | Aggregate `unwrap(Δθ)` over window (`W`).       | Indicates spiral motion. Non-causal.             | Goals, objectives, branching.                          |
+| **Radial (r)**      | `sqrt(sum(ks(ℓ)^2))` over paired lanes.         | Represents persistence/memory depth. Continuous. | Storage in payload, influencing pressure/focus.        |
+| **Radial Drift (ṙ)** | `Δr / Δt` over window (`W`).                    | Indicates persistence trend. Monotone.           | Triggering events, selecting neighbors.                |
+| **Coherence Index** | `|ω| * r` (optional, derived).                   | Visualization/logging only.                      | Loss function, reward signal.                          |
+
+**Question/Challenge 3.9.1: How to implement `atan2` and `sqrt` for floating-point values in a truly branchless, AVX2-compatible manner across all lanes, ensuring deterministic numerical stability, given the strict rules against complex intrinsics or data movement?**
+This led to the use of highly optimized, often polynomial, approximations for transcendental functions that could be performed entirely with allowed arithmetic intrinsics, or the acknowledgment that these specific *observable calculations* might occur on scalar-extracted values outside the critical, time-critical kernel loop if performance was not paramount for *observing* but only for *evolving*.
 
 ---
