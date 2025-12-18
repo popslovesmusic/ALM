@@ -213,3 +213,36 @@ This snippet, while conceptual and simplified (e.g., neighbor averaging, registe
 This became a recurring theme: any global aggregation or complex indexing risked breaking our core rules. It would eventually lead to specialized pre-computed neighbor access patterns and tight loop structures.
 
 ---
+
+### 3.2 AVX2 Kernel Rules (Ontology Enforcement)
+
+**Motivation:** The philosophical commitment "SIMD is Ontology" was constantly under threat from practical implementation details. Developers naturally gravitate towards "optimizations" or "conveniences" that, while seemingly innocuous, could subtly violate the uniform law and simultaneity fundamental to ALM. We needed a draconian set of rules to guard against these ontological breaches. `AVX2_KERNEL_RULES.md` became our unbreakable contract with the hardware and the philosophy.
+
+**Key Design Decisions:**
+
+*   **Whitelist/Blacklist Approach:** Instead of broadly permitting instructions and trying to catch violations, we opted for a strict whitelist of *allowed* intrinsics and an even stricter blacklist of *forbidden* ones. This forced developers to work within the ALM's ontological bounds.
+    *   **Allowed:** Primarily arithmetic (`_mm256_add_ps`, `_mm256_mul_ps`, `_mm256_fmadd_ps`) and basic loads/stores (`_mm256_load_ps`, `_mm256_store_ps`, `_mm256_set1_ps`). These preserve lane independence and uniform execution.
+    *   **Forbidden:** This list was crucial. It specifically targeted instructions that introduce lane-dependent behavior (`_mm256_cmp_ps`, `_mm256_blendv_ps`, masks), break fixed lane semantics (`_mm256_permute*`, `_mm256_shuffle*`), or violate simultaneity/introduces privilege (`horizontal adds`, `scalar extraction for control`).
+*   **Loop Structure Rules:** Fixed iteration counts (`for (int block = 0; block < 4; ++block)`) and absolute prohibition of lane-dependent branching. This ensures every lane sees the same control flow.
+*   **Memory Rules:** Reiterating 32-byte alignment for all vectors and forbidding dynamic allocation within the kernel. This prevents cache thrashing and unpredictable latency.
+*   **Performance Invariants as Ontology:** The most controversial, but necessary, decision was to elevate performance metrics (zero branch mispredictions, no L3 accesses, L2 residency) to *ontological requirements*. If the code didn't meet these, it wasn't just "slow"; it was violating ALM's very nature, as "time ceases to be uniform, simultaneity is broken."
+
+**Challenges & Trade-offs:**
+
+*   **Developer Pushback:** Developers accustomed to using `if` statements, `min/max`, or `blendv` for conditional logic found these rules highly restrictive. The constant challenge was to educate that these weren't arbitrary style guides but philosophical mandates.
+*   **Finding Branchless Alternatives:** Many common operations had to be re-thought in a purely branchless, polynomial, and continuous manner. This often meant using arithmetic manipulations (e.g., `x * (x > 0)` or `(x + abs(x)) / 2` for `max(0,x)`) or carefully crafted `_mm256` intrinsics that performed operations uniformly across all lanes.
+*   **Maintaining Readability:** Extremely dense intrinsic code could become difficult to read and debug. The trade-off was between strict adherence to rules and maintaining some level of clarity. Extensive comments and helper functions (if they strictly adhered to rules) became essential.
+
+**Table 3.2.1: Excerpt of AVX2 Intrinsic Rules**
+
+| Category      | Allowed Intrinsics                                 | Forbidden Intrinsics (Examples)                                     | Rationale (Ontological)                                      |
+| :------------ | :------------------------------------------------- | :------------------------------------------------------------------ | :----------------------------------------------------------- |
+| **Arithmetic** | `_mm256_add_ps`, `_mm256_sub_ps`, `_mm256_mul_ps`, `_mm256_fmadd_ps` | None (all these are uniform)                                        | Preserve uniform law, simultaneity.                          |
+| **Control/Mask** | None (explicitly)                                  | `_mm256_cmp_ps`, `_mm256_blendv_ps`, `_mm256_movemask_ps`, `_mm256_and_ps` (for masking) | Introduces lane-dependent behavior, gating, non-continuity.  |
+| **Data Movement** | None (explicitly)                                  | `_mm256_permute*`, `_mm256_shuffle*`, `_mm256_insert*`, `_mm256_extract*` | Breaks fixed lane semantics, cache predictability.           |
+| **Reductions** | None (explicitly)                                  | Horizontal adds, max/min, scalar extraction                         | Violates simultaneity, introduces privileged lanes.          |
+
+**Question/Challenge 3.2.1: How do we prevent future developers from bypassing these rules with higher-level abstractions or subtle compiler tricks?**
+This led directly to the design of `INVARIANT_REGRESSION_TESTS.md`, a suite of tests designed to *mechanically enforce* these ontological rules, not just numerically verify output. The tests became the "watchdogs" of the ALM philosophy.
+
+---
