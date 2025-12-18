@@ -92,7 +92,7 @@ The philosophical insistence on "persistence" and "continuous experience" meant 
 The idea of "Relational Semantics" and "meaning emerging from continuous interaction" found its perfect physical manifestation in Single Instruction, Multiple Data (SIMD) architectures, specifically AVX2.
 
 *   **Early Question:** How do we encode "relations" as fundamental entities, not properties of objects?
-*   **The SIMD Answer:** Each SIMD lane, executing the exact same instruction simultaneously, became a "relational commitment." The lanes weren't processing parallel *examples*; they were processing parallel *aspects of a single, continuous law*.
+*   **The SIMD Answer:** Each SIMD lane, executing the exact same instruction simultaneously, became a "relational commitment." The lanes aren't processing parallel *examples*; they were processing parallel *aspects of a single, continuous law*.
     *   **12x12 Chromaticity:** The idea of 12 hues and 12 tones, crucial to earlier "Chromatic Cognition" explorations, was difficult to map spatially to a 10x10 grid without losing resolution or incurring massive overhead. SIMD provided the breakthrough: 12 hues could live in lanes 0-11, 12 tones in lanes 12-23. The remaining lanes (24-31) would be for "auxiliary" terms like cross-coupling and stability. The 12x12 *relationship* would be encoded by coefficient periodicity and lane algebra, not spatial geometry.
     *   **Lane Pairing:** Meaning from "differential interaction" implied paired processing. Even/odd lanes, or `ℓ` and its inverse `ℓˉ`, naturally became "phase-coupled duals."
 
@@ -513,5 +513,98 @@ __m256 new_ks_v = _mm256_mul_ps(decay_factor_v, ks_current_v);
 
 **Question/Challenge 3.6.1: What are the most subtle ways signal and pressure could become accidentally coupled (e.g., through floating-point artifacts, compiler optimizations, or shared memory access patterns outside the immediate kernel)?**
 This led to an even deeper scrutiny of memory access patterns and data flow, ensuring that even seemingly innocuous shared resources didn't inadvertently become feedback channels.
+
+---
+
+### 3.7 Jitter-Focus Transfer (Proprioceptive Feedback)
+
+**Motivation:** ALM rejects external control signals and explicit goal-seeking. Yet, a living system needs a sense of its own internal state and external environment – a form of "proprioception." This led to the novel concept of treating *jitter* (temporal instability in data arrival) not as noise to be suppressed, but as a lawful proprioceptive signal that, via a continuous transfer function, generates an internal "focus" state. `JITTER_FOCUS_TRANSFER.md` defines this crucial mechanism.
+
+**Key Design Decisions:**
+
+*   **Jitter as Proprioception:** Jitter, typically a nuisance in real-time systems, was elevated to a fundamental signal. It reflected the "stress" or "unpredictability" of the incoming data stream.
+*   **Canonical Jitter Metric:** Instead of simple instantaneous deviation, we defined jitter as "Windowed Jitter Energy" – a local variance estimate over a rolling window of frames (`J(n)`). This provided a continuous, non-negative, and burst-sensitive measure.
+    ```
+    J(n) = sqrt( (1/W) * sum( (δ_i - δ̄)^2 ) )
+    ```
+    Where `δ_i` is the instantaneous timing error and `W` is the window size.
+*   **Focus as Continuous Scalar:** The output, `Focus (F(n))`, was constrained to be a continuous scalar in `[0,1]`, modulating kernel sensitivity. `F≈1` meant tight, high sensitivity; `F≈0` meant relaxed, low sensitivity. Crucially, Focus was not "attention" (which implies discrete selection or gating).
+*   **Canonical Transfer Function:** The most critical decision was the form of the Jitter → Focus transfer function. It had to be continuous, smooth, monotone decreasing, and branchless. A sigmoid-like function was chosen:
+    `F(n) = 1 / (1 + α * J̃(n)^p)`
+    Where `J̃(n)` is normalized jitter, `α` controls sensitivity, and `p` controls curvature. This ensured focus varied smoothly with jitter, never jumping or introducing thresholds.
+*   **Strictly Limited Uses of Focus:** Focus was explicitly restricted to modulating *rates only*, similar to pressure. It could scale neighbor coupling, decay constants, or reinforcement gains. It was strictly forbidden from enabling/disabling kernels, selecting lanes/registers, altering topology, or acting as a conditional. This reinforced the "rate modulation, not control" paradigm.
+*   **Orthogonal Interaction with Pressure:** Focus and pressure were allowed to compound multiplicatively on shared scaling factors, but neither could override or gate the other. This maintained their independent, yet integrated, roles as rate modulators.
+
+**Challenges & Trade-offs:**
+
+*   **Filtering vs. Signal:** The initial intuition was to filter out jitter. Repurposing it as a signal required a mental shift and careful mathematical formulation to ensure `J(n)` captured relevant temporal instability without being overly noisy or delayed.
+*   **Transfer Function Design:** Selecting a function that met all criteria (continuous, monotone, smooth, branchless, intuitive parameters) was iterative. Simplicity and strict adherence to branchless arithmetic were key.
+*   **Preventing "Attention Creep":** The concept of "focus" naturally leads to thoughts of "attention" or "selection." The document explicitly and repeatedly distinguished `Focus` from `Attention` to prevent developers from implementing gating mechanisms.
+
+**Code Example: Jitter Calculation and Focus Transfer (Conceptual)**
+
+This snippet shows the essence of how jitter might be calculated and transformed into focus.
+
+```cpp
+// Assume timestamps_ring_buffer is a circular buffer of recent frame arrival times
+// Assume nominal_cadence_s is the expected time between frames (float)
+// Assume J_ref_val, alpha_val, p_val are configuration constants (float)
+// Assume W is the window size (int)
+
+float calculate_jitter(const float* timestamps_ring_buffer, int current_idx, float nominal_cadence_s, int W) {
+    float sum_delta = 0.0f;
+    float sum_delta_sq = 0.0f;
+    
+    // Calculate instantaneous timing errors (delta_i) and their mean
+    std::vector<float> deltas;
+    for (int i = 0; i < W; ++i) {
+        int idx = (current_idx - i + W) % W; // Access in reverse chronological order from current_idx
+        float t_n = timestamps_ring_buffer[idx];
+        float expected_t_n = timestamps_ring_buffer[current_idx] - (i * nominal_cadence_s); // Rough expected time relative to current
+                                                                                               // More precise: t_0 + n*nominal_cadence_s
+
+        float delta_i = t_n - expected_t_n; // Simplified: assumes t_n is directly comparable to t_0 + n*nominal_cadence
+        deltas.push_back(delta_i);
+        sum_delta += delta_i;
+    }
+    float mean_delta = sum_delta / W;
+
+    // Calculate sum of squared differences from mean delta
+    for (float delta_i : deltas) {
+        float diff = delta_i - mean_delta;
+        sum_delta_sq += diff * diff;
+    }
+
+    // Windowed Jitter Energy
+    return std::sqrt(sum_delta_sq / W);
+}
+
+float calculate_focus(float raw_jitter, float J_ref_val, float alpha_val, float p_val) {
+    // Normalize Jitter
+    float normalized_jitter = raw_jitter / J_ref_val;
+    
+    // Apply Canonical Transfer Function: F(n) = 1 / (1 + α * J̃(n)^p)
+    float jitter_power_p = std::pow(normalized_jitter, p_val); // Use branchless pow or simple mul for p=2
+    return 1.0f / (1.0f + alpha_val * jitter_power_p);
+}
+
+// Usage in main loop:
+// float current_jitter = calculate_jitter(timestamps, current_frame_idx, nominal_frame_period, WINDOW_SIZE);
+// float current_focus  = calculate_focus(current_jitter, J_REF, ALPHA, P_VAL);
+// // Pass current_focus as scalar into kernel to be broadcast via _mm256_set1_ps
+```
+
+**Table 3.7.1: Jitter-Focus Transfer Function Properties**
+
+| Property        | Requirement                                          | Implication for ALM Ontology                               |
+| :-------------- | :--------------------------------------------------- | :--------------------------------------------------------- |
+| **Continuous**  | Small change in jitter → small change in focus.      | Preserves continuous evolution; no sudden state changes.   |
+| **Monotone**    | Increasing jitter → non-increasing focus.            | Predictable response to increasing environmental stress.   |
+| **Smooth**      | No sharp angles or discontinuities.                  | Prevents generation of spurious artifacts in dynamics.     |
+| **Branchless**  | Implementable using only arithmetic operations.      | Upholds SIMD as ontology; uniform law across all lanes.    |
+| **Rate-Modulating** | Only scales coefficients or decay rates.               | Prevents focus from becoming a control signal or attention. |
+
+**Question/Challenge 3.7.1: How do we determine the optimal `J_ref_val`, `alpha_val`, and `p_val` parameters for the focus transfer function without resorting to "optimization" or "learning" in the traditional sense?**
+This led to the concept of *calibrated emergence* – these parameters would be fixed by design to create a *lawful space* for emergence, rather than being "tuned" to a desired outcome. Their values would reflect the designer's intent for sensitivity, not an ALM's internal "learning."
 
 ---
