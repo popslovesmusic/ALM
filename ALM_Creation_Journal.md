@@ -523,7 +523,7 @@ This led to an even deeper scrutiny of memory access patterns and data flow, ens
 **Key Design Decisions:**
 
 *   **Jitter as Proprioception:** Jitter, typically a nuisance in real-time systems, was elevated to a fundamental signal. It reflected the "stress" or "unpredictability" of the incoming data stream.
-*   **Canonical Jitter Metric:** Instead of simple instantaneous deviation, we defined jitter as "Windowed Jitter Energy" – a local variance estimate over a rolling window of frames (`J(n)`). This provided a continuous, non-negative, and burst-sensitive measure.
+*   **Canonical Jitter Metric:** Instead of simple instantaneous deviation, we defined jitter as "Windowed Jitter Energy" – a local variance estimate over a rolling window of frames (`J(n)`) This provided a continuous, non-negative, and burst-sensitive measure.
     ```
     J(n) = sqrt( (1/W) * sum( (δ_i - δ̄)^2 ) )
     ```
@@ -606,5 +606,91 @@ float calculate_focus(float raw_jitter, float J_ref_val, float alpha_val, float 
 
 **Question/Challenge 3.7.1: How do we determine the optimal `J_ref_val`, `alpha_val`, and `p_val` parameters for the focus transfer function without resorting to "optimization" or "learning" in the traditional sense?**
 This led to the concept of *calibrated emergence* – these parameters would be fixed by design to create a *lawful space* for emergence, rather than being "tuned" to a desired outcome. Their values would reflect the designer's intent for sensitivity, not an ALM's internal "learning."
+
+---
+
+### 3.8 ALM Lane Map & Coefficients (Chromatic Architecture)
+
+**Motivation:** The decision to encode "12x12 chromaticity" into the 32 SIMD lanes (0-31) of each register was a foundational architectural choice. This mapping (`ALM Lane Map and Coefficient Tables Spec v0.md`) was essential for translating the high-level concept of chromatic relations into concrete, addressable hardware units, while strictly adhering to the "SIMD is Ontology" principle. It needed to define not just *what* each lane represented, but *how* its inherent relational structure would be maintained through coefficients and pairing rules.
+
+**Key Design Decisions:**
+
+*   **Fixed 32-Lane Structure:** The 32 lanes per register were divided into three fixed groups:
+    *   **Hue Lanes (0-11):** 12 lanes for the chromatic hue relational basis.
+    *   **Tone Lanes (12-23):** 12 lanes for the chromatic tone relational basis.
+    *   **Auxiliary Lanes (24-31):** 8 lanes reserved for stabilizers, cross-terms, and observability.
+*   **Involutive Lane Pairing:** To enforce the concept of "phase-coupled duals" and differential interaction, an involutive pairing function (`ℓ̄`) was defined for each lane group (`ℓ̄ = 11-ℓ` for Hue, `ℓ̄ = 35-ℓ` for Tone, `ℓ̄ = 55-ℓ` for Aux). This mathematical definition of pairing was central to maintaining symmetry invariants.
+*   **Pair-Symmetry Constraint on Coefficients:** A critical guardrail was placed on all coefficient vectors (`α, β, Γ`): they *must* exhibit pair symmetry (`q[ℓ̄] = q[ℓ]`). This was the mechanical condition guaranteeing that the kernel could preserve symmetry without resorting to branch-based logic.
+*   **Mod-12 Periodicity:** The 12x12 chromaticity was encoded not by 144 separate lanes, but by imposing mod-12 periodicity on the generation rules for the coefficients within the 12 Hue and 12 Tone lane groups. This maintained the desired relational algebra without violating the 32-lane physical constraint.
+*   **Explicit Aux Lane Roles:** The auxiliary lanes (24-31) were rigorously defined to prevent them from becoming "hidden control" channels.
+    *   `XH` (Cross-Hue) and `XT` (Cross-Tone) pairs: algebraic accumulators for hue↔tone interactions, computed from payload.
+    *   `STAB` (Stabilizer) pair: for damping, scaled by fixed coefficients.
+    *   `OBS` (Observability) pair: strictly write-only, side-channel for diagnostics, *never* feeding back into evolution.
+*   **Coefficient Table Layout:** The structure for `alpha[4][32]`, `beta[4][32]`, `gamma[4][4][32]` (float32, 32-byte aligned) was explicitly laid out, defining *what* the kernel would operate on. These tables were read-only at runtime to prevent dynamic modification.
+*   **Deliverables Checkoff (`Section_10_Deliverables_Checkoff _Lane Map & Coefficients.md`):** This companion document codified the process of verifying the implementation, including a header for lane map constants, compile-time assertions, and unit tests for coefficient symmetry.
+
+**Challenges & Trade-offs:**
+
+*   **Mapping High-Dimensionality to Low-Dimensionality:** The primary challenge was distilling the rich 12x12 chromatic relational space into just 32 physical SIMD lanes without loss of conceptual integrity. This was resolved by making the 12x12 property a characteristic of the *coefficients* and their generation rules, rather than the lanes themselves.
+*   **Preventing Aux Lane Misuse:** Auxiliary lanes, by their nature, present a temptation for "clever" hacks or hidden control. The strict definition of their roles, particularly the read-only nature of OBS lanes, was crucial.
+*   **Ensuring Compile-Time Enforcement:** Relying on `constexpr` and `static_assert` to hard-gate lane map properties meant early detection of fundamental structural errors, but required careful C++ metaprogramming.
+
+**Table 3.8.1: Canonical Lane Map and Auxiliary Lane Roles**
+
+| Lane Group     | Indices      | Count | Semantic Role                               | Key Constraint                                                 |
+| :------------- | :----------- | :---- | :------------------------------------------ | :------------------------------------------------------------- |
+| **Hue (H)**    | 0-11         | 12    | Chromatic Hue Relational Basis              | `q[ℓ̄] = q[ℓ]` for coefficients. Mod-12 periodicity.             |
+| **Tone (T)**   | 12-23        | 12    | Chromatic Tone Relational Basis             | `q[ℓ̄] = q[ℓ]` for coefficients. Mod-12 periodicity.             |
+| **Auxiliary**  | 24-31        | 8     | Stabilizers, Cross-Terms, Observables       | Paired. Must not be hidden control channels.                   |
+|   `XH`         | 24 & 31      | 2     | Cross-Hue Accumulator (algebraic)           | Algebraic combination of Hue & Tone.                           |
+|   `XT`         | 25 & 30      | 2     | Cross-Tone Accumulator (algebraic)          | Algebraic combination of Hue & Tone (phase-shifted).           |
+|   `STAB`       | 26 & 29      | 2     | Stabilizer / Damping Basis                  | Fixed coefficient scaling.                                     |
+|   `OBS`        | 27 & 28      | 2     | Observability Basis (non-coupled)           | **STRICTLY WRITE-ONLY.** Must never feed back into evolution. |
+
+**Code Example: `alm_lane_map.hpp` Snippet (Conceptual)**
+
+This header snippet demonstrates the hard-gated compile-time definitions for the lane map.
+
+```cpp
+#pragma once
+
+// --- Lane Group Constants ---
+constexpr int LANES_TOTAL = 32;
+constexpr int HUE_START   = 0;
+constexpr int HUE_COUNT   = 12;
+constexpr int TONE_START  = 12;
+constexpr int TONE_COUNT  = 12;
+constexpr int AUX_START   = 24;
+constexpr int AUX_COUNT   = 8;
+
+// --- Canonical Lane Pairing Function (Involutive) ---
+// This function maps a lane index to its paired lane index.
+// l_bar(l_bar(l)) == l
+constexpr int lane_pair(int l) {
+    if (l >= HUE_START && l < (HUE_START + HUE_COUNT)) {
+        return (HUE_START + HUE_COUNT - 1) - (l - HUE_START); // e.g., 0->11, 1->10
+    } else if (l >= TONE_START && l < (TONE_START + TONE_COUNT)) {
+        return (TONE_START + TONE_COUNT - 1) - (l - TONE_START) + TONE_START; // e.g., 12->23, 13->22
+    } else if (l >= AUX_START && l < (AUX_START + AUX_COUNT)) {
+        return (AUX_START + AUX_COUNT - 1) - (l - AUX_START) + AUX_START; // e.g., 24->31, 25->30
+    }
+    return -1; // Should not happen with valid input
+}
+
+// --- Compile-Time Assertions for Lane Map Integrity ---
+// Ensure the pairing function is truly involutive (l_bar(l_bar(l)) == l)
+static_assert(lane_pair(lane_pair(0)) == 0, "Lane pairing for 0 failed involutive check");
+static_assert(lane_pair(lane_pair(5)) == 5, "Lane pairing for 5 failed involutive check");
+static_assert(lane_pair(lane_pair(12)) == 12, "Lane pairing for 12 failed involutive check");
+static_assert(lane_pair(lane_pair(24)) == 24, "Lane pairing for 24 failed involutive check");
+// Spot checks
+static_assert(lane_pair(0) == 11, "Lane 0 pair incorrect");
+static_assert(lane_pair(5) == 6, "Lane 5 pair incorrect");
+static_assert(lane_pair(12) == 23, "Lane 12 pair incorrect");
+static_assert(lane_pair(24) == 31, "Lane 24 pair incorrect");
+```
+
+**Question/Challenge 3.8.1: How do we generate the actual `alpha`, `beta`, `gamma` coefficient values from our mod-12 chromatic model, ensuring strict pair-symmetry and read-only access, without introducing any runtime branches or lookup overhead in the critical path?**
+This led to careful offline pre-computation and generation of static, aligned coefficient tables, often with custom scripts, and further compile-time assertions to verify their properties.
 
 ---
