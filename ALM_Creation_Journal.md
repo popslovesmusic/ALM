@@ -122,3 +122,94 @@ This model removed the need for external supervision or "training" in the tradit
 This question haunted us. Every design choice, every mathematical formulation, had to be rigorously vetted to ensure that we weren't inadvertently smuggling in "if/then" logic, "goals," or "control" disguised as "optimization" or "adaptation." This would lead directly to the development of our "Canonical Specifications."
 
 ---
+
+## 3. Architecting the Laws: From Principles to Canonical Specifications
+
+This was the phase of rigorous definition, where philosophical insights were painstakingly translated into precise, mathematically sound, and mechanically enforceable laws. Each "canonical document" became a pillar supporting the ALM ontology, designed not just to describe, but to *block* any deviation.
+
+### 3.1 Relational Kernel Law (Core Mathematics)
+
+**Motivation:** The core of ALM's continuous evolution lies in how state *transforms itself* locally. We needed a precise mathematical description of this self-transformation that embodied all our philosophical tenets: branchless, symmetry-preserving, residual-based, dual-frequency, and pressure-governed. This document, `Relational Kernel Law Spec v0.md`, became the heart of the system.
+
+**Key Design Decisions:**
+
+*   **Residual-Based Update (`Δ*`)**: The fundamental principle was "only the difference produced by interaction survives." This necessitated defining a "mixed field input" (`U*`) and then calculating the residual as `Δ* = U* - k*`. This ensures that in a perfectly balanced state, the residual is zero, and the system is neutral.
+*   **Dual-Frequency Integration**: We needed both fast (angular/interaction) and slow (radial/persistence) components. The fast component (`kf`) would drive angular motion and react to new inputs, while the slow component (`ks`) would integrate the "energy" of the fast component, driving radial changes and embodying persistence.
+*   **Skew-Symmetric Rotation Matrix (`A`)**: To ensure continuous, deterministic angular motion in the fast component without branching, a constant skew-symmetric matrix was chosen. This provides a simple, energy-conserving rotation mechanism across registers.
+    ```
+    A = [  0 -ω  0  0 ]
+        [  ω  0 -ω  0 ]
+        [  0  ω  0 -ω ]
+        [  0  0  ω  0 ]
+    ```
+    This `A` matrix, applied lane-wise, induces a consistent "spin" among the R, G, B, I registers.
+*   **Energy Proxy (`ρ(x)=x^2`)**: The slow component's update needed to be driven by the "energy" of the fast component. A simple, even, smooth, and branchless function like `ρ(x)=x^2` was chosen as the canonical energy proxy, directly computable via `_mm256_mul_ps`.
+*   **Pressure Integration as Rate Modulation**: Pressure and focus were explicitly integrated as multiplicative modulators of decay and coupling coefficients, *never* as conditional logic. This maintained their role as physical constraints rather than control signals.
+*   **Symmetry Invariants by Construction**: The mathematical structure of coefficient vectors (`α, β, Γ`) was designed to guarantee symmetry preservation if the initial state and neighbor states exhibited it. Specifically, coefficients had to be symmetric (`q[ℓ̄] = q[ℓ]`).
+
+**Challenges & Trade-offs:**
+
+*   **Balancing Simplicity and Emergence**: The biggest challenge was finding the simplest mathematical expressions that could still give rise to complex emergent spiral behaviors. Over-complicating the kernel risked losing determinism or introducing hidden branches.
+*   **Branchless Design**: Every aspect of the law had to be formulated to be branchless. This was a continuous battle against implicit conditions. For instance, `max(0, x)` is a branch. `x * (x > 0)` or `_mm256_max_ps(x, _mm256_setzero_ps())` is not. Our rules explicitly forbade `_mm256_blendv_ps` in the AVX2 kernel to enforce this continuity in the core law, using only arithmetic for selection.
+*   **Ensuring Ontology Preservation**: Each term in the equations had to be scrutinized to ensure it didn't violate the SIMD ontology (e.g., no lane privilege, uniform law).
+
+**Code Example: Simplified Kernel Loop Pseudo-code (Conceptual)**
+
+This pseudo-code illustrates the core update logic for a single register `k` in a single cell `c`, iterating over AVX2 blocks. The actual implementation would involve `_mm256` intrinsics and careful memory access.
+
+```cpp
+// Assume kf_in, ks_in, kf_out, ks_out are aligned float* pointers to 4 AVX2 blocks (32 lanes) for cell c, register k
+// Assume neighbor_kf_avg_v is an __m256 vector of averaged fast components from neighbors for current AVX2 block
+// Assume alpha_v, beta_v, gamma_k_j_v are __m256 coefficient vectors for current AVX2 block
+// Assume pressure_eff_decay_v, focus_eff_coupling_v are __m256 vectors for effective rates
+
+for (int block = 0; block < 4; ++block) { // Iterate over 4 AVX2 blocks (0-7, 8-15, 16-23, 24-31)
+    __m256 kf_current_v = _mm256_load_ps(&kf_in[block * 8]); // Load 8 fast lanes for current block
+    __m256 ks_current_v = _mm256_load_ps(&ks_in[block * 8]); // Load 8 slow lanes for current block
+
+    // 1. Calculate Mixed Input (U*)
+    __m256 mixed_input_v = _mm256_setzero_ps(); // Accumulate U* for register k
+    for (int j = 0; j < REG_COUNT; ++j) { // Iterate over source registers j (R,G,B,I)
+        __m256 alpha_j_v = _mm256_load_ps(&alpha[j][block * 8]); // Self-coupling coeff
+        __m256 beta_j_v  = _mm256_load_ps(&beta[j][block * 8]);  // Neighbor-coupling coeff
+        __m256 gamma_k_j_v = _mm256_load_ps(&gamma[k][j][block * 8]); // Cross-register mixing coeff
+
+        // Assuming jf_current_v and neighbor_jf_avg_v for source register j
+        __m256 jf_current_v = ...; // Load fast component for source register j
+        __m256 neighbor_jf_avg_v = ...; // Load averaged fast component from neighbors for source register j
+
+        __m256 term1 = _mm256_mul_ps(alpha_j_v, jf_current_v);
+        __m256 term2 = _mm256_mul_ps(beta_j_v, neighbor_jf_avg_v); // Here beta might be modulated by focus
+        __m256 sum_terms = _mm256_add_ps(term1, term2);
+
+        // Apply cross-register mixing: Gamma_k_j * (alpha_j * jf + beta_j * <jf>)
+        mixed_input_v = _mm256_fmadd_ps(gamma_k_j_v, sum_terms, mixed_input_v);
+    }
+
+    // 2. Calculate Residual (Delta*)
+    __m256 delta_v = _mm256_sub_ps(mixed_input_v, kf_current_v);
+
+    // 3. Fast Update Law (Interaction + Rotation)
+    // Simplified rotation; actual A matrix multiplication is more complex across 4 registers, lane-wise
+    __m256 rotation_term_v = _mm256_mul_ps(_mm256_set1_ps(eta_r), ...); // Simplified A * Xf(c)
+
+    __m256 kf_new_v = _mm256_fmadd_ps(_mm256_set1_ps(eta_f), delta_v, kf_current_v);
+    kf_new_v = _mm256_add_ps(kf_new_v, rotation_term_v);
+    _mm256_store_ps(&kf_out[block * 8], kf_new_v); // Write new fast lanes
+
+    // 4. Slow Update Law (Persistence Accumulation + Decay)
+    __m256 fast_energy_proxy_v = _mm256_mul_ps(kf_current_v, kf_current_v); // rho(x) = x^2 (branchless)
+
+    __m256 decay_factor_v = _mm256_sub_ps(_mm256_set1_ps(1.0f), pressure_eff_decay_v); // (1 - lambda_k_eff)
+    __m256 new_ks_v = _mm256_mul_ps(decay_factor_v, ks_current_v);
+    new_ks_v = _mm256_fmadd_ps(_mm256_set1_ps(eta_s), fast_energy_proxy_v, new_ks_v);
+    _mm256_store_ps(&ks_out[block * 8], new_ks_v); // Write new slow lanes
+}
+```
+
+This snippet, while conceptual and simplified (e.g., neighbor averaging, register-to-register rotation, and loading `jf_current_v`/`neighbor_jf_avg_v` are abstracted), captures the essence of the `_mm256` intrinsic-based, branchless, lane-wise computation, and the dual-frequency update. The actual implementation is spread across loops for cells and registers.
+
+**Question/Challenge 3.1.1: How to efficiently implement `neighbor_kf_avg_v` across varying neighborhood topologies while maintaining branchlessness and L2 cache residency?**
+This became a recurring theme: any global aggregation or complex indexing risked breaking our core rules. It would eventually lead to specialized pre-computed neighbor access patterns and tight loop structures.
+
+---
