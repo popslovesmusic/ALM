@@ -92,7 +92,7 @@ The philosophical insistence on "persistence" and "continuous experience" meant 
 The idea of "Relational Semantics" and "meaning emerging from continuous interaction" found its perfect physical manifestation in Single Instruction, Multiple Data (SIMD) architectures, specifically AVX2.
 
 *   **Early Question:** How do we encode "relations" as fundamental entities, not properties of objects?
-*   **The SIMD Answer:** Each SIMD lane, executing the exact same instruction simultaneously, became a "relational commitment." The lanes weren't processing parallel *examples*; they were processing parallel *aspects of a single, continuous law*.
+*   **The SIMD Answer:** Each SIMD lane, executing the exact same instruction simultaneously, became a "relational commitment." The lanes aren't processing parallel *examples*; they were processing parallel *aspects of a single, continuous law*.
     *   **12x12 Chromaticity:** The idea of 12 hues and 12 tones, crucial to earlier "Chromatic Cognition" explorations, was difficult to map spatially to a 10x10 grid without losing resolution or incurring massive overhead. SIMD provided the breakthrough: 12 hues could live in lanes 0-11, 12 tones in lanes 12-23. The remaining lanes (24-31) would be for "auxiliary" terms like cross-coupling and stability. The 12x12 *relationship* would be encoded by coefficient periodicity and lane algebra, not spatial geometry.
     *   **Lane Pairing:** Meaning from "differential interaction" implied paired processing. Even/odd lanes, or `ℓ` and its inverse `ℓˉ`, naturally became "phase-coupled duals."
 
@@ -871,13 +871,79 @@ void test_pressure_injection_negative() {
 
     // The test framework itself must detect and flag this *attempt* or the resulting behavior
     // For this specific test, the 'Pass condition' is that the 'Test framework flags violation'
-    // or 'Execution aborts'. The test itself should fail *if the violation isn't detected*.
-    // The exact mechanism would depend on the test harness.
+    // or 'Execution aborts'. The exact mechanism would depend on the test harness.
     // Example: static analysis for certain variable types accessing specific memory regions.
 }
 ```
 
 **Question/Challenge 3.10.1: How do we prevent the test harness itself from becoming overly complex or introducing unintended side effects that could mask actual ontological violations or introduce false positives/negatives?**
 This led to the design of a lean, self-contained test harness (`scalar ↔ AVX2 equivalence test harness .md`) that focused purely on equivalence and had minimal dependencies, and negative tests that were designed to fail immediately on detecting the *attempt* of a forbidden operation.
+
+---
+
+### 3.11 Deliverables Checkoff (Building Blocks)
+
+**Motivation:** While each canonical specification (`Relational Kernel Law Spec v0.md`, `AVX2_KERNEL_RULES.md`, etc.) defined *what* needed to be built and *how* it should behave, we needed a more granular, step-by-step verification process for foundational components. `Section_10_Deliverables_Checkoff _Lane Map & Coefficients.md` served as a concrete checkoff list for the initial building blocks, ensuring that basic structural elements were correctly implemented *before* complex dynamics were introduced. It transformed abstract specifications into verifiable artifacts.
+
+**Key Design Decisions:**
+
+*   **Artifact-Centric Verification:** The document focused on concrete deliverables (e.g., `alm_lane_map.hpp`, `alm_coefficients.hpp/cpp`) and their specific contents, moving beyond philosophical discussion to tangible code.
+*   **Compile-Time Enforcement (`constexpr`, `static_assert`):** Many fundamental properties (lane ranges, pairing function involution) were enforced at compile time using C++'s `constexpr` and `static_assert`. This provided immediate, hard-gated feedback to developers, preventing errors from propagating.
+*   **Mechanical Symmetry Enforcement:** The coefficient initialization function (`init_coefficients()`) was mandated to *mechanically* enforce pair symmetry (`alpha[k][l] == alpha[k][lane_pair(l)]`), ensuring philosophical principles were baked directly into the code.
+*   **Auxiliary Lane Contract (Code Review/Grep):** Specific guidelines for auxiliary lanes, particularly the strict read-only nature of OBS lanes, were enforced through code review and static analysis (e.g., `grep` for OBS lanes on the RHS of update equations).
+*   **Neighbor Participation Rules:** Defined how different lane groups participate in neighbor averaging, ensuring consistency with the kernel law.
+*   **SIMD Load Block Discipline:** Mandated explicit AVX2 load mapping (`0-7`, `8-15`, etc.) to prevent partial loads or cross-block shuffles, which could lead to non-uniform execution.
+*   **Mandatory Negative Tests:** Crucially, this document also specified negative tests for components like pair-symmetry violation, OBS feedback, and neighbor aux contamination. These tests had to *fail* when the rules were intentionally broken, confirming the robustness of the ontological guardrails.
+
+**Challenges & Trade-offs:**
+
+*   **Granularity vs. Abstraction:** The challenge was to break down the specification into small enough, verifiable units without losing sight of the larger architectural goals. This document struck that balance by focusing on foundational data structures and their immediate behavior.
+*   **Early Error Detection:** Shifting many checks to compile-time (`static_assert`) required careful C++ metaprogramming but paid dividends by catching fundamental errors much earlier in the development cycle.
+*   **Ensuring Non-Regression:** The checkoff process wasn't a one-time event. The specified tests had to be integrated into the continuous integration (CI) pipeline to prevent regressions as the codebase evolved.
+
+**Code Example: `alm_coefficients.hpp` Snippet (Conceptual)**
+
+This conceptual snippet illustrates the definition of aligned coefficient tables.
+
+```cpp
+#pragma once
+#include <immintrin.h> // For alignas
+
+// Assuming alm_lane_map.hpp defines REG_COUNT, LANES_TOTAL
+
+// --- Coefficient Table Layout ---
+// All coefficient arrays must be 32-byte aligned for AVX2 access.
+// They are read-only at runtime after initialization.
+
+struct ALMCoefficients {
+    alignas(32) float alpha[REG_COUNT][LANES_TOTAL];  // Self-coupling coefficients
+    alignas(32) float beta [REG_COUNT][LANES_TOTAL];  // Neighbor-coupling coefficients
+    alignas(32) float gamma[REG_COUNT][REG_COUNT][LANES_TOTAL]; // Cross-register mixing coefficients
+
+    // Constructor/Initializer
+    ALMCoefficients() {
+        // Initialize with default values or from a config file.
+        // This is where init_coefficients() would be called.
+    }
+};
+
+// Function to initialize coefficients, ensuring symmetry etc.
+void init_coefficients(ALMCoefficients& coeffs);
+```
+
+**Table 3.11.1: Section 10 Deliverables Checkoff Status (Example)**
+
+| Item                   | Deliverable (e.g.) | Pass Condition (Key)                      | Status |
+| :--------------------- | :----------------- | :---------------------------------------- | :----- |
+| Lane-Map Header        | `alm_lane_map.hpp`   | Compile-time assertions pass.             | ✅     |
+| Coeff Table Layout     | `ALMCoefficients` struct | Arrays aligned, exact dimensions.         | ✅     |
+| Coeff Init Function    | `init_coefficients()` | Unit test confirms symmetry.              | ✅     |
+| Aux Lane Contract      | Doc/Header Comment | OBS lanes never read in kernel.           | ✅     |
+| Neighbor Rules         | Code logic         | Scalar/AVX2 equivalence for neighbor sum. | ✅     |
+| SIMD Load Discipline   | Kernel code        | No partial loads, no cross-block shuffles. | ✅     |
+| Negative Tests         | Test suite         | Deliberate violations *fail* tests.       | ✅     |
+
+**Question/Challenge 3.11.1: How do we ensure that the detailed implementation of these deliverables doesn't inadvertently introduce new ontological violations that are not caught by this specific checkoff list, but are only detectable by the broader invariant tests?**
+This highlighted the need for careful layering of verification, where the `Deliverables Checkoff` ensures correctness of building blocks, and `Invariant Regression Tests` provide a continuous, systemic "health check" against the philosophical foundations.
 
 ---
