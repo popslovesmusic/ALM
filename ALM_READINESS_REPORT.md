@@ -6,21 +6,21 @@ READY_TO_CODE: YES
 
 ### Section B — Blocking Issues
 
-None. Topology, ingest lane binding, and coefficient tables now have canonical, non-parametric definitions.【F:docs/blueprint/TOPOLOGY & INGEST CONTRACT.md†L34-L145】【F:docs/blueprint/INGEST_LANE_BINDING.md†L11-L78】【F:docs/blueprint/ALM Lane Map and Coefficient Tables Spec v0.md†L471-L520】
+None. Topology, ingest cadence, and stencil mechanics are canonical with explicit prohibitions on control paths or adaptive rewiring, leaving no open structural questions before implementation.【F:docs/blueprint/TOPOLOGY & INGEST CONTRACT.md†L6-L120】【F:docs/blueprint/TIME_STENCIL_MECHANICS.md†L11-L198】
 
 ### Section C — Non-Blocking Ambiguities
 
-* **Observability windowing and storage defaults.** Spiral observables prescribe fixed windowing defaults and storage options but allow “external diagnostic buffers” without specifying durability or sampling cadence, which should be clarified to keep tooling consistent even though it does not alter kernel behavior.【F:docs/blueprint/SPIRAL_OBSERVABLES.md†L73-L116】【F:docs/blueprint/SPIRAL_OBSERVABLES.md†L198-L214】
-* **FUTURE bias source term \(\Phi\) is still abstract.** Time-stencil semantics specify decay and rotation but leave \(\Phi\) as a lawful function of NOW/RECENT/STABLE without a canonical form, so implementations may diverge on bias accumulation even though stencil mechanics are fixed.【F:docs/blueprint/TIME_STENCIL_MECHANICS.md†L124-L158】
+* **Diagnostic storage durability.** Spiral observables define fixed window sizing and forbid kernel dependence but leave retention/durability of “external diagnostic buffers” unspecified, which could lead to divergent tooling defaults without affecting kernel legality.【F:docs/blueprint/SPIRAL_OBSERVABLES.md†L198-L260】
+* **FUTURE bias source term (Φ).** FUTURE updates require Φ as a lawful function of NOW/RECENT/STABLE but do not canonically instantiate it, so bias accumulation may vary across implementations while preserving stencil rotation and decay laws.【F:docs/blueprint/TIME_STENCIL_MECHANICS.md†L124-L176】
 
 ### Section D — Stability Assessment
 
-* **Time handling:** High. Slice counts, rotation order, jitter treatment, and ingest cadence are fixed, removing runtime discretion aside from the remaining \(\Phi\) choice.【F:docs/blueprint/TIME_STENCIL_MECHANICS.md†L60-L158】【F:docs/blueprint/JITTER_FOCUS_TRANSFER.md†L17-L116】【F:docs/blueprint/INGEST_LANE_BINDING.md†L17-L62】
-* **Persistence semantics:** High. Dual-frequency updates, decay bounds, and pressure-modulated rates are mathematically specified with required invariants.【F:docs/blueprint/Relational Kernel Law Spec v0.md†L239-L420】【F:docs/blueprint/PRESSURE_AND_DECAY_LAWS.md†L3-L186】
-* **Selection / pressure mechanics:** High. Orthogonality and modulation rules forbid gating and define required negative tests, reducing risk of control-channel drift.【F:docs/blueprint/PRESSURE_SIGNAL_ORTHOGONALITY.md†L1-L118】【F:docs/blueprint/PRESSURE_AND_DECAY_LAWS.md†L3-L186】
-* **Metric integrity:** Medium. Spiral observables are defined as non-causal diagnostics, but runtime expectations (sampling frequency, retention) are left to tooling choices.【F:docs/blueprint/SPIRAL_OBSERVABLES.md†L57-L154】【F:docs/blueprint/SPIRAL_OBSERVABLES.md†L198-L214】
-* **Phase isolation:** High. Topology/ingest entry conditions, stencil read/write permissions, and cache bounds are declared, reducing boundary creep risk.【F:docs/blueprint/TOPOLOGY & INGEST CONTRACT.md†L101-L166】【F:docs/blueprint/TIME_STENCIL_MECHANICS.md†L92-L158】【F:docs/blueprint/CACHE_RESIDENCY_PROOF.md†L11-L214】
+* **Time handling:** High. Slice counts, rotation order, and read/write permissions are fixed with prohibited deviations, minimizing temporal discretion.【F:docs/blueprint/TIME_STENCIL_MECHANICS.md†L30-L176】
+* **Persistence semantics:** High. Bias decay and write constraints to FUTURE bound accumulation and forbid control-like behavior.【F:docs/blueprint/TIME_STENCIL_MECHANICS.md†L124-L176】
+* **Selection / pressure mechanics:** High. Ingest and topology rules bar control, gating, and pressure coupling into kernel evolution.【F:docs/blueprint/TOPOLOGY & INGEST CONTRACT.md†L20-L120】
+* **Metric integrity:** Medium. Observables remain diagnostic-only with fixed window defaults, but storage policy is left to tooling choices.【F:docs/blueprint/SPIRAL_OBSERVABLES.md†L198-L260】
+* **Phase isolation:** High. Time stencil access controls and ingest orthogonality enforce read-only snapshots and prevent cross-phase leakage.【F:docs/blueprint/TIME_STENCIL_MECHANICS.md†L92-L176】【F:docs/blueprint/TOPOLOGY & INGEST CONTRACT.md†L20-L120】
 
 ### Section E — Risk Statement
 
-With ingest lanes, topology, and coefficient tables canonical, remaining risk centers on tooling choices for diagnostic storage and the undefined \(\Phi\) bias term: diverging implementations could emit different observability traces or accumulate FUTURE bias differently, but core kernel wiring is now fixed, so any rework would be localized to diagnostics or bias functions rather than structural rewrites.【F:docs/blueprint/INGEST_LANE_BINDING.md†L11-L78】【F:docs/blueprint/ALM Lane Map and Coefficient Tables Spec v0.md†L471-L520】【F:docs/blueprint/TIME_STENCIL_MECHANICS.md†L124-L158】
+Main residual risk is divergence in diagnostic tooling—retention or sampling policies for spiral observables and choice of Φ in FUTURE updates—leading to non-comparable traces or bias tuning differences across deployments, but structural kernel contracts (topology, ingest cadence, stencil rotation) are rigid enough to confine any rework to diagnostics or bias functions rather than core rewrites.【F:docs/blueprint/SPIRAL_OBSERVABLES.md†L198-L260】【F:docs/blueprint/TIME_STENCIL_MECHANICS.md†L30-L176】【F:docs/blueprint/TOPOLOGY & INGEST CONTRACT.md†L6-L120】
