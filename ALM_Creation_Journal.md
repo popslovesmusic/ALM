@@ -771,3 +771,113 @@ for (int l_block_idx = 0; l_block_idx < 8; ++l_block_idx) { // Iterate over 8 la
 This led to the use of highly optimized, often polynomial, approximations for transcendental functions that could be performed entirely with allowed arithmetic intrinsics, or the acknowledgment that these specific *observable calculations* might occur on scalar-extracted values outside the critical, time-critical kernel loop if performance was not paramount for *observing* but only for *evolving*.
 
 ---
+
+### 3.10 Invariant Regression Tests (The Watchdogs)
+
+**Motivation:** With such a strict philosophical and technical ontology, merely getting "correct" numerical output was insufficient. We needed a rigorous, mechanical way to prove that the ALM implementation *adhered to its laws* – that it was truly branchless, symmetry-preserving, orthogonal, and continuous. The `INVARIANT_REGRESSION_TESTS.md` document defined the "watchdogs" of the ALM, a suite of tests designed to *fail loudly* when any ontological principle was violated, even if the system appeared to function otherwise.
+
+**Key Design Decisions:**
+
+*   **Ontology Enforcement:** The tests were explicitly designed to enforce SIMD ontology, lane symmetry, pressure-signal orthogonality, continuity, and non-coupled observability. They were meant to catch subtle deviations that might pass conventional functional tests.
+*   **Three Test Classifications:**
+    *   **Preservation Tests:** Verify that invariants (e.g., symmetry) hold under lawful evolution.
+    *   **Equivalence Tests:** Ensure scalar and SIMD paths produce identical numerical results within tolerance.
+    *   **Negative Tests:** Crucially, these tests *deliberately introduce violations* to ensure the system *fails* as expected, thus proving its ability to detect ontological breaches (e.g., injecting pressure into payload).
+*   **Eight Core Invariant Tests:** Each test targeted a specific, critical ALM invariant:
+    1.  **Uniform Law / No Lane Privilege:** Tested by **Lane Permutation Invariance**, which checks if outputs are consistent when inputs are permuted.
+    2.  **Paired-Lane Symmetry Preservation:** Tested by **Antisymmetry Preservation**, ensuring antisymmetric inputs remain so after update.
+    3.  **Earned Asymmetry Only:** Tested by **Neutral Input Neutrality**, verifying no new structure emerges from neutral inputs.
+    4.  **Continuity (No Thresholds):** Tested by **Small Perturbation Continuity**, checking for linear response to small input changes.
+    5.  **Pressure–Signal Orthogonality:** Tested by **Pressure Injection Negative Test** (ensuring pressure cannot enter payload) and **Signal-to-Pressure Feedback Negative Test** (ensuring signal cannot influence pressure).
+    6.  **Non-Coupled Observability:** Tested by **OBS Lane Feedback Prohibition**, verifying OBS lane writes don't influence kernel output.
+    7.  **Scalar ↔ AVX2 Ontology Equivalence:** Tested by **Randomized Equivalence**, comparing scalar and AVX2 results (this was satisfied by `scalar ↔ AVX2 equivalence test harness .md`).
+    8.  **Auxiliary Lane Containment:** Tested by **Aux Isolation**, ensuring aux lanes don't act as hidden control.
+*   **Comprehensive Test Matrix:** Each invariant test had to be run across multiple dimensions (Scalar/AVX2, zero/non-zero pressure, zero/non-zero jitter, single/multi-cell grids) to ensure robustness.
+*   **Strict Failure Semantics:** Any invariant test failure resulted in a *hard-fail* of CI, demanded a minimal reproduction, and required printing exact indices – no "warning-only" allowed. This prevented developers from ignoring ontological breaches.
+
+**Challenges & Trade-offs:**
+
+*   **Designing Negative Tests:** Creating tests that intentionally broke the rules (e.g., injecting pressure into payload) required careful thought to ensure they could be implemented within the test harness without compromising the integrity of the *actual* ALM kernel.
+*   **Floating-Point Tolerance:** Defining appropriate numerical tolerances for "approximate equality" (`≈`) was crucial. Too strict, and tests would fail due to inherent floating-point arithmetic differences between scalar and AVX2 paths; too loose, and real deviations could be missed. This led to the ULP (Units in the Last Place)-ish approach mentioned in `scalar ↔ AVX2 equivalence test harness .md`.
+*   **Maintaining Test Suite Performance:** With a comprehensive matrix of tests, the test suite itself could become a performance bottleneck. Balancing test coverage with execution speed was an ongoing optimization.
+
+**Table 3.10.1: Excerpt of Invariant Regression Tests**
+
+| Invariant Targeted             | Test Name                         | Setup                                                   | Failure Indication                                                                 |
+| :----------------------------- | :-------------------------------- | :------------------------------------------------------ | :--------------------------------------------------------------------------------- |
+| **Uniform Law**                | Lane Permutation Invariance       | Run on permuted inputs, un-permute outputs.             | Per-lane branching, hidden indexing logic.                                         |
+| **Paired-Lane Symmetry**       | Antisymmetry Preservation         | Initialise `x[ℓ̄] = -x[ℓ]`, zero pressure/jitter.       | Sign flips, asymmetric coefficients, non-linear gating.                            |
+| **Pressure–Signal Orthogonality** | Pressure Injection Negative Test | Intentionally inject pressure into payload lanes.       | Test framework *fails* (proving pressure leakage is caught).                       |
+| **Non-Coupled Observability**  | OBS Lane Feedback Prohibition     | Write arbitrary values into OBS lanes, zero others.     | Output *differs* from run with OBS zeroed (hidden feedback path).                |
+| **Scalar ↔ AVX2 Equivalence**  | Randomized Equivalence            | Random inputs to both scalar and AVX2 kernels.          | Results diverge beyond tolerance (SIMD path divergence).                           |
+
+**Code Example: Invariant Test Structure (Conceptual)**
+
+This conceptual snippet illustrates how an invariant test might be structured.
+
+```cpp
+// Assuming kernel_step_scalar and kernel_step_avx2 are defined
+// Assuming compare_states(state1, state2, abs_eps, rel_eps) returns true if states are equal within tolerance
+
+// --- Test: Lane Permutation Invariance ---
+void test_lane_permutation_invariance() {
+    State initial_state_normal; // Initialize with random, valid data
+    State initial_state_permuted; // Initialize by permuting initial_state_normal
+
+    // Apply permutation to initial_state_normal to create initial_state_permuted
+    // ... logic for permutation ...
+
+    Coeffs coeffs; // Initialize coefficients
+    Params params; // Initialize parameters (pressure, jitter)
+
+    State output_normal_scalar, output_normal_avx2;
+    State output_permuted_scalar, output_permuted_avx2;
+
+    // Run kernel on normal state
+    kernel_step_scalar(output_normal_scalar, initial_state_normal, coeffs, params);
+    kernel_step_avx2(output_normal_avx2, initial_state_normal, coeffs, params);
+
+    // Run kernel on permuted state
+    kernel_step_scalar(output_permuted_scalar, initial_state_permuted, coeffs, params);
+    kernel_step_avx2(output_permuted_avx2, initial_state_permuted, coeffs, params);
+
+    // Un-permute the output from the permuted run
+    State unpermuted_output_scalar, unpermuted_output_avx2;
+    // ... logic for un-permutation of output_permuted_scalar/avx2 into unpermuted_output_scalar/avx2 ...
+
+    // ASSERT: output_normal_scalar should be approximately equal to unpermuted_output_scalar
+    if (!compare_states(output_normal_scalar, unpermuted_output_scalar, ABS_EPS, REL_EPS)) {
+        // Test Failure: Report specific lanes/cells where divergence occurred
+        std::cerr << "FAIL: Lane Permutation Invariance (Scalar Path) violated!" << std::endl;
+        abort();
+    }
+    // ASSERT: output_normal_avx2 should be approximately equal to unpermuted_output_avx2
+    if (!compare_states(output_normal_avx2, unpermuted_output_avx2, ABS_EPS, REL_EPS)) {
+        std::cerr << "FAIL: Lane Permutation Invariance (AVX2 Path) violated!" << std::endl;
+        abort();
+    }
+}
+
+// --- Test: Pressure Injection Negative Test (Conceptual) ---
+void test_pressure_injection_negative() {
+    State initial_state; // Initialize
+    Coeffs coeffs;
+    Params params;
+    
+    // DELIBERATELY BREAK RULE: Inject pressure into a payload lane
+    // This part of the test harness actively tries to perform an illegal operation
+    // For example, if 'P_ow' is part of 'params'
+    // initial_state.cells[0].regs[0].lanes[0] = params.P_ow; // This is the 'injection'
+
+    // The test framework itself must detect and flag this *attempt* or the resulting behavior
+    // For this specific test, the 'Pass condition' is that the 'Test framework flags violation'
+    // or 'Execution aborts'. The test itself should fail *if the violation isn't detected*.
+    // The exact mechanism would depend on the test harness.
+    // Example: static analysis for certain variable types accessing specific memory regions.
+}
+```
+
+**Question/Challenge 3.10.1: How do we prevent the test harness itself from becoming overly complex or introducing unintended side effects that could mask actual ontological violations or introduce false positives/negatives?**
+This led to the design of a lean, self-contained test harness (`scalar ↔ AVX2 equivalence test harness .md`) that focused purely on equivalence and had minimal dependencies, and negative tests that were designed to fail immediately on detecting the *attempt* of a forbidden operation.
+
+---
