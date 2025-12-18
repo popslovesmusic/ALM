@@ -135,7 +135,7 @@ This was the phase of rigorous definition, where philosophical insights were pai
 
 *   **Residual-Based Update (`Δ*`)**: The fundamental principle was "only the difference produced by interaction survives." This necessitated defining a "mixed field input" (`U*`) and then calculating the residual as `Δ* = U* - k*`. This ensures that in a perfectly balanced state, the residual is zero, and the system is neutral.
 *   **Dual-Frequency Integration**: We needed both fast (angular/interaction) and slow (radial/persistence) components. The fast component (`kf`) would drive angular motion and react to new inputs, while the slow component (`ks`) would integrate the "energy" of the fast component, driving radial changes and embodying persistence.
-*   **Skew-Symmetric Rotation Matrix (`A`)**: To ensure continuous, deterministic angular motion in the fast component without branching, a constant skew-symmetric matrix was chosen. This provides a simple, energy-preserving rotation mechanism across registers.
+*   **Skew-Symmetric Rotation Matrix (`A`)**: To ensure continuous, deterministic angular motion in the fast component without branching, a constant skew-symmetric matrix was chosen. This provides a simple, energy-conserving rotation mechanism across registers.
     ```
     A = [  0 -ω  0  0 ]
         [  ω  0 -ω  0 ]
@@ -175,8 +175,38 @@ for (int block = 0; block < 4; ++block) { // Iterate over 4 AVX2 blocks (0-7, 8-
         __m256 gamma_k_j_v = _mm256_load_ps(&gamma[k][j][block * 8]); // Cross-register mixing coeff
 
         // Assuming jf_current_v and neighbor_jf_avg_v for source register j
-        __m252_k
+        __m256 jf_current_v = ...; // Load fast component for source register j
+        __m256 neighbor_jf_avg_v = ...; // Load averaged fast component from neighbors for source register j
+
+        __m256 term1 = _mm256_mul_ps(alpha_j_v, jf_current_v);
+        __m256 term2 = _mm256_mul_ps(beta_j_v, neighbor_jf_avg_v); // Here beta might be modulated by focus
+        __m256 sum_terms = _mm256_add_ps(term1, term2);
+
+        // Apply cross-register mixing: Gamma_k_j * (alpha_j * jf + beta_j * <jf>)
+        mixed_input_v = _mm256_fmadd_ps(gamma_k_j_v, sum_terms, mixed_input_v);
+    }
+
+    // 2. Calculate Residual (Delta*)
+    __m256 delta_v = _mm256_sub_ps(mixed_input_v, kf_current_v);
+
+    // 3. Fast Update Law (Interaction + Rotation)
+    // Simplified rotation; actual A matrix multiplication is more complex across 4 registers, lane-wise
+    __m256 rotation_term_v = _mm256_mul_ps(_mm256_set1_ps(eta_r), ...); // Simplified A * Xf(c)
+
+    __m256 kf_new_v = _mm256_fmadd_ps(_mm256_set1_ps(eta_f), delta_v, kf_current_v);
+    kf_new_v = _mm256_add_ps(kf_new_v, rotation_term_v);
+    _mm256_store_ps(&kf_out[block * 8], kf_new_v); // Write new fast lanes
+
+    // 4. Slow Update Law (Persistence Accumulation + Decay)
+    __m256 fast_energy_proxy_v = _mm256_mul_ps(kf_current_v, kf_current_v); // rho(x) = x^2 (branchless)
+
+    __m256 decay_factor_v = _mm256_sub_ps(_mm256_set1_ps(1.0f), pressure_eff_decay_v); // (1 - lambda_k_eff)
+    __m256 new_ks_v = _mm256_mul_ps(decay_factor_v, ks_current_v);
+    new_ks_v = _mm256_fmadd_ps(_mm256_set1_ps(eta_s), fast_energy_proxy_v, new_ks_v);
+    _mm256_store_ps(&ks_out[block * 8], new_ks_v); // Write new slow lanes
+}
 ```
+
 This snippet, while conceptual and simplified (e.g., neighbor averaging, register-to-register rotation, and loading `jf_current_v`/`neighbor_jf_avg_v` are abstracted), captures the essence of the `_mm256` intrinsic-based, branchless, lane-wise computation, and the dual-frequency update. The actual implementation is spread across loops for cells and registers.
 
 **Question/Challenge 3.1.1: How to efficiently implement `neighbor_kf_avg_v` across varying neighborhood topologies while maintaining branchlessness and L2 cache residency?**
@@ -259,5 +289,78 @@ This led directly to the design of `INVARIANT_REGRESSION_TESTS.md`, a suite of t
 
 **Question/Challenge 3.3.1: How do we prevent performance-driven optimizations (e.g., prefetching, complex memory access patterns) from subtly reintroducing unpredictable latency or non-uniform memory access patterns that violate L2 residency?**
 This led to the strict `AVX2_KERNEL_RULES.md` against data movement intrinsics and the overall emphasis on linear, predictable memory access.
+
+---
+
+### 3.4 Time Stencil Mechanics (Temporal Fabric)
+
+**Motivation:** Our philosophical commitment to "thick, bounded, and non-predictive time" was a cornerstone of ALM. It enabled "persistence without prediction" and "memory without storage." To translate this into a deterministic, high-performance system, we needed to rigorously define the mechanics of the 4-slice time stencil. The `TIME_STENCIL_MECHANICS.md` document became the foundational text for how ALM experienced and processed time.
+
+**Key Design Decisions:**
+
+*   **Fixed Four-Slice Set:** The decision for exactly four slices (STABLE, RECENT, NOW, FUTURE) was not arbitrary. It was the minimal set required to encode the necessary temporal relationships: a durable past, an immediate past, the present interaction, and a bias towards potential future states. This fixed count also strongly contributed to the `CACHE_RESIDENCY_PROOF.md`.
+*   **Rigid Rotation Mechanics:** The rotation rule (`STABLE ← RECENT`, `RECENT ← NOW`, `NOW ← FUTURE`, `FUTURE ← cleared/decayed`) was made unconditional, global, and identical for both scalar and AVX2 paths. Crucially, this rotation was mandated to be implemented *only* as index rotation or pointer swaps, explicitly forbidding costly element-wise copying or conditional rotation. This preserved cache locality and guaranteed deterministic temporal progression.
+*   **Precise Read/Write Permissions:** Each slice was assigned strict read and write permissions to prevent information from "time traveling" incorrectly. For example, STABLE and RECENT became read-only snapshots during kernel execution, while FUTURE could only be written to in a restricted, accumulative manner.
+*   **FUTURE as Bias, Not Control:** The `FUTURE` slice was a highly sensitive philosophical point. It was defined as an "accumulator of weak tendencies" or "pressure-weighted drift hint," explicitly *not* a prediction, goal, or control signal. Its writes had to be continuous, symmetric, and branchless, and any behavior that would convert its bias into a control signal (e.g., conditional logic based on FUTURE) was strictly forbidden.
+*   **Overwrite Pressure Interaction:** Overwrite pressure (`P_ow`) was designed to interact with the time stencil solely through the modulation of decay rates, never by changing the rotation order or selecting slices. This reinforced its role as a rate modulator, not a structural controller.
+*   **Temporal Consistency Invariants:** Hard laws like "No Time Travel" (information flow only STABLE → RECENT → NOW → FUTURE) and "Bounded Memory" (no infinite memory channel) were established to prevent violations of the time ontology.
+
+**Challenges & Trade-offs:**
+
+*   **Preventing Implicit Prediction:** The `FUTURE` slice was a constant source of temptation for developers to "cheat" and try to introduce predictive elements. Rigorous code reviews and invariant tests were needed to ensure its behavior remained strictly as a continuous bias accumulator.
+*   **Optimizing Pointer Rotation:** Implementing the rotation efficiently without performance penalties or cache misses required careful low-level pointer arithmetic or index management, particularly in a highly optimized AVX2 context.
+*   **Explaining "Non-Predictive Bias":** Articulating the distinction between a "bias" and a "prediction" required deep philosophical and technical clarity, as these terms can be easily conflated in traditional AI.
+
+**Code Example: Slice Rotation Logic (Conceptual)**
+
+This pseudo-code illustrates the state buffer pointers and their rotation.
+
+```cpp
+// Assume state_buffers is an array of pointers to the 4 time slices
+// e.g., float* state_buffers[4];
+
+// Function to perform slice rotation at the end of each kernel step
+void rotate_time_stencil(StateContext* ctx) {
+    // Save current pointers
+    float* stable_ptr = ctx->state_buffers[0];
+    float* recent_ptr = ctx->state_buffers[1];
+    float* now_ptr    = ctx->state_buffers[2];
+    float* future_ptr = ctx->state_buffers[3];
+
+    // Perform rotation by swapping pointers/indices
+    ctx->state_buffers[0] = recent_ptr; // New STABLE is old RECENT
+    ctx->state_buffers[1] = now_ptr;    // New RECENT is old NOW
+    ctx->state_buffers[2] = future_ptr; // New NOW is old FUTURE
+
+    // New FUTURE slice: must be cleared or seeded with decayed values
+    // This is typically the 'old' STABLE buffer, which is now ready to be written as the new FUTURE.
+    // However, conceptually, the new FUTURE accumulates new bias, not carries old STABLE content.
+    // For ALM, we might clear this or decay-seed it.
+    ctx->state_buffers[3] = stable_ptr; // This buffer becomes the target for NEW FUTURE writes
+    
+    // Explicitly clear or decay-seed the new FUTURE buffer here, or it will be overwritten
+    // by the kernel's FUTURE writes in the next step. For ALM, it often starts decayed/cleared.
+    // e.g., _mm256_setzero_ps or a decay function on the buffer's contents.
+    // clear_buffer(ctx->state_buffers[3]); // Conceptual clear or decay
+}
+
+// Inside the kernel, read/write access would be through these pointers:
+// const float* stable_data = ctx->state_buffers[0]; // Read-only
+// const float* recent_data = ctx->state_buffers[1]; // Read-only
+// float* now_write_data    = ctx->state_buffers[2]; // Read/Write
+// float* future_write_data = ctx->state_buffers[3]; // Read/Write (restricted)
+```
+
+**Table 3.4.1: Time Stencil Read/Write Permissions**
+
+| Slice    | Read Allowed | Write Allowed | Role                                       |
+| :------- | :----------- | :------------ | :----------------------------------------- |
+| **STABLE** | YES          | NO            | Long-lived baseline, read-only snapshot.   |
+| **RECENT** | YES          | NO            | Short-term persistence, read-only snapshot. |
+| **NOW**    | YES          | YES           | Active computation target.                 |
+| **FUTURE** | YES (bias)   | YES (restricted) | Bias accumulator, non-predictive.         |
+
+**Question/Challenge 3.4.1: How do we rigorously test the "No Write-Through Test" and "FUTURE Non-Control Test" to guarantee that kernel modifications don't accidentally violate these temporal invariants?**
+This required meticulous instrumentation within our `INVARIANT_REGRESSION_TESTS.md` to monitor unintended writes and validate the continuous, non-gating behavior of the `FUTURE` slice.
 
 ---
