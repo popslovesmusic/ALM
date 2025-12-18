@@ -38,7 +38,7 @@ This led to the first foundational sketches of ALM's guiding philosophy:
 *   **Relational Semantics:** Meaning isn't inherent in an isolated entity but in its dynamic relationships. What connects to what, how strongly, and how long?
 
 **Question/Challenge 1.1: How to build a system where meaning *emerges* without being imposed?**
-This was the core conundrum. How do you quantify "emergence"? How do you create a substrate where interactions *themselves* define significance, rather than an external observer? This question would drive every subsequent design decision, pushing us towards models of physics, dynamics, and continuous fields.
+This was the core conundrum. How do you quantify "emergence"? How do you create a substrate where interactions *themeslves* define significance, rather than an external observer? This question would drive every subsequent design decision, pushing us towards models of physics, dynamics, and continuous fields.
 
 ---
 
@@ -135,7 +135,7 @@ This was the phase of rigorous definition, where philosophical insights were pai
 
 *   **Residual-Based Update (`Δ*`)**: The fundamental principle was "only the difference produced by interaction survives." This necessitated defining a "mixed field input" (`U*`) and then calculating the residual as `Δ* = U* - k*`. This ensures that in a perfectly balanced state, the residual is zero, and the system is neutral.
 *   **Dual-Frequency Integration**: We needed both fast (angular/interaction) and slow (radial/persistence) components. The fast component (`kf`) would drive angular motion and react to new inputs, while the slow component (`ks`) would integrate the "energy" of the fast component, driving radial changes and embodying persistence.
-*   **Skew-Symmetric Rotation Matrix (`A`)**: To ensure continuous, deterministic angular motion in the fast component without branching, a constant skew-symmetric matrix was chosen. This provides a simple, energy-conserving rotation mechanism across registers.
+*   **Skew-Symmetric Rotation Matrix (`A`)**: To ensure continuous, deterministic angular motion in the fast component without branching, a constant skew-symmetric matrix was chosen. This provides a simple, energy-preserving rotation mechanism across registers.
     ```
     A = [  0 -ω  0  0 ]
         [  ω  0 -ω  0 ]
@@ -175,38 +175,8 @@ for (int block = 0; block < 4; ++block) { // Iterate over 4 AVX2 blocks (0-7, 8-
         __m256 gamma_k_j_v = _mm256_load_ps(&gamma[k][j][block * 8]); // Cross-register mixing coeff
 
         // Assuming jf_current_v and neighbor_jf_avg_v for source register j
-        __m256 jf_current_v = ...; // Load fast component for source register j
-        __m256 neighbor_jf_avg_v = ...; // Load averaged fast component from neighbors for source register j
-
-        __m256 term1 = _mm256_mul_ps(alpha_j_v, jf_current_v);
-        __m256 term2 = _mm256_mul_ps(beta_j_v, neighbor_jf_avg_v); // Here beta might be modulated by focus
-        __m256 sum_terms = _mm256_add_ps(term1, term2);
-
-        // Apply cross-register mixing: Gamma_k_j * (alpha_j * jf + beta_j * <jf>)
-        mixed_input_v = _mm256_fmadd_ps(gamma_k_j_v, sum_terms, mixed_input_v);
-    }
-
-    // 2. Calculate Residual (Delta*)
-    __m256 delta_v = _mm256_sub_ps(mixed_input_v, kf_current_v);
-
-    // 3. Fast Update Law (Interaction + Rotation)
-    // Simplified rotation; actual A matrix multiplication is more complex across 4 registers, lane-wise
-    __m256 rotation_term_v = _mm256_mul_ps(_mm256_set1_ps(eta_r), ...); // Simplified A * Xf(c)
-
-    __m256 kf_new_v = _mm256_fmadd_ps(_mm256_set1_ps(eta_f), delta_v, kf_current_v);
-    kf_new_v = _mm256_add_ps(kf_new_v, rotation_term_v);
-    _mm256_store_ps(&kf_out[block * 8], kf_new_v); // Write new fast lanes
-
-    // 4. Slow Update Law (Persistence Accumulation + Decay)
-    __m256 fast_energy_proxy_v = _mm256_mul_ps(kf_current_v, kf_current_v); // rho(x) = x^2 (branchless)
-
-    __m256 decay_factor_v = _mm256_sub_ps(_mm256_set1_ps(1.0f), pressure_eff_decay_v); // (1 - lambda_k_eff)
-    __m256 new_ks_v = _mm256_mul_ps(decay_factor_v, ks_current_v);
-    new_ks_v = _mm256_fmadd_ps(_mm256_set1_ps(eta_s), fast_energy_proxy_v, new_ks_v);
-    _mm256_store_ps(&ks_out[block * 8], new_ks_v); // Write new slow lanes
-}
+        __m252_k
 ```
-
 This snippet, while conceptual and simplified (e.g., neighbor averaging, register-to-register rotation, and loading `jf_current_v`/`neighbor_jf_avg_v` are abstracted), captures the essence of the `_mm256` intrinsic-based, branchless, lane-wise computation, and the dual-frequency update. The actual implementation is spread across loops for cells and registers.
 
 **Question/Challenge 3.1.1: How to efficiently implement `neighbor_kf_avg_v` across varying neighborhood topologies while maintaining branchlessness and L2 cache residency?**
@@ -244,5 +214,50 @@ This became a recurring theme: any global aggregation or complex indexing risked
 
 **Question/Challenge 3.2.1: How do we prevent future developers from bypassing these rules with higher-level abstractions or subtle compiler tricks?**
 This led directly to the design of `INVARIANT_REGRESSION_TESTS.md`, a suite of tests designed to *mechanically enforce* these ontological rules, not just numerically verify output. The tests became the "watchdogs" of the ALM philosophy.
+
+---
+
+### 3.3 Cache Residency Proof (The L2 Law)
+
+**Motivation:** Our earliest architectural decision (Section 2.1) made L2 cache residency an ontological requirement, not merely a performance target. We needed a rigorous, quantifiable proof that the entire active working set of the ALM kernel would *always* fit within the designated 256 KB L2 cache per core. This proof (`CACHE_RESIDENCY_PROOF.md`) was critical to ensuring deterministic, bounded-latency operation—without which, the very notion of "simultaneity" and "uniform law" would break down.
+
+**Key Design Decisions:**
+
+*   **Canonical Working Set Definition:** Precisely defining what constitutes the "working set" was paramount. It explicitly included the `TensorCluster` payload, time stencil slices, coefficient tables, temporary registers/stack, neighbor access buffers, and observability accumulators. Crucially, it excluded non-essential components like ingest buffers or UI state to ensure a focused and provable bound.
+*   **Detailed Footprint Calculation:** Each component of the working set was meticulously sized:
+    *   **TensorCluster:** `4 slices * 10x10 cells * 4 registers * 32 lanes * 4 bytes/lane (float32) = 204,800 bytes (~200 KB)`. This calculation was the bedrock of the entire proof.
+    *   **Coefficient Tables:** Based on the structure defined in `ALM Lane Map and Coefficient Tables Spec v0.md` (e.g., `alpha[4][32]`, `beta[4][32]`, `gamma[4][4][32]`), these totaled a modest `~3 KB`.
+    *   **Auxiliary Components:** Conservative estimates were made for stack usage (`< 8 KB`) and observability buffers (`~3 KB`).
+*   **Hard Constraints & Guardrails:** To maintain the validity of the proof, explicit "Forbidden Changes" were listed (e.g., increasing grid size, lane count, adding registers/slices, switching to `float64`, dynamic allocations). Any such change would invalidate the proof and require a version bump.
+*   **Runtime & Compile-Time Verification:** The proof wasn't just a paper exercise. It mandated:
+    *   `static_assert` at compile time to enforce a maximum `TensorCluster` size.
+    *   Runtime performance counters (e.g., L2 cache misses, L3 cache accesses, branch mispredictions) to provide empirical validation, with zero sustained L3 access being a hard failure.
+
+**Challenges & Trade-offs:**
+
+*   **Maintaining Tight Bounds:** Every architectural decision had to be made with a constant eye on the memory budget. This drove decisions like using `float32` exclusively and fixing the number of time slices.
+*   **Rigorous Definition of "Working Set":** It was tempting to include more data or auxiliary structures within the kernel's active memory. However, each byte had to be justified and fit within the budget.
+*   **Educating Developers on "Ontological" Performance:** Convincing the team that L3 cache accesses were not just a performance bottleneck but a philosophical violation (breaking simultaneity and uniform time) required continuous reinforcement.
+
+**Data Table: Working Set Summary (Excerpt from `CACHE_RESIDENCY_PROOF.md`)**
+
+| Component                 | Size     |
+| :------------------------ | :------- |
+| TensorCluster (4 slices)  | ~200 KB  |
+| Coefficient tables        | ~3 KB    |
+| Observability buffers     | ~3 KB    |
+| Stack & temps             | ~8 KB    |
+| **Total**                 | **~214 KB** |
+
+**Table 3.3.1: Runtime Verification Thresholds**
+
+| Metric             | Threshold |
+| :----------------- | :-------- |
+| L2 misses          | ≈ 0       |
+| L3 accesses        | 0         |
+| Branch mispredicts | 0         |
+
+**Question/Challenge 3.3.1: How do we prevent performance-driven optimizations (e.g., prefetching, complex memory access patterns) from subtly reintroducing unpredictable latency or non-uniform memory access patterns that violate L2 residency?**
+This led to the strict `AVX2_KERNEL_RULES.md` against data movement intrinsics and the overall emphasis on linear, predictable memory access.
 
 ---
