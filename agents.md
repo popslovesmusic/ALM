@@ -28,16 +28,6 @@ READY\_TO\_CODE: YES | NO
 with formal justification.  
 ---
 
-## Explicit Non-Goals (Hard Prohibitions)
-
-The agent MUST NOT:
-
-* Write or suggest code  
-* Propose new abstractions, operators, or phases  
-* Rename existing concepts  
-* Optimize, refactor, or simplify  
-* Resolve ambiguity by invention  
-* Assume intent not explicitly documented
 
 If a concept is unclear, it must be flagged—not repaired.  
 ---
@@ -217,11 +207,3 @@ This agent is successful only if:
   * Pause and formalize
 
 ---
-
-## Invocation Instructions (for you)
-
-When you run this agent, instruct it:  
-“Analyze ALM for code readiness only.  
-Do not design. Do not fix. Do not optimize.  
-Return verdict and blockers per charter.”
-
