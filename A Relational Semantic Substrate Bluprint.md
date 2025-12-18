@@ -1,28 +1,23 @@
+
+# **Global rule set**
+
+# This document is "Canonical" prime authority and the only source of governance for this project
+# All documents other than those found in prime references are leagacy and historical and have no governence authority 
+# This document is the current bluprint for ALM and will followed as such
+# This document may be amended and changed 
+# Any amendments or changes must be dated with local time stamp too
+# The amendment or change with the most recent date/time is then the governence bluprint and must be followed 
+# Any indecision or doubt flags a stop for clarification
+# The **global rule set** (these) may not be changed
+
+
+
+
 # ALM Project: A Relational Semantic Substrate - Analysis and Proposed Plan
 
-## 1. Overview of Reviewed Documents
 
-I have reviewed the following documents from your project:
 
-**Core ALM Project Documents:**
-*   `project-plan.md`
-*   `ALM bullet point.md`
-*   `Foundational Background Theory.md`
-*   `The Spiral Concept in ALM.md`
-
-**Related Project and Context Documents:**
-*   `10x10_Substrate_12x12_Relational_Model.md`
-*   `chrocog.txt`
-*   `Chromatic Cognition System.txt`
-*   `chromatic-cognition-narrative.txt`
-*   `chromatic-cognition.txt`
-*   `Chromatic-Cognition2.txt`
-*   `core.txt`
-*   `DASE_OPERATIONS_MANUAL.md`
-*   `Medical Image Analysis.txt`
-*   `dir.py`
-
-## 2. Synthesis of ALM Project Core
+##  Synthesis of ALM Project Core
 
 ALM, instantiated through DASE, is a continuously evolving, cache-resident tensor field whose lawful, branchless self-transformation encodes semantic physics. Meaning is not stored, classified, or optimized; it exists only as the survivability of spiral trajectories under pressure, enforced by paired-lane symmetry and dual-frequency dynamics. SIMD lanes are not parallel examples but relational commitments, and time is embedded as structural thickness rather than indexed steps. The tensor does not support queries or commands; it can only be perturbed and observed.
 
@@ -72,11 +67,9 @@ The ALM project aims to build a novel computational model called the Analog Lang
 *   **Non-Coupled Observability:**
     *   Internal metrics (e.g., residual energy, symmetry deviation, radial drift, angular velocity, persistence half-life) are collected in side-channels. These diagnostics are strictly read-only and do not feedback into the control logic, preserving system integrity.
 
-## 3. Comparison of `project-plan.md` to Source Material
 
-The `project-plan.md` document provides a solid foundation for the ALM project, aligning well with the core theoretical underpinnings outlined in `Foundational Background Theory.md` and `The Spiral Concept in ALM.md`, and the technical details in `ALM bullet point.md`. It correctly identifies the project's purpose, key concepts, architectural elements, and a phased implementation roadmap.
 
-**Critical Concepts Missing (or underemphasized) from `project-plan.md`:**
+**Critical Concepts Missing (or underemphasized) 
 
 While the existing plan is comprehensive, some fundamental, non-negotiable aspects highlighted in the theoretical documents could be more explicitly stated or emphasized upfront as governing principles:
 
@@ -87,14 +80,9 @@ While the existing plan is comprehensive, some fundamental, non-negotiable aspec
 
 These points are mostly about emphasizing core philosophical and architectural commitments rather than outright missing technical details, as the technical plan is well-covered.
 
-## 4. Related Projects and Distinctions
 
-Several other documents (`chrocog.txt`, `Chromatic Cognition System.txt`, `chromatic-cognition-narrative.txt`, `chromatic-cognition.txt`, `Chromatic-Cognition2.txt`, `DASE_OPERATIONS_MANUAL.md`, `Medical Image Analysis.txt`) describe projects that are distinct from the core ALM development, although they share some conceptual similarities or may serve as potential applications/tools:
 
-*   **Chromatic Cognition (Soundlab) Projects:** These are browser-based audio experimentation platforms that leverage phi-based synthesis and CPWP analysis. They appear to be applications that might utilize ALM principles for semantic processing but are not the ALM core.
-*   **Chromatic Cognition Core (Rust engine):** A Rust engine for modeling cognition as a 4D RGB tensor field, with a dream pool, WGSL code generation, and CSI. This is a foundational project that shares principles with ALM, especially regarding tensor structures and cognitive modeling.
 *   **DASE (Dynamic Analog Simulation Engine):** A high-performance platform for Spatially-Aware Temporal Physics (SATP) simulation. This could serve as a powerful tool for implementing or testing specific ALM components (e.g., AVX2 kernels), given its focus on analog simulation and optimization.
-*   **Medical Image Analysis:** A Rust-first project for medical image analysis using fixed tensor shapes. Another distinct project sharing some architectural similarities.
 
 ## 5. Proposed ALM Project Plan
 
