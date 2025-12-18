@@ -468,6 +468,56 @@ Default structural constraint (recommended for v0.1):
 This keeps I as an inertial/persistence channel rather than a control channel.  
 ---
 
+### 6.5 Canonical instantiated tables (v1.0)
+
+This section fixes all numeric freedom by deriving concrete 32-lane tables from the constitutional base sequence in the **COEFFICIENT CANONICALIZATION CONTRACT** while enforcing pair symmetry.
+
+**Definitions:**
+
+* Base sequence (length 12): `S = [+1, 0, −1, 0, +1, 0, −1, 0, +1, 0, −1, 0]`.  
+* Pair map for hue/tone lanes: pairs are (0,11), (1,10), (2,9), (3,8), (4,7), (5,6).  
+* Pair-symmetric seed (length 6) from `S`: `P = [ +0.5, −0.5, −0.5, +0.5, +0.5, −0.5 ]` where each entry applies to its paired lanes.  
+* Normalization constant to satisfy ‖·‖₂ ≤ 1 when expanded across hue and tone: `c = 1/√6 ≈ 0.40824829`.  
+* Lane amplitude (after symmetry + normalization): `a = 0.5 * c ≈ 0.20412415`.
+
+**Lane expansion helper:** For a pair-sign vector `[p0..p5]`, the 12-lane array is `[p0, p1, p2, p3, p4, p5, p5, p4, p3, p2, p1, p0] * a` to enforce `q[ℓ] = q[ℓˉ]`. The tone group (lanes 12–23) repeats the same 12 values. Aux lanes (24–31) are zero unless noted.
+
+#### α (state interaction, per register)
+
+* Pair-sign vector: `[+1, −1, −1, +1, +1, −1]`.  
+* Lanes 0–11: `[+a, −a, −a, +a, +a, −a, −a, +a, +a, −a, −a, +a]`.  
+* Lanes 12–23: same as lanes 0–11.  
+* Lanes 24–31: all `0` (aux ingest/damping handled elsewhere).  
+* Applies identically to R, G, B, I to preserve chromatic symmetry.
+
+#### β (neighbor coupling, per register)
+
+* Pair-sign vector: rotate the α pair vector by +1 in pair space → `[−1, −1, +1, +1, −1, +1]`.  
+* Lanes 0–11: `[−a, −a, +a, +a, −a, +a, +a, −a, −a, +a, +a, −a]`.  
+* Lanes 12–23: same as lanes 0–11.  
+* Lanes 24–31: all `0` (aux neighbor coupling remains disabled by rule 6.2).  
+* Applies identically to R, G, B, I.
+
+#### Γ (cross-register mixing)
+
+* Diagonal (k ← k): pair-sign vector = rotate `P` by +3 in pair space with sign inversion → `[−1, −1, +1, −1, +1, +1]`.  
+  * Lanes 0–11: `[−a, −a, +a, −a, +a, +a, +a, +a, −a, +a, −a, −a]`.  
+  * Lanes 12–23: same as lanes 0–11.  
+  * Lanes 24–31: `0`.  
+* Off-diagonal (k ← j, j ≠ k): use the same lane pattern scaled by 0.5 to keep ‖·‖₂ ≤ 1.  
+  * Off-diagonal amplitude: `a_off = a / 2 ≈ 0.10206207`.  
+  * Lanes 0–11: `[−a_off, −a_off, +a_off, −a_off, +a_off, +a_off, +a_off, +a_off, −a_off, +a_off, −a_off, −a_off]`.  
+  * Lanes 12–23: same as lanes 0–11.  
+  * Lanes 24–31: `0`.
+
+**Checks (apply per vector):**
+
+1. Pair symmetry: `q[ℓ] = q[ℓˉ]` holds by construction for all α, β, Γ vectors.  
+2. Norm bounds: hue+tone expansion yields ‖α‖₂ = ‖β‖₂ ≈ 0.999, ‖Γ_diag‖₂ ≈ 0.999, ‖Γ_off‖₂ ≈ 0.499, all within the `≤ 1` constraint (aux zeros preserve these bounds).  
+3. Rotation differentiation: α, β, and Γ use distinct pair-space rotations (0, +1, +3 with inversion), preserving the canonical family differentiation while satisfying lane pairing.
+
+These tables are canonical and must be regenerated exactly; no runtime tuning or alternative scaling is permitted.
+
 ## 7\. How 12×12 Relational Algebra Appears Without 144 Lanes
 
 You correctly want 12×12 structure but only have 32 lanes. The canonical method is:
@@ -514,4 +564,3 @@ So for neighbor mean
 * XH/XT: YES, but only via algebraic derived values  
 * STAB: YES, but coefficient-controlled only  
 * OBS: NO (must not feed back)
-
