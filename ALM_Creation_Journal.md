@@ -444,3 +444,74 @@ This snippet extends the previous `kf`/`ks` update, incorporating pressure and f
 This led to the subsequent, even more stringent, `PRESSURE_SIGNAL_ORTHOGONALITY.md` document, which enforced the non-negotiable divide between constraint and content.
 
 ---
+
+### 3.6 Pressure-Signal Orthogonality (The Non-Negotiable Divide)
+
+**Motivation:** The integration of pressure into the kernel (Section 3.5) brought a critical new risk: the subtle blurring of the line between *constraint* and *content*. If pressure could be misinterpreted as semantic information, or if semantic information could inadvertently influence pressure, the ALM's core philosophical premise (meaning is emergent, not controlled) would be fundamentally violated. The `PRESSURE_SIGNAL_ORTHOGONALITY.md` document was created as an absolute, non-negotiable firewall against this ontological breach.
+
+**Key Design Decisions:**
+
+*   **Single Non-Negotiable Rule:** The document opens with the unequivocal statement: "**Pressure and signal must never share a representational channel.**" This became the guiding principle for all subsequent rules.
+*   **Formal Orthogonality Law (`∂X/∂P = 0`)**: This was the mathematical embodiment of the principle. It states that while pressure (`P`) influences *how* the payload (`X`) evolves (through its effect on evolution operator `E`), it never becomes *part of* the payload itself. This rigorous definition prevented "pressure creep" into the semantic space.
+*   **Strict Definitions of Signal and Pressure:**
+    *   **Signal:** Explicitly defined as residing *only* in SIMD payload lanes (R, G, B, I), participating in residual computation, contributing to spiral formation, and persisting or decaying as memory.
+    *   **Pressure:** Defined as existing *only* as external scalar/vector fields, side-channel arrays, or parameters passed by value. It explicitly forbade storage in payload registers or their auxiliary lanes.
+*   **Forbidden Representations:** A comprehensive list of forbidden ways to represent pressure included: payload lane values, auxiliary lanes (including STAB, XH, XT, OBS), masks, flags, indices, or counters stored alongside signal. This directly addressed any potential ambiguity from `ALM Lane Map and Coefficient Tables Spec v0.md` or `AVX2_KERNEL_RULES.md`.
+*   **Strict Interaction Constraints:**
+    *   **Pressure → Signal (Allowed, Limited):** Reaffirmed that pressure could only scale decay, coupling, or persistence continuously. It explicitly forbade pressure from changing signs, zeroing values, skipping updates, altering topology, or affecting lane pairing.
+    *   **Signal → Pressure (Forbidden):** This was a hard prohibition: signal must *never* influence pressure *inside the core engine*. Computing pressure from payload energy or feedback loops from spiral metrics were explicitly disallowed. Any such adaptation had to occur *outside* the engine.
+*   **Coding Rules for Enforcement:** Examples of legal and illegal coding patterns were provided to guide developers and facilitate static analysis/code review.
+*   **Runtime Negative Tests:** Beyond static checks, the document mandated runtime negative tests:
+    *   Attempting to inject pressure into payload lanes must *fail*.
+    *   Attempting to compute pressure from payload must *fail*.
+    *   Attempting to use pressure as a conditional must *fail*.
+    These tests transformed philosophical principles into concrete, verifiable implementation gates.
+
+**Challenges & Trade-offs:**
+
+*   **Absolute Enforcement:** Implementing true orthogonality in a complex system required constant vigilance. It meant resisting the temptation to create "smart" feedback loops or adaptive pressure mechanisms within the core kernel, which would have compromised the ALM's foundational philosophy.
+*   **Debugging Orthogonality Violations:** Subtle leaks between pressure and signal could be difficult to trace. The negative tests became invaluable for quickly identifying such violations.
+*   **Explaining "No Content in Constraint":** The philosophical nuance of "pressure as a physical constraint, not a goal or content" required continuous emphasis. Developers often found it counter-intuitive to have a system that "adapts" without explicitly "observing" its own state to modulate pressure.
+
+**Code Example: Legal vs. Illegal Pressure Application (Conceptual)**
+
+This example highlights the strict coding discipline required.
+
+```cpp
+// Assume P_ow_scalar is a scalar overwrite pressure for the current cell
+// Assume regs_k_v is an __m256 vector for current payload register k, block
+// Assume effective_lambda_v is the effective decay rate vector already calculated from pressure
+
+// --- ILLEGAL: Pressure as Content/Control ---
+
+// regs_k_v[lane_idx] = P_ow_scalar; // ❌ ERROR: Pressure written into payload lane
+// aux_stabilizer_v = _mm256_mul_ps(aux_stabilizer_v, _mm256_set1_ps(P_ow_scalar)); // ❌ ERROR: Pressure directly modifying aux lane (unless specified as algebraic combination)
+// if (P_ow_scalar > SOME_THRESHOLD) { // ❌ ERROR: Pressure used for conditional branching
+//     // ... do something conditional ...
+// }
+
+// --- LEGAL: Pressure as Rate Modulation ---
+
+// Example: Effective Decay Rate calculation (from PRESSURE_AND_DECAY_LAWS.md)
+// lambda_k^eff(c) = lambda_k * (1 + a_ow * P_ow(c) + a_bw * P_bw(c))
+// This calculation occurs OUTSIDE the payload, and effective_lambda_v is a parameter passed IN.
+// Its elements are then used as multipliers.
+
+__m256 decay_factor_v = _mm256_sub_ps(_mm256_set1_ps(1.0f), effective_lambda_v); // (1 - lambda_k_eff)
+
+// Update payload: Content (regs_k_v) is modulated by Rate (decay_factor_v derived from pressure)
+__m256 new_ks_v = _mm256_mul_ps(decay_factor_v, ks_current_v);
+// ... further calculations ...
+```
+
+**Table 3.6.1: Orthogonality Violation Tests (Excerpt from `INVARIANT_REGRESSION_TESTS.md`)**
+
+| Test Type                    | Setup                                                | Pass Condition               |
+| :--------------------------- | :--------------------------------------------------- | :--------------------------- |
+| **Pressure Injection Negative** | Intentionally inject pressure values into payload lanes. | Test framework flags violation and aborts. |
+| **Signal-to-Pressure Feedback Negative** | Instrument kernel to compute pressure from payload.     | Test fails immediately.      |
+
+**Question/Challenge 3.6.1: What are the most subtle ways signal and pressure could become accidentally coupled (e.g., through floating-point artifacts, compiler optimizations, or shared memory access patterns outside the immediate kernel)?**
+This led to an even deeper scrutiny of memory access patterns and data flow, ensuring that even seemingly innocuous shared resources didn't inadvertently become feedback channels.
+
+---
