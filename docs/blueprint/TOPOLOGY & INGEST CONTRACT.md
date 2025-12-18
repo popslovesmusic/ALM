@@ -1,122 +1,167 @@
-# PART I — TOPOLOGY & INGEST CONTRACT
+# TOPOLOGY & INGEST CONTRACT
 
-ALM Topology and Ingest Contract v1.0 (Proposed Canonical)  
+ALM Topology and Ingest Contract v1.0 (Canonical)  
 ---
 
 ## 1\. Purpose
 
-This contract defines the only admissible spatial coupling and external ingest rules for ALM kernels.  
-Its role is to eliminate implementation discretion regarding:
+This contract defines the only admissible spatial coupling and external ingest rules for all ALM kernels.  
+Its purpose is to eliminate all implementation discretion regarding:
 
-* Neighbor definition  
-* Signal entry  
-* Temporal alignment  
-* Authority flow
+* Neighbor construction  
+* Aggregation behavior  
+* Ingest timing  
+* Ingest structure  
+* Authority flow into the kernel
 
+Any implementation that violates this contract is not ALM-compliant.  
 ---
 
-## 2\. Derived Constraints (Non-Negotiable)
+## 2\. Binding Constraints (Derived)
 
-The following are already enforced elsewhere in ALM and therefore constrain topology and ingest:
+The following constraints are already enforced elsewhere in ALM and are binding here:
 
-* Pressure channels must remain orthogonal to state evolution  
+* Pressure channels are orthogonal to state evolution  
 * No control, gating, or thresholding is permitted  
 * Phase isolation is mandatory  
 * Cache residency is bounded  
 * Pairwise symmetry must be preserved  
-* No observer feedback into kernel dynamics
+* Observers do not feed back into kernel dynamics
 
-These constraints are binding on all declarations below.  
+All declarations below satisfy and enforce these constraints.  
 ---
 
 ## 3\. Topology Definition
 
-### 3.1 Cell and Neighbor Set
+### 3.1 Cells
 
-Definition (Derived):  
-Each ALM cell c maintains a fixed, finite neighbor set N(c) such that:
-
-* |N(c)| \= K, where K is constant across all cells  
-* Neighbor relationships are symmetric:  
-* r  
-* Copy code
-
-cᵢ ∈ N(cⱼ) ⇔ cⱼ ∈ N(cᵢ)
-
-*   
-* Neighbor identity is static for the lifetime of the system
-
-Forbidden (Derived):
-
-* Dynamic rewiring  
-* Distance-dependent weighting  
-* Long-range shortcuts  
-* Global routing tables
-
-Rationale: dynamic or asymmetric topology introduces implicit authority flow and violates pressure orthogonality.  
+An ALM system consists of a finite set of cells.  
+All cells are topologically equivalent.  
+No geometric embedding is assumed or permitted.  
 ---
 
-### 3.2 Topological Regularity
+### 3.2 Neighbor Degree (Canonical)
 
-Declaration (Constitutional Choice):  
-Topology is locally regular and degree-bounded, but geometry is abstract.
+Each cell c maintains a fixed neighbor set N(c) with invariant cardinality:  
+mathematica  
+Copy code  
+|N(c)| \= K \= 12
 
-* No embedding in physical space is assumed  
-* Topology is defined purely by adjacency  
-* All cells are topologically equivalent
+This value is canonical, global, and immutable.  
+---
 
-This preserves symmetry while avoiding geometric bias.  
+### 3.3 Neighbor Construction (Canonical)
+
+For each cell c:
+
+* N(c) consists of exactly 12 statically assigned adjacent cells  
+* Adjacency is:  
+  * symmetric  
+  * static for system lifetime  
+  * abstract (non-geometric)
+
+Formally:  
+r  
+Copy code  
+cᵢ ∈ N(cⱼ) ⇔ cⱼ ∈ N(cᵢ)
+
+---
+
+### 3.4 Neighbor Weighting (Canonical)
+
+All neighbor contributions are uniformly weighted:  
+ini  
+Copy code  
+w\_i \= 1 / 12
+
+Properties:
+
+* Sum-normalized  
+* Symmetry-preserving  
+* No authority gradients  
+* No implicit control channels
+
+---
+
+### 3.5 Forbidden Topological Behaviors
+
+The following are explicitly forbidden:
+
+* Dynamic rewiring  
+* Long-range shortcuts  
+* Distance-dependent weighting  
+* Learned or adaptive weights  
+* Global routing tables  
+* Per-lane neighbor specialization
+
 ---
 
 ## 4\. Ingest Contract
 
-### 4.1 External Signal Entry
+### 4.1 Ingest Lanes
 
-Definition (Derived):  
-External signals enter ALM only through designated ingest lanes, which:
+External signals may enter ALM only through designated ingest lanes.  
+Ingest lanes:
 
 * Are orthogonal to pressure and persistence channels  
 * Do not modify kernel coefficients  
-* Do not alter neighbor topology
+* Do not modify topology  
+* Do not carry control or timing metadata
 
 ---
 
-### 4.2 Temporal Alignment
+### 4.2 Ingest Cadence (Canonical)
 
-Definition (Derived):  
-Ingest operates at a fixed cadence aligned to the ALM time stencil.
+Ingest operates at a fixed cadence aligned to the ALM time stencil.  
+Rules:
 
-* Each ingest sample maps to exactly one stencil advancement  
-* No mid-step injection is permitted
-
-Forbidden:
-
-* Event-driven injection  
-* Asynchronous callbacks  
-* Observer-triggered updates
+* One ingest frame corresponds to exactly one stencil advancement  
+* No mid-step injection is permitted  
+* No event-driven or asynchronous callbacks are permitted
 
 ---
 
-### 4.3 Jitter Handling
+### 4.3 Valid Ingest Frame (Canonical)
 
-Declaration (Minimal Sufficiency):
+A valid ingest frame consists of:
 
-* Bounded jitter is absorbed into the existing time stencil smoothing rules  
-* Jitter does not propagate as a state variable  
-* Excess jitter beyond declared bounds is rejected upstream
+* One scalar value per declared ingest lane  
+* Values aligned to a single stencil step  
+* No control, topology, or timing metadata
 
-This avoids introducing hidden state or adaptive timing control.  
+Frames that violate cadence or bounds are rejected upstream and do not enter ALM state.  
 ---
 
-## 5\. Entry / Exit Conditions
+### 4.4 Jitter Bounds (Canonical)
 
-* Entry: Valid ingest frame \+ stable neighbor topology  
-* Exit: Kernel update \+ observable emission only
+Permitted ingest jitter is bounded by:  
+Copy code  
+|Δt| ≤ 0.25 × Δt\_stencil
+
+Behavior:
+
+* Jitter within bounds is absorbed by the stencil smoothing rule  
+* Jitter exceeding bounds invalidates the ingest frame
+
+Jitter does not propagate as state.  
+---
+
+## 5\. Phase Boundaries
+
+### Entry Conditions
+
+* Valid ingest frame  
+* Stable topology
+
+### Exit Conditions
+
+* Kernel update  
+* Observable emission only
 
 No phase may:
 
-* Modify ingest rules  
 * Modify topology  
+* Modify ingest rules  
 * Influence upstream phases
 
 ---
@@ -125,9 +170,9 @@ No phase may:
 
 This contract is:
 
-* Authoritative  
+* Closed  
 * Non-parametric  
 * Implementation-binding
 
-Any code violating this contract is non-ALM.
+Any deviation constitutes a spec violation, not an interpretation difference.
 
