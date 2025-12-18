@@ -9,7 +9,12 @@
 ## Current materials (quick map)
 - Theory & intent: Foundational Background Theory (report + long form), Spiral Concept, 10×10 vs 12×12 resolution, ALM v0.2 bullet plan.
 - Implementation guardrails: cache budget (\<256 KB), 4-slice time stencil (Stable/Recent/Now/Future), paired-lane invariants, branchless pressure laws, dual-frequency envelope/beat handling.
+<<<<<<< ours
 - Adjacent references: DASE operations manual (CLI-driven dual-engine sim platform) and chromatic-cognition analyses (audio/CPWP prototypes); useful for tooling patterns but not core ALM substrate.
+=======
+- External simulator & analysis hooks: DASE headless CLI (NDJSON mission files), IGSOA/Phase4B engines, Python/C++ APIs, and bundled validation scripts (FFT, drift checks, R_c scaling) for physics-style inspection of ALM kernels.【F:source material/DASE_OPERATIONS_MANUAL.md†L1-L120】【F:source material/DASE_OPERATIONS_MANUAL.md†L120-L240】
+- Adjacent references: chromatic-cognition analyses (audio/CPWP prototypes); useful for tooling patterns but not core ALM substrate.
+>>>>>>> theirs
 
 ## Plan to move forward
 1. **Ground the substrate**
@@ -30,6 +35,10 @@
 6. **Validation harness**
    - Build regression tests: symmetry preservation, overwrite/pressure survival, neutrality smoke, slice-rotation integrity, scalar vs AVX2 equivalence, dual-frequency envelope/beat formation.
    - Profile hot loops for cache residency and branchlessness; confirm lane pairing invariants and deterministic outputs on target hardware assumptions.
+<<<<<<< ours
+=======
+   - Mirror DASE-style checks where applicable: FFT-based spectral purity for stable modes, drift/energy stability under null pressure, and scaling behavior under higher interaction radius/pressure analogs.
+>>>>>>> theirs
 7. **Integration trajectory**
    - After substrate proof, layer modality adapters (audio/visual streams as continuous fields), routing via authority/pressure fields, and spiral-centric memory probes; keep discrete outputs downstream-only.
 

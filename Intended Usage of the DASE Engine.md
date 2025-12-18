@@ -1,5 +1,6 @@
 # Intended Usage of the DASE Engine
 
+<<<<<<< ours
 ## 1\. What DASE Is (Usage-Oriented Definition)
 
 DASE (Dynamic Analog Semantic Engine) is:  
@@ -583,3 +584,36 @@ DASE is a living tensor field whose evolution rules encode semantic physics, and
 Everything else—agents, symbols, decisions—are observers standing outside the tensor, watching shadows of its motion.  
 ---
 
+=======
+## Core intent
+- Use DASE as a **headless, scriptable simulator** driven by NDJSON mission files that stream commands into `dase_cli.exe` for reproducible SATP runs.【F:source material/DASE_OPERATIONS_MANUAL.md†L1-L80】
+- Choose the **engine type per task**:
+  - **IGSOA Complex (header-only, compiled into CLI)** for non-local SATP physics with configurable causal radius `R_c`.【F:source material/DASE_OPERATIONS_MANUAL.md†L13-L43】
+  - **Phase 4B Analog (dynamic library)** for AVX2-optimized real-valued workloads when quantum interactions are not the focus.【F:source material/DASE_OPERATIONS_MANUAL.md†L13-L43】
+
+## Mission workflow (minimum loop)
+1. Prepare a mission file with newline-delimited JSON commands:
+   - `create_engine` (choose `igsoa_complex` or `phase4b`, set `engine_id`, grid size, dimensions).【F:source material/DASE_OPERATIONS_MANUAL.md†L41-L94】
+   - `set_igsoa_state` (modes: `overwrite` for clean starts, `add` for perturbations, `blend` for smooth transitions with `blend_weight`).【F:source material/DASE_OPERATIONS_MANUAL.md†L120-L180】
+   - `run_simulation` (duration, `R_c`, optional status interval).【F:source material/DASE_OPERATIONS_MANUAL.md†L67-L110】
+   - `get_state` (use `json_compact_verbose` for base64-encoded field dumps) and `destroy_engine` to free resources.【F:source material/DASE_OPERATIONS_MANUAL.md†L120-L150】
+2. Pipe the mission into the CLI and capture stdout to a results file (Windows example from the manual).【F:source material/DASE_OPERATIONS_MANUAL.md†L80-L110】
+
+## Analysis & validation
+- Run bundled scripts on saved JSON output:
+  - `analyze_igsoa_state.py` for FFT-based spectral purity checks.
+  - `extract_drift.py` for energy drift/zero-drift verification.
+- Expected validation signals:
+  - Performance scales with higher `R_c` (more non-local interactions).
+  - Null fields show near-zero drift.
+  - Single-mode inputs yield single-peak spectra without spurious modes.【F:source material/DASE_OPERATIONS_MANUAL.md†L180-L240】
+
+## API surfaces
+- **Primary:** NDJSON CLI (`dase_cli.exe`).
+- **Embedded use:** C++ headers under `src/cpp` for direct integration (requires rebuild when physics changes).【F:source material/DASE_OPERATIONS_MANUAL.md†L200-L240】
+- **Python bindings:** `dase_engine.pyd` for scripting/analysis and WebSocket bridging prototypes.【F:source material/DASE_OPERATIONS_MANUAL.md†L200-L240】
+
+## How this informs ALM work
+- Reuse the mission/CLI pattern to drive ALM kernels with deterministic command streams.
+- Borrow validation patterns (FFT purity, drift checks, scaling under pressure/radius) as acceptance tests for ALM’s residual/spiral dynamics.
+>>>>>>> theirs
