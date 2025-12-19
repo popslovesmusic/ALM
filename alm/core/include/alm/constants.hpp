@@ -18,6 +18,12 @@ inline constexpr std::size_t kLanesPerRegister = kLaneBlocks * kLaneCount;
 // Register count per cell (R, G, B, I).
 inline constexpr std::size_t kRegisterCount = 4;
 
+<<<<<<< ours
+=======
+// Topology constants: each cell connects to 12 symmetric neighbors.
+inline constexpr std::size_t kNeighborCount = 12;
+
+>>>>>>> theirs
 // Deterministic seed defaults for reproducible initialization.
 inline constexpr std::uint64_t kDefaultSeed = 0xA1B2C3D4u;
 
