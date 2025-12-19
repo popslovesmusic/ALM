@@ -64,3 +64,184 @@ The blueprint depends on the following sources (all under `docs/blueprint/` unle
 
 ## Provenance
 - **Development record:** `ALM_Creation_Journal.md` retains the detailed rationale and historical derivation of the above rules. It informs traceability but does not override the contracts listed here.
+
+
+
+
+-----
+
+1. Canonical ALM Directory Structure (Authoritative Execution)
+This is the only place where system state is allowed to evolve.
+
+makefile
+Copy code
+alm/
+├── core/
+│   ├── include/
+│   │   └── alm/
+│   │       ├── types.hpp              # Fundamental scalar/vector types
+│   │       ├── constants.hpp          # Compile-time constants only
+│   │       ├── coefficients.hpp       # Read-only canonical tables
+│   │       ├── topology.hpp           # Static neighbor topology
+│   │       ├── time_stencil.hpp       # FUTURE/NOW/RECENT/STABLE rotation
+│   │       ├── phase4_kernel.hpp      # Scalar relational kernel (authoritative)
+│   │       ├── phase5_kernel_avx2.hpp # SIMD kernel (law-equivalent)
+│   │       ├── boundary_terms.hpp     # Boundary conditioning terms (math only)
+│   │       ├── focus_terms.hpp        # Focus transfer terms (math only)
+│   │       ├── ingest_terms.hpp       # Ingest coupling terms (math only)
+│   │       └── observables.hpp        # Read-only probes
+│   │
+│   ├── src/
+│   │   ├── coefficients.cpp
+│   │   ├── topology.cpp
+│   │   ├── time_stencil.cpp
+│   │   ├── phase4_kernel.cpp
+│   │   ├── phase5_kernel_avx2.cpp
+│   │   ├── boundary_terms.cpp
+│   │   ├── focus_terms.cpp
+│   │   ├── ingest_terms.cpp
+│   │   └── observables.cpp
+│   │
+│   └── tests/
+│       ├── symmetry_invariant_test.cpp
+│       ├── scalar_vs_simd_test.cpp
+│       ├── topology_closure_test.cpp
+│       ├── pressure_orthogonality_test.cpp
+│       └── long_run_drift_test.cpp
+│
+├── tools/                              # Non-canonical helpers
+│   ├── python/
+│   ├── julia/
+│   └── rust/
+│
+├── reference/                          # Conceptual & validation code only
+│   └── python/
+│
+└── docs/
+    ├── blueprint/
+    ├── contracts/
+    └── agent_notes/
+Agent rule:
+
+Only code under alm/core/ may evolve ALM state.
+
+Everything else is support or reference.
+
+2. Revised Language Authority Rule (Flexible but Enforced)
+You were right — “C++ only” is too restrictive. Here is the correct framing.
+
+Canonical Execution Language Rule
+Canonical ALM execution may be implemented in languages that provide:
+
+explicit memory layout control
+
+deterministic floating-point behavior
+
+enforceable SIMD or vector simultaneity
+
+zero hidden control flow
+
+compile-time or provable runtime invariants
+
+Approved canonical languages (initial):
+
+C++ (primary)
+
+Rust (with explicit SIMD + unsafe where required)
+
+Julia (only with static arrays, no dynamic dispatch, no JIT variance)
+
+Python is explicitly disallowed as a canonical execution language.
+
+This gives you room without losing discipline.
+
+3. What the Agent Must Do With the Current Python File Set
+This needs to be mechanical, not interpretive.
+
+Current Python Directory (Given)
+arduino
+Copy code
+__init__.py
+avx2.py
+boundary.py
+bias.py
+coefficients.py
+config.py
+constants.py
+focus.py
+ingest.py
+kernel.py
+observability.py
+performance.py
+state.py
+topology.py
+validators.py
+Agent Instructions (Explicit)
+Reclassify the existing Python directory as reference/python/.
+
+The agent must:
+
+NOT extend it as a runtime system
+
+NOT optimize it
+
+NOT treat it as authoritative
+
+The agent MAY:
+
+use it to clarify math
+
+use it to validate coefficients
+
+use it to generate test vectors
+
+use it as a slow scalar reference
+
+File-by-File Handling Rules
+File	Status
+kernel.py	Reference scalar math only
+coefficients.py	Validation + export only
+topology.py	Static topology checks
+validators.py	Invariant validation
+observability.py	Offline analysis
+avx2.py	Freeze — do not use as SIMD
+boundary.py, focus.py, bias.py, ingest.py	Conceptual decomposition only
+state.py	Snapshot / inspection only
+performance.py	Harness only
+
+No Python file may advance time, rotate stencils, or apply pressure in production.
+
+4. Language Policy Block (Drop-In for agents.md)
+You can copy-paste this directly.
+
+diff
+Copy code
+LANGUAGE_AUTHORITY_POLICY
+
+Canonical ALM execution is restricted to low-level, deterministic languages
+with explicit memory and SIMD control.
+
+Approved canonical languages:
+- C++
+- Rust (explicit SIMD, no hidden dispatch)
+- Julia (static arrays only, deterministic mode)
+
+Python is non-canonical and may be used ONLY for:
+- reference implementations
+- invariant validation
+- coefficient verification
+- test harnesses
+- visualization and analysis
+
+Python code must never:
+- evolve ALM state
+- rotate time stencils
+- apply pressure or focus
+- implement SIMD logic
+
+If an agent is unsure whether code is canonical,
+it must assume it is NOT and place it under /reference/.
+
+---
+## confirm understanding of task before starting a task.
+## then execute agents_plan.md
