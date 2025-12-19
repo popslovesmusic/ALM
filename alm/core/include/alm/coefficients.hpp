@@ -30,6 +30,7 @@ static_assert(kConjugateLaneMap[1] == kLaneCount - 2U, "Lane pairing must be sym
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 struct LaneCoefficients {
   std::array<float, kLaneCount> alpha{};
   std::array<float, kLaneCount> beta{};
@@ -41,6 +42,8 @@ struct CoefficientTables {
 
   [[nodiscard]] constexpr const LaneCoefficients &block(std::size_t index) const {
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 struct RegisterLaneCoefficients {
@@ -82,6 +85,9 @@ struct CoefficientTables {
 
   [[nodiscard]] constexpr const RegisterCoefficientTables &block(std::size_t index) const {
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -166,10 +172,13 @@ struct CanonicalizationStatus {
   for (std::size_t block = 0; block < kLaneBlocks; ++block) {
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     output.blocks[block].alpha = alpha;
     output.blocks[block].beta = beta;
     output.blocks[block].gamma = gamma;
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
     for (std::size_t reg = 0; reg < kRegisterCount; ++reg) {
@@ -181,6 +190,9 @@ struct CanonicalizationStatus {
       }
     }
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

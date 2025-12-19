@@ -1,6 +1,12 @@
 #pragma once
 
+<<<<<<< ours
 #include "alm/coefficients.hpp"
+=======
+#include "alm/boundary.hpp"
+#include "alm/coefficients.hpp"
+#include "alm/focus.hpp"
+>>>>>>> theirs
 #include "alm/stencil.hpp"
 #include "alm/topology.hpp"
 #include "alm/types.hpp"
@@ -8,10 +14,13 @@
 #include <array>
 #include <cstddef>
 <<<<<<< ours
+<<<<<<< ours
 
 namespace alm::core {
 
 =======
+=======
+>>>>>>> theirs
 #include <immintrin.h>
 
 namespace alm::core {
@@ -66,6 +75,9 @@ inline __m256 AccumulateCoupling(const Frame &neighbor_sum, const RegisterGammaC
   return acc;
 }
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 inline void RegisterDifference(const RegisterArray &lhs, const RegisterArray &rhs, RegisterArray &output) {
   for (std::size_t block = 0; block < kLaneBlocks; ++block) {
@@ -84,7 +96,12 @@ inline void FrameDifference(const Frame &lhs, const Frame &rhs, Frame &output) {
 
 inline void ScalarKernelStep(Stencil &stencil, const CoefficientTables &coefficients,
                              const NeighborMap &topology = kCanonicalTopology, float pressure = 1.0F,
+<<<<<<< ours
                              float decay = 0.0F) {
+=======
+                             float decay = 0.0F, const BoundaryProfile *boundary = nullptr,
+                             const FocusState *focus = nullptr, float focus_gain = 1.0F) {
+>>>>>>> theirs
   constexpr std::array<Register, kRegisterCount> kRegisters = {Register::kR, Register::kG, Register::kB, Register::kI};
 
   const Frame &now = stencil.now();
@@ -127,6 +144,7 @@ inline void ScalarKernelStep(Stencil &stencil, const CoefficientTables &coeffici
       }
     }
   }
+<<<<<<< ours
 }
 
 <<<<<<< ours
@@ -134,6 +152,22 @@ inline void ScalarKernelStep(Stencil &stencil, const CoefficientTables &coeffici
 inline void Avx2KernelStep(Stencil &stencil, const CoefficientTables &coefficients,
                            const NeighborMap &topology = kCanonicalTopology, float pressure = 1.0F,
                            float decay = 0.0F) {
+=======
+
+  if (boundary != nullptr) {
+    ApplyBoundaryCondition(*boundary, future);
+  }
+
+  if (focus != nullptr) {
+    ApplyFocusOverlay(*focus, focus_gain, future);
+  }
+}
+
+inline void Avx2KernelStep(Stencil &stencil, const CoefficientTables &coefficients,
+                           const NeighborMap &topology = kCanonicalTopology, float pressure = 1.0F,
+                           float decay = 0.0F, const BoundaryProfile *boundary = nullptr,
+                           const FocusState *focus = nullptr, float focus_gain = 1.0F) {
+>>>>>>> theirs
   const Frame &now = stencil.now();
   const Frame &recent = stencil.recent();
   const Frame &stable = stencil.stable();
@@ -213,6 +247,19 @@ inline void Avx2KernelStep(Stencil &stencil, const CoefficientTables &coefficien
       StoreRegisterBlock(future.b, block, lane, future_b);
       StoreRegisterBlock(future.i, block, lane, future_i);
     }
+  }
+<<<<<<< ours
+}
+
+>>>>>>> theirs
+=======
+
+  if (boundary != nullptr) {
+    ApplyBoundaryCondition(*boundary, future);
+  }
+
+  if (focus != nullptr) {
+    ApplyFocusOverlay(*focus, focus_gain, future);
   }
 }
 
