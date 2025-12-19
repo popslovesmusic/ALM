@@ -15,6 +15,7 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     LANES,
 >>>>>>> theirs
@@ -31,10 +32,16 @@ from .constants import (
     LANES,
 >>>>>>> theirs
     LANES_PER_BLOCK,
+=======
+    LANES,
+    LANES_PER_BLOCK,
+    L2_CACHE_BUDGET_BYTES,
+>>>>>>> theirs
     NUM_REGISTERS,
     REGISTER_NAMES,
     STENCIL_ORDER,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -51,6 +58,9 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+from .boundary import apply_resonant_boundary, boundary_envelope
 >>>>>>> theirs
 =======
 from .boundary import apply_resonant_boundary, boundary_envelope
@@ -72,6 +82,7 @@ from .coefficients import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from .state import StateSlice, StencilBuffers
 
 __all__ = [
@@ -106,14 +117,19 @@ from .avx2 import avx2_step, avx2_equivalent_step
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 from .focus import FocusTracker
 from .ingest import INGEST_REGISTER_INDEX, IngestController
 from .kernel import scalar_step
 from .avx2 import avx2_step, avx2_equivalent_step
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 from .observability import (
@@ -122,10 +138,20 @@ from .observability import (
     spiral_observation,
 )
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 from .state import StateSlice, StencilBuffers
+=======
+from .state import (
+    StateSlice,
+    StencilBuffers,
+    assert_cache_residency,
+    slice_payload_bytes,
+    stencil_payload_bytes,
+)
+>>>>>>> theirs
 from .topology import (
     DEFAULT_NEIGHBOR_OFFSETS,
     DEFAULT_TOPOLOGY,
@@ -141,6 +167,10 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    "FocusTracker",
+>>>>>>> theirs
 =======
     "FocusTracker",
 >>>>>>> theirs
@@ -158,6 +188,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "LANE_BLOCKS",
 <<<<<<< ours
 =======
@@ -173,6 +204,9 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+    "L2_CACHE_BUDGET_BYTES",
 >>>>>>> theirs
     "apply_resonant_boundary",
     "avx2_equivalent_step",
@@ -182,6 +216,9 @@ __all__ = [
     "LANES",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -196,6 +233,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     "scalar_step",
 >>>>>>> theirs
@@ -206,6 +244,8 @@ __all__ = [
     "scalar_step",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
     "scalar_step",
@@ -213,6 +253,9 @@ __all__ = [
     "spiral_observation",
     "observable_snapshot",
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -225,6 +268,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -235,6 +279,11 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+    "assert_cache_residency",
+    "slice_payload_bytes",
+    "stencil_payload_bytes",
 >>>>>>> theirs
     "StateSlice",
     "StencilBuffers",

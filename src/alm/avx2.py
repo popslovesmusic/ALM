@@ -15,6 +15,10 @@ from .coefficients import CoefficientTables
 from .state import StencilBuffers
 from .topology import DEFAULT_TOPOLOGY, NeighborTopology, aggregate_neighbors
 <<<<<<< ours
+<<<<<<< ours
+=======
+from .validators import require_scalar
+>>>>>>> theirs
 =======
 from .validators import require_scalar
 >>>>>>> theirs
@@ -36,6 +40,12 @@ def avx2_step(
     """
 
 <<<<<<< ours
+<<<<<<< ours
+=======
+    pressure_scalar = require_scalar(pressure, "pressure")
+    decay_scalar = require_scalar(decay, "decay")
+
+>>>>>>> theirs
 =======
     pressure_scalar = require_scalar(pressure, "pressure")
     decay_scalar = require_scalar(decay, "decay")
@@ -58,7 +68,11 @@ def avx2_step(
     update = alpha * fast_residual + beta * slow_residual + coupling
 
 <<<<<<< ours
+<<<<<<< ours
     buffers.future.data[:] = now + pressure * update - decay * slow_residual
+=======
+    buffers.future.data[:] = now + pressure_scalar * update - decay_scalar * slow_residual
+>>>>>>> theirs
 =======
     buffers.future.data[:] = now + pressure_scalar * update - decay_scalar * slow_residual
 >>>>>>> theirs

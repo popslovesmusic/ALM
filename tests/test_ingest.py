@@ -22,12 +22,15 @@ def test_ingest_writes_future_aux_lane_only_once():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     for register in range(buffers.future.data.shape[-1]):
         if register == controller.register_index:
             np.testing.assert_allclose(buffers.future.data[..., register], 0.5)
         else:
             assert np.allclose(buffers.future.data[..., register], 0.0)
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -45,6 +48,9 @@ def test_ingest_writes_future_aux_lane_only_once():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -79,8 +85,13 @@ def test_ingest_resets_after_advance_and_tracks_rotation():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     assert np.allclose(buffers.stable.data[..., controller.register_index], 2.0)
     assert np.allclose(buffers.future.data[..., controller.register_index], 0.0)
+=======
+    assert np.allclose(buffers.stable.data[..., controller.register_index, :], 2.0)
+    assert np.allclose(buffers.future.data[..., controller.register_index, :], 0.0)
+>>>>>>> theirs
 =======
     assert np.allclose(buffers.stable.data[..., controller.register_index, :], 2.0)
     assert np.allclose(buffers.future.data[..., controller.register_index, :], 0.0)
@@ -110,7 +121,11 @@ def test_ingest_resets_after_advance_and_tracks_rotation():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     assert np.allclose(buffers.future.data[..., controller.register_index], 3.0)
+=======
+    assert np.allclose(buffers.future.data[..., controller.register_index, :], 3.0)
+>>>>>>> theirs
 =======
     assert np.allclose(buffers.future.data[..., controller.register_index, :], 3.0)
 >>>>>>> theirs

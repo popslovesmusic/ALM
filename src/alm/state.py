@@ -14,6 +14,7 @@ from .config import ArrayInitializer
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from .constants import GRID_COLS, GRID_ROWS, NUM_REGISTERS, STENCIL_ORDER
 =======
 from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
@@ -30,6 +31,16 @@ from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
 =======
 from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
 >>>>>>> theirs
+=======
+from .constants import (
+    GRID_COLS,
+    GRID_ROWS,
+    LANES,
+    L2_CACHE_BUDGET_BYTES,
+    NUM_REGISTERS,
+    STENCIL_ORDER,
+)
+>>>>>>> theirs
 
 
 @dataclass
@@ -44,7 +55,11 @@ class StateSlice:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS)
+=======
+        expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES)
+>>>>>>> theirs
 =======
         expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES)
 >>>>>>> theirs
@@ -68,6 +83,12 @@ class StateSlice:
         if not np.issubdtype(self.data.dtype, np.floating):
             raise TypeError("StateSlice data must be a floating point array")
 
+<<<<<<< ours
+=======
+        if not self.data.flags["C_CONTIGUOUS"]:
+            raise ValueError("StateSlice data must be C-contiguous for cache residency")
+
+>>>>>>> theirs
     @classmethod
     def from_initializer(cls, init: ArrayInitializer, name: str) -> "StateSlice":
         return cls(init(name))
@@ -79,7 +100,13 @@ class StateSlice:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         return cls(np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS), dtype=dtype))
+=======
+        return cls(
+            np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=dtype)
+        )
+>>>>>>> theirs
 =======
         return cls(
             np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=dtype)
@@ -157,3 +184,36 @@ class StencilBuffers:
             "RECENT": self.recent.data.copy(),
             "STABLE": self.stable.data.copy(),
         }
+<<<<<<< ours
+=======
+
+
+def slice_payload_bytes(dtype: np.dtype = np.float32) -> int:
+    """Return payload size in bytes for one state slice with the given dtype."""
+
+    return GRID_ROWS * GRID_COLS * NUM_REGISTERS * LANES * np.dtype(dtype).itemsize
+
+
+def stencil_payload_bytes(dtype: np.dtype = np.float32) -> int:
+    """Return payload size in bytes for the full four-slice stencil."""
+
+    return slice_payload_bytes(dtype) * len(STENCIL_ORDER)
+
+
+def assert_cache_residency(
+    dtype: np.dtype = np.float32, budget_bytes: int = L2_CACHE_BUDGET_BYTES
+) -> int:
+    """Validate the stencil payload fits within the L2 cache budget.
+
+    Returns the computed payload size when under budget to allow callers to
+    surface telemetry or build additional instrumentation.
+    """
+
+    payload = stencil_payload_bytes(dtype)
+    if payload > budget_bytes:
+        raise ValueError(
+            f"Stencil payload of {payload} bytes exceeds budget of {budget_bytes} bytes"
+        )
+
+    return payload
+>>>>>>> theirs

@@ -19,6 +19,7 @@ LANES_PER_BLOCK: int = 8  # 4 blocks × 8 lanes == 32 lanes total
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 LANES: int = LANE_BLOCKS * LANES_PER_BLOCK
 >>>>>>> theirs
@@ -36,3 +37,11 @@ LANES: int = LANE_BLOCKS * LANES_PER_BLOCK
 >>>>>>> theirs
 
 STENCIL_ORDER: Tuple[str, str, str, str] = ("FUTURE", "NOW", "RECENT", "STABLE")
+=======
+LANES: int = LANE_BLOCKS * LANES_PER_BLOCK
+
+STENCIL_ORDER: Tuple[str, str, str, str] = ("FUTURE", "NOW", "RECENT", "STABLE")
+
+# Cache residency budget (bytes) for the four-slice stencil payload
+L2_CACHE_BUDGET_BYTES: int = 256 * 1024
+>>>>>>> theirs
