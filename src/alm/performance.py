@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Mapping
+import re
+from pathlib import Path
+from typing import Iterable, Mapping, Sequence
 
 import numpy as np
 
@@ -14,12 +16,19 @@ from .state import stencil_payload_bytes
 # reductions, shuffles, or masked control flow.
 ALLOWED_AVX2_INTRINSICS = (
     "_mm256_set1_ps",
+    "_mm256_setzero_ps",
     "_mm256_load_ps",
+    "_mm256_loadu_ps",
     "_mm256_store_ps",
     "_mm256_add_ps",
     "_mm256_sub_ps",
     "_mm256_mul_ps",
     "_mm256_fmadd_ps",
+)
+
+_INTRINSIC_PATTERN = re.compile(r"_mm256_[A-Za-z0-9_]+")
+_CONST_PATTERN = re.compile(
+    r"inline constexpr std::size_t\s+(?P<name>k[A-Za-z0-9_]+)\s*=\s*(?P<value>[0-9_]+)U?;"
 )
 
 
@@ -48,4 +57,26 @@ def validate_intrinsics_used(intrinsics: Iterable[str]) -> None:
         )
 
 
-__all__ = ["ALLOWED_AVX2_INTRINSICS", "residency_report", "validate_intrinsics_used"]
+def extract_intrinsics_from_header(header: Path) -> Sequence[str]:
+    """Parse AVX2 intrinsic names from a C++ header for allow-list checks."""
+
+    content = header.read_text(encoding="utf-8")
+    return sorted(set(_INTRINSIC_PATTERN.findall(content)))
+
+
+def parse_cxx_constants(header: Path) -> Mapping[str, int]:
+    """Extract literal std::size_t constants from a C++ header."""
+
+    content = header.read_text(encoding="utf-8")
+    matches = _CONST_PATTERN.finditer(content)
+    parsed = {match.group("name"): int(match.group("value")) for match in matches}
+    return parsed
+
+
+__all__ = [
+    "ALLOWED_AVX2_INTRINSICS",
+    "extract_intrinsics_from_header",
+    "parse_cxx_constants",
+    "residency_report",
+    "validate_intrinsics_used",
+]
