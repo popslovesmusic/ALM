@@ -14,6 +14,10 @@ import numpy as np
 from .coefficients import CoefficientTables
 from .state import StencilBuffers
 from .topology import DEFAULT_TOPOLOGY, NeighborTopology, aggregate_neighbors
+<<<<<<< ours
+=======
+from .validators import require_scalar
+>>>>>>> theirs
 
 
 def avx2_step(
@@ -31,6 +35,12 @@ def avx2_step(
     parity with the scalar path while matching the SIMD simultaneity contract.
     """
 
+<<<<<<< ours
+=======
+    pressure_scalar = require_scalar(pressure, "pressure")
+    decay_scalar = require_scalar(decay, "decay")
+
+>>>>>>> theirs
     now = buffers.now.data
     recent = buffers.recent.data
     stable = buffers.stable.data
@@ -47,7 +57,11 @@ def avx2_step(
 
     update = alpha * fast_residual + beta * slow_residual + coupling
 
+<<<<<<< ours
     buffers.future.data[:] = now + pressure * update - decay * slow_residual
+=======
+    buffers.future.data[:] = now + pressure_scalar * update - decay_scalar * slow_residual
+>>>>>>> theirs
 
 
 def avx2_equivalent_step(

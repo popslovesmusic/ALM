@@ -14,6 +14,10 @@ from .coefficients import CoefficientTables
 from .constants import NUM_REGISTERS
 from .state import StencilBuffers
 from .topology import DEFAULT_TOPOLOGY, NeighborTopology, aggregate_neighbors
+<<<<<<< ours
+=======
+from .validators import require_scalar
+>>>>>>> theirs
 
 
 def scalar_step(
@@ -32,6 +36,12 @@ def scalar_step(
     introducing control flow.
     """
 
+<<<<<<< ours
+=======
+    pressure_scalar = require_scalar(pressure, "pressure")
+    decay_scalar = require_scalar(decay, "decay")
+
+>>>>>>> theirs
     now = buffers.now.data
     recent = buffers.recent.data
     stable = buffers.stable.data
@@ -53,9 +63,17 @@ def scalar_step(
             + coupling
         )
 
+<<<<<<< ours
         future[..., target, :] = now[..., target, :] + pressure * update - decay * slow_residual[
             ..., target, :
         ]
+=======
+        future[..., target, :] = (
+            now[..., target, :]
+            + pressure_scalar * update
+            - decay_scalar * slow_residual[..., target, :]
+        )
+>>>>>>> theirs
 
 
 __all__ = ["scalar_step"]
