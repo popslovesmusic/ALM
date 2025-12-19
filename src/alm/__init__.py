@@ -17,6 +17,7 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     LANES,
 >>>>>>> theirs
@@ -33,6 +34,11 @@ from .constants import (
     LANES,
 >>>>>>> theirs
     LANES_PER_BLOCK,
+=======
+    LANES,
+    LANES_PER_BLOCK,
+    L2_CACHE_BUDGET_BYTES,
+>>>>>>> theirs
 =======
     LANES,
     LANES_PER_BLOCK,
@@ -56,6 +62,7 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from .state import StateSlice, StencilBuffers
 
 __all__ = [
@@ -65,6 +72,9 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+from .boundary import apply_resonant_boundary, boundary_envelope
 >>>>>>> theirs
 =======
 from .boundary import apply_resonant_boundary, boundary_envelope
@@ -94,6 +104,7 @@ from .coefficients import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from .state import StateSlice, StencilBuffers
 
 __all__ = [
@@ -132,10 +143,14 @@ from .avx2 import avx2_step, avx2_equivalent_step
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+from .bias import future_bias
+>>>>>>> theirs
 from .focus import FocusTracker
 from .ingest import INGEST_REGISTER_INDEX, IngestController
 from .kernel import scalar_step
 from .avx2 import avx2_step, avx2_equivalent_step
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -163,6 +178,16 @@ from .state import StateSlice, StencilBuffers
 =======
 =======
 >>>>>>> theirs
+=======
+from .observability import (
+    observable_snapshot,
+    observation_fingerprint,
+    spiral_components,
+    spiral_observation,
+    TraceRecorder,
+    TraceRetentionPolicy,
+)
+>>>>>>> theirs
 from .state import (
     StateSlice,
     StencilBuffers,
@@ -171,13 +196,19 @@ from .state import (
     stencil_payload_bytes,
 )
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 from .performance import (
     ALLOWED_AVX2_INTRINSICS,
     residency_report,
     validate_intrinsics_used,
 )
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 from .topology import (
     DEFAULT_NEIGHBOR_OFFSETS,
@@ -190,6 +221,7 @@ __all__ = [
     "DEFAULT_NEIGHBOR_OFFSETS",
     "DEFAULT_TOPOLOGY",
 <<<<<<< ours
+<<<<<<< ours
     "CoefficientTables",
     "DeterministicConfig",
 <<<<<<< ours
@@ -209,15 +241,22 @@ __all__ = [
     "FocusTracker",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
     "ALLOWED_AVX2_INTRINSICS",
     "CoefficientTables",
     "DeterministicConfig",
     "FocusTracker",
+<<<<<<< ours
+>>>>>>> theirs
+=======
+    "future_bias",
 >>>>>>> theirs
     "GRID_COLS",
     "GRID_ROWS",
     "INGEST_REGISTER_INDEX",
     "IngestController",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -239,6 +278,9 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+    "L2_CACHE_BUDGET_BYTES",
 >>>>>>> theirs
 =======
     "L2_CACHE_BUDGET_BYTES",
@@ -256,6 +298,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -288,11 +331,14 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
     "LANES_PER_BLOCK",
     "NUM_REGISTERS",
     "NeighborTopology",
     "residency_report",
     "REGISTER_NAMES",
+<<<<<<< ours
 >>>>>>> theirs
     "scalar_step",
     "spiral_components",
@@ -308,6 +354,15 @@ __all__ = [
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+    "scalar_step",
+    "TraceRecorder",
+    "TraceRetentionPolicy",
+    "spiral_components",
+    "spiral_observation",
+    "observable_snapshot",
+    "observation_fingerprint",
+>>>>>>> theirs
     "STENCIL_ORDER",
     "aggregate_neighbors",
     "build_canonical_coefficients",
@@ -319,6 +374,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -336,10 +392,15 @@ __all__ = [
     "stencil_payload_bytes",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
     "assert_cache_residency",
     "validate_intrinsics_used",
     "slice_payload_bytes",
     "stencil_payload_bytes",
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
     "StateSlice",
     "StencilBuffers",

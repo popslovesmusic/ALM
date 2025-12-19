@@ -8,7 +8,14 @@ or archival snapshots.
 
 from __future__ import annotations
 
+<<<<<<< ours
 from typing import Dict, Iterable
+=======
+import hashlib
+from collections import deque
+from dataclasses import dataclass
+from typing import Deque, Dict, Iterable, List, Tuple
+>>>>>>> theirs
 
 import numpy as np
 
@@ -78,3 +85,79 @@ def spiral_observation(
 
 
 __all__ = ["observable_snapshot", "spiral_components", "spiral_observation"]
+<<<<<<< ours
+=======
+
+
+@dataclass(frozen=True)
+class TraceRetentionPolicy:
+    """Retention policy for diagnostic traces."""
+
+    window: int = 64
+    durable: bool = True
+
+    def __post_init__(self) -> None:
+        if self.window <= 0:
+            raise ValueError("window must be a positive integer")
+
+
+def _copy_observation(observation: Dict[str, np.ndarray]) -> Dict[str, np.ndarray]:
+    return {key: value.copy() for key, value in observation.items()}
+
+
+def observation_fingerprint(observation: Dict[str, np.ndarray]) -> str:
+    """Compute a deterministic fingerprint for an observation payload."""
+
+    digest = hashlib.sha256()
+    for key in sorted(observation):
+        digest.update(key.encode("utf-8"))
+        digest.update(observation[key].tobytes())
+    return digest.hexdigest()
+
+
+class TraceRecorder:
+    """Non-intrusive trace recorder with bounded retention."""
+
+    def __init__(self, policy: TraceRetentionPolicy = TraceRetentionPolicy()):
+        self.policy = policy
+        self._window: Deque[Tuple[int, Dict[str, np.ndarray]]] = deque(
+            maxlen=policy.window
+        )
+        self._archive: List[Tuple[int, Dict[str, np.ndarray]]] | None = (
+            [] if policy.durable else None
+        )
+
+    def record(self, step: int, observation: Dict[str, np.ndarray]) -> None:
+        """Record a passive observation with retention and optional durability."""
+
+        safe_obs = _copy_observation(observation)
+        entry = (step, safe_obs)
+        self._window.append(entry)
+        if self._archive is not None:
+            self._archive.append(entry)
+
+    @property
+    def window(self) -> List[Tuple[int, Dict[str, np.ndarray]]]:
+        return [(step, _copy_observation(obs)) for step, obs in self._window]
+
+    @property
+    def archive(self) -> List[Tuple[int, Dict[str, np.ndarray]]]:
+        if self._archive is None:
+            return []
+        return [(step, _copy_observation(obs)) for step, obs in self._archive]
+
+    def window_fingerprints(self) -> List[str]:
+        return [observation_fingerprint(obs) for _, obs in self._window]
+
+    def archive_fingerprints(self) -> List[str]:
+        if self._archive is None:
+            return []
+        return [observation_fingerprint(obs) for _, obs in self._archive]
+
+
+__all__ += [
+    "TraceRecorder",
+    "TraceRetentionPolicy",
+    "observation_fingerprint",
+]
+>>>>>>> theirs

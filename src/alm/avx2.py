@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import numpy as np
 
+<<<<<<< ours
 from .coefficients import CoefficientTables
 from .state import StencilBuffers
 from .topology import DEFAULT_TOPOLOGY, NeighborTopology, aggregate_neighbors
@@ -24,6 +25,13 @@ from .validators import require_scalar
 from .validators import require_scalar
 >>>>>>> theirs
 =======
+from .validators import require_scalar
+>>>>>>> theirs
+=======
+from .bias import future_bias
+from .coefficients import CoefficientTables
+from .state import StencilBuffers
+from .topology import DEFAULT_TOPOLOGY, NeighborTopology, aggregate_neighbors
 from .validators import require_scalar
 >>>>>>> theirs
 
@@ -46,6 +54,12 @@ def avx2_step(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    pressure_scalar = require_scalar(pressure, "pressure")
+    decay_scalar = require_scalar(decay, "decay")
+
+>>>>>>> theirs
 =======
     pressure_scalar = require_scalar(pressure, "pressure")
     decay_scalar = require_scalar(decay, "decay")
@@ -70,6 +84,11 @@ def avx2_step(
 
     neighbor_sum = aggregate_neighbors(now, topology)
 
+<<<<<<< ours
+=======
+    bias = future_bias(now, recent, stable)
+
+>>>>>>> theirs
     coupling = np.einsum("...sl,tsl->...tl", neighbor_sum, coefficients.gamma)
 
     alpha = coefficients.alpha[np.newaxis, np.newaxis, :, :]
@@ -77,6 +96,7 @@ def avx2_step(
 
     update = alpha * fast_residual + beta * slow_residual + coupling
 
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -89,6 +109,13 @@ def avx2_step(
 >>>>>>> theirs
 =======
     buffers.future.data[:] = now + pressure_scalar * update - decay_scalar * slow_residual
+>>>>>>> theirs
+=======
+    buffers.future.data[:] = (
+        now
+        + pressure_scalar * (update + bias)
+        - decay_scalar * slow_residual
+    )
 >>>>>>> theirs
 
 

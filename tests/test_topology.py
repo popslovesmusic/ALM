@@ -12,6 +12,10 @@ from alm import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    LANES,
+>>>>>>> theirs
 =======
     LANES,
 >>>>>>> theirs
@@ -78,8 +82,11 @@ def test_aggregate_neighbors_matches_manual_average():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     field = np.arange(GRID_ROWS * GRID_COLS, dtype=np.float32).reshape(GRID_ROWS, GRID_COLS, 1)
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -103,6 +110,9 @@ def test_aggregate_neighbors_matches_manual_average():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -128,7 +138,11 @@ def test_aggregate_neighbors_matches_manual_average():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
             values.append(field[nrow, ncol, 0])
+=======
+            values.append(field[nrow, ncol, 0, 0])
+>>>>>>> theirs
 =======
             values.append(field[nrow, ncol, 0, 0])
 >>>>>>> theirs
@@ -161,7 +175,11 @@ def test_aggregate_neighbors_matches_manual_average():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
             assert np.isclose(aggregated[r, c, 0], manual_average(r, c))
+=======
+            assert np.isclose(aggregated[r, c, 0, 0], manual_average(r, c))
+>>>>>>> theirs
 =======
             assert np.isclose(aggregated[r, c, 0, 0], manual_average(r, c))
 >>>>>>> theirs

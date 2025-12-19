@@ -10,6 +10,10 @@ from __future__ import annotations
 
 import numpy as np
 
+<<<<<<< ours
+=======
+from .bias import future_bias
+>>>>>>> theirs
 from .coefficients import CoefficientTables
 from .constants import NUM_REGISTERS
 from .state import StencilBuffers
@@ -17,6 +21,10 @@ from .topology import DEFAULT_TOPOLOGY, NeighborTopology, aggregate_neighbors
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+from .validators import require_scalar
+>>>>>>> theirs
 =======
 from .validators import require_scalar
 >>>>>>> theirs
@@ -47,6 +55,12 @@ def scalar_step(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    pressure_scalar = require_scalar(pressure, "pressure")
+    decay_scalar = require_scalar(decay, "decay")
+
+>>>>>>> theirs
 =======
     pressure_scalar = require_scalar(pressure, "pressure")
     decay_scalar = require_scalar(decay, "decay")
@@ -69,6 +83,11 @@ def scalar_step(
     neighbor_sum = aggregate_neighbors(now, topology)
     future = buffers.future.data
 
+<<<<<<< ours
+=======
+    bias = future_bias(now, recent, stable)
+
+>>>>>>> theirs
     fast_residual = now - recent
     slow_residual = now - stable
 
@@ -83,6 +102,7 @@ def scalar_step(
             + coupling
         )
 
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -105,6 +125,13 @@ def scalar_step(
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+        future[..., target, :] = (
+            now[..., target, :]
+            + pressure_scalar * (update + bias[..., target, :])
+            - decay_scalar * slow_residual[..., target, :]
+        )
 >>>>>>> theirs
 
 

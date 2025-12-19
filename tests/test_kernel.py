@@ -20,10 +20,18 @@ def test_scalar_step_respects_coefficients_and_neighbors():
 
     neighbor_sum = np.ones((GRID_ROWS, GRID_COLS, NUM_REGISTERS, 32), dtype=np.float32)
     expected = np.empty_like(buffers.future.data)
+<<<<<<< ours
     for target in range(NUM_REGISTERS):
         coupling = sum(neighbor_sum[..., source, :] * coeffs.gamma[target, source] for source in range(NUM_REGISTERS))
         update = coeffs.alpha[target] + coeffs.beta[target] + coupling
         expected[..., target, :] = 1.0 + update
+=======
+    bias = (buffers.now.data + buffers.recent.data + buffers.stable.data) / 3.0 - buffers.now.data
+    for target in range(NUM_REGISTERS):
+        coupling = sum(neighbor_sum[..., source, :] * coeffs.gamma[target, source] for source in range(NUM_REGISTERS))
+        update = coeffs.alpha[target] + coeffs.beta[target] + coupling
+        expected[..., target, :] = 1.0 + update + bias[..., target, :]
+>>>>>>> theirs
 
     np.testing.assert_allclose(buffers.future.data, expected)
 
@@ -40,9 +48,17 @@ def test_scalar_step_supports_pressure_and_decay_scalars():
     slow = 2.0 - 1.0
     neighbor = np.ones((GRID_ROWS, GRID_COLS, NUM_REGISTERS, 32), dtype=np.float32) * 2.0
     expected = np.empty_like(buffers.future.data)
+<<<<<<< ours
     for target in range(NUM_REGISTERS):
         coupling = sum(neighbor[..., source, :] * coeffs.gamma[target, source] for source in range(NUM_REGISTERS))
         update = coeffs.alpha[target] * fast + coeffs.beta[target] * slow + coupling
         expected[..., target, :] = 2.0 + 0.5 * update - 0.25 * slow
+=======
+    bias = (buffers.now.data + buffers.recent.data + buffers.stable.data) / 3.0 - buffers.now.data
+    for target in range(NUM_REGISTERS):
+        coupling = sum(neighbor[..., source, :] * coeffs.gamma[target, source] for source in range(NUM_REGISTERS))
+        update = coeffs.alpha[target] * fast + coeffs.beta[target] * slow + coupling
+        expected[..., target, :] = 2.0 + 0.5 * (update + bias[..., target, :]) - 0.25 * slow
+>>>>>>> theirs
 
     np.testing.assert_allclose(buffers.future.data, expected)
