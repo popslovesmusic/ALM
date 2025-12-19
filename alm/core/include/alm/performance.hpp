@@ -18,10 +18,22 @@ inline constexpr std::size_t kSliceBytes = kSliceElements * sizeof(float);
 inline constexpr std::size_t kStencilBytes = kSliceBytes * kStencilSlices;
 
 // Literal stencil payload size used for cross-language validation.
+<<<<<<< ours
+=======
+inline constexpr std::size_t kSliceElementsLiteral = 512U;
+inline constexpr std::size_t kSliceBytesLiteral = 2048U;
+>>>>>>> theirs
 inline constexpr std::size_t kStencilBytesLiteral = 8192U;
 
 inline constexpr std::size_t kCacheHeadroomBytes = 253952U;
 
+<<<<<<< ours
+=======
+static_assert(kSliceElements == kSliceElementsLiteral,
+              "Slice element count must remain stable for residency proofing.");
+static_assert(kSliceBytes == kSliceBytesLiteral,
+              "Slice payload size must remain stable for residency proofing.");
+>>>>>>> theirs
 static_assert(kStencilBytes == kStencilBytesLiteral,
               "Stencil payload size must remain stable for residency proofing.");
 static_assert(kStencilBytesLiteral <= kL2CacheBudgetBytes,
