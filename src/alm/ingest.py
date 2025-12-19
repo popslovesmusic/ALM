@@ -12,7 +12,11 @@ import numpy as np
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from .constants import GRID_COLS, GRID_ROWS, REGISTER_NAMES
+=======
+from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
+>>>>>>> theirs
 =======
 from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
 >>>>>>> theirs
@@ -60,12 +64,15 @@ class IngestController:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         if frame_arr.shape != (GRID_ROWS, GRID_COLS):
             raise ValueError("ingest frame must have shape (GRID_ROWS, GRID_COLS)")
 
         target = buffers.future.data[..., self.register_index]
         buffers.future.data[..., self.register_index] = target + frame_arr.astype(target.dtype) * self.scale
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -90,6 +97,9 @@ class IngestController:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

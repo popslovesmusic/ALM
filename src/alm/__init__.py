@@ -16,6 +16,7 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     LANES,
 >>>>>>> theirs
@@ -37,10 +38,16 @@ from .constants import (
     LANES_PER_BLOCK,
     L2_CACHE_BUDGET_BYTES,
 >>>>>>> theirs
+=======
+    LANES,
+    LANES_PER_BLOCK,
+    L2_CACHE_BUDGET_BYTES,
+>>>>>>> theirs
     NUM_REGISTERS,
     REGISTER_NAMES,
     STENCIL_ORDER,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -71,11 +78,15 @@ from .boundary import apply_resonant_boundary, boundary_envelope
 =======
 from .boundary import apply_resonant_boundary, boundary_envelope
 >>>>>>> theirs
+=======
+from .boundary import apply_resonant_boundary, boundary_envelope
+>>>>>>> theirs
 from .coefficients import (
     CoefficientTables,
     build_canonical_coefficients,
     lane_pair_index,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -119,6 +130,8 @@ from .avx2 import avx2_step, avx2_equivalent_step
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 from .focus import FocusTracker
 from .ingest import INGEST_REGISTER_INDEX, IngestController
 from .kernel import scalar_step
@@ -126,8 +139,11 @@ from .avx2 import avx2_step, avx2_equivalent_step
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -139,17 +155,28 @@ from .observability import (
 )
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 from .state import StateSlice, StencilBuffers
 =======
+=======
+>>>>>>> theirs
 from .state import (
     StateSlice,
     StencilBuffers,
     assert_cache_residency,
     slice_payload_bytes,
     stencil_payload_bytes,
+)
+<<<<<<< ours
+>>>>>>> theirs
+=======
+from .performance import (
+    ALLOWED_AVX2_INTRINSICS,
+    residency_report,
+    validate_intrinsics_used,
 )
 >>>>>>> theirs
 from .topology import (
@@ -162,6 +189,7 @@ from .topology import (
 __all__ = [
     "DEFAULT_NEIGHBOR_OFFSETS",
     "DEFAULT_TOPOLOGY",
+<<<<<<< ours
     "CoefficientTables",
     "DeterministicConfig",
 <<<<<<< ours
@@ -180,10 +208,17 @@ __all__ = [
 =======
     "FocusTracker",
 >>>>>>> theirs
+=======
+    "ALLOWED_AVX2_INTRINSICS",
+    "CoefficientTables",
+    "DeterministicConfig",
+    "FocusTracker",
+>>>>>>> theirs
     "GRID_COLS",
     "GRID_ROWS",
     "INGEST_REGISTER_INDEX",
     "IngestController",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -208,12 +243,16 @@ __all__ = [
 =======
     "L2_CACHE_BUDGET_BYTES",
 >>>>>>> theirs
+=======
+    "L2_CACHE_BUDGET_BYTES",
+>>>>>>> theirs
     "apply_resonant_boundary",
     "avx2_equivalent_step",
     "avx2_step",
     "boundary_envelope",
     "LANE_BLOCKS",
     "LANES",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -248,12 +287,22 @@ __all__ = [
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+    "LANES_PER_BLOCK",
+    "NUM_REGISTERS",
+    "NeighborTopology",
+    "residency_report",
+    "REGISTER_NAMES",
+>>>>>>> theirs
     "scalar_step",
     "spiral_components",
     "spiral_observation",
     "observable_snapshot",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -263,6 +312,7 @@ __all__ = [
     "aggregate_neighbors",
     "build_canonical_coefficients",
     "lane_pair_index",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -282,6 +332,12 @@ __all__ = [
 >>>>>>> theirs
 =======
     "assert_cache_residency",
+    "slice_payload_bytes",
+    "stencil_payload_bytes",
+>>>>>>> theirs
+=======
+    "assert_cache_residency",
+    "validate_intrinsics_used",
     "slice_payload_bytes",
     "stencil_payload_bytes",
 >>>>>>> theirs

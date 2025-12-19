@@ -16,6 +16,10 @@ from .state import StencilBuffers
 from .topology import DEFAULT_TOPOLOGY, NeighborTopology, aggregate_neighbors
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+from .validators import require_scalar
+>>>>>>> theirs
 =======
 from .validators import require_scalar
 >>>>>>> theirs
@@ -42,6 +46,12 @@ def scalar_step(
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    pressure_scalar = require_scalar(pressure, "pressure")
+    decay_scalar = require_scalar(decay, "decay")
+
+>>>>>>> theirs
 =======
     pressure_scalar = require_scalar(pressure, "pressure")
     decay_scalar = require_scalar(decay, "decay")
@@ -75,10 +85,13 @@ def scalar_step(
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         future[..., target, :] = now[..., target, :] + pressure * update - decay * slow_residual[
             ..., target, :
         ]
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
         future[..., target, :] = (
@@ -87,6 +100,9 @@ def scalar_step(
             - decay_scalar * slow_residual[..., target, :]
         )
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
