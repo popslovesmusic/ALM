@@ -1,153 +1,28 @@
-"""Ingest lane handling synchronized with stencil advancement."""
+"""Reference-only ingest helpers for future phases.
+
+The ingest contract will bind external signals to lane-safe entry points. This
+placeholder preserves module structure while Phase 1 scaffolding is validated.
+"""
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-
 import numpy as np
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-from .constants import GRID_COLS, GRID_ROWS, REGISTER_NAMES
-=======
-from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
->>>>>>> theirs
-=======
-from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
->>>>>>> theirs
-=======
-from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
->>>>>>> theirs
-=======
-from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
->>>>>>> theirs
-=======
-from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
->>>>>>> theirs
-=======
-from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
->>>>>>> theirs
-=======
-from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
->>>>>>> theirs
-=======
-from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
->>>>>>> theirs
-=======
-from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
->>>>>>> theirs
-=======
-from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
->>>>>>> theirs
-from .state import StencilBuffers
-
-INGEST_REGISTER_INDEX = REGISTER_NAMES.index("I")
+from .constants import GRID_COLS, GRID_ROWS, NUM_REGISTERS, STENCIL_ORDER
 
 
-@dataclass
-class IngestController:
-    """Coordinate ingest frames so they remain orthogonal to pressure channels."""
+def validate_frame_shape(frame: np.ndarray) -> None:
+    """Ensure a candidate ingest frame matches the grid/register layout."""
 
-    scale: float = 1.0
-    _applied_this_step: bool = field(default=False, init=False, repr=False)
-
-    @property
-    def register_index(self) -> int:
-        return INGEST_REGISTER_INDEX
-
-    def ingest(self, buffers: StencilBuffers, frame: np.ndarray) -> None:
-        """Inject an external frame into the FUTURE slice once per step."""
-
-        if self._applied_this_step:
-            raise RuntimeError("ingest already applied for this step; advance first")
-
-        frame_arr = np.asarray(frame)
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-        if frame_arr.shape != (GRID_ROWS, GRID_COLS):
-            raise ValueError("ingest frame must have shape (GRID_ROWS, GRID_COLS)")
-
-        target = buffers.future.data[..., self.register_index]
-        buffers.future.data[..., self.register_index] = target + frame_arr.astype(target.dtype) * self.scale
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-        if frame_arr.shape == (GRID_ROWS, GRID_COLS):
-            frame_arr = np.broadcast_to(frame_arr[..., None], (GRID_ROWS, GRID_COLS, LANES))
-        if frame_arr.shape != (GRID_ROWS, GRID_COLS, LANES):
-            raise ValueError(
-                "ingest frame must have shape (GRID_ROWS, GRID_COLS) or (GRID_ROWS, GRID_COLS, LANES)"
-            )
-
-        target = buffers.future.data[..., self.register_index, :]
-        buffers.future.data[..., self.register_index, :] = target + frame_arr.astype(target.dtype) * self.scale
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-        self._applied_this_step = True
-
-    def advance(self, buffers: StencilBuffers) -> None:
-        """Rotate the stencil and clear the ingest guard for the next step."""
-
-        buffers.advance()
-        self._applied_this_step = False
+    expected = (GRID_ROWS, GRID_COLS, NUM_REGISTERS)
+    if frame.shape[:3] != expected:
+        raise ValueError(f"ingest frame must start with shape {expected}, got {frame.shape}")
 
 
-__all__ = ["INGEST_REGISTER_INDEX", "IngestController"]
+def is_step_aligned(step_name: str) -> bool:
+    """Check that ingest is only scheduled on FUTURE steps."""
+
+    return step_name == STENCIL_ORDER[0]
+
+
+__all__ = ["validate_frame_shape", "is_step_aligned"]

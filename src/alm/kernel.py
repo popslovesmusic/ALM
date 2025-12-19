@@ -1,55 +1,15 @@
-"""Scalar relational kernel for the ALM stencil.
-
-Phase 4 introduces the residual-based scalar kernel that advances the FUTURE
-slice using NOW/RECENT/STABLE data, canonical coefficients, and uniform
-neighbor aggregation. The update is branchless and symmetric across lanes to
-mirror the SIMD contract that will be enforced in the AVX2 path.
-"""
+"""Scalar relational kernel for the ALM stencil."""
 
 from __future__ import annotations
 
 import numpy as np
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-=======
 from .bias import future_bias
->>>>>>> theirs
-=======
-from .bias import future_bias
->>>>>>> theirs
-=======
-from .bias import future_bias
->>>>>>> theirs
 from .coefficients import CoefficientTables
 from .constants import NUM_REGISTERS
 from .state import StencilBuffers
 from .topology import DEFAULT_TOPOLOGY, NeighborTopology, aggregate_neighbors
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-=======
 from .validators import require_scalar
->>>>>>> theirs
-=======
-from .validators import require_scalar
->>>>>>> theirs
-=======
-from .validators import require_scalar
->>>>>>> theirs
-=======
-from .validators import require_scalar
->>>>>>> theirs
-=======
-from .validators import require_scalar
->>>>>>> theirs
-=======
-from .validators import require_scalar
->>>>>>> theirs
 
 
 def scalar_step(
@@ -59,51 +19,11 @@ def scalar_step(
     pressure: float = 1.0,
     decay: float = 0.0,
 ) -> None:
-    """Advance the FUTURE slice using the relational scalar kernel.
+    """Advance the FUTURE slice using the relational scalar kernel."""
 
-    The update is residual-based: both fast (NOW−RECENT) and slow
-    (NOW−STABLE) components contribute, along with uniform neighbor
-    aggregation weighted by the canonical Γ tables. Pressure and decay are
-    multiplicative scalars that modulate the composite update without
-    introducing control flow.
-    """
-
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-=======
     pressure_scalar = require_scalar(pressure, "pressure")
     decay_scalar = require_scalar(decay, "decay")
 
->>>>>>> theirs
-=======
-    pressure_scalar = require_scalar(pressure, "pressure")
-    decay_scalar = require_scalar(decay, "decay")
-
->>>>>>> theirs
-=======
-    pressure_scalar = require_scalar(pressure, "pressure")
-    decay_scalar = require_scalar(decay, "decay")
-
->>>>>>> theirs
-=======
-    pressure_scalar = require_scalar(pressure, "pressure")
-    decay_scalar = require_scalar(decay, "decay")
-
->>>>>>> theirs
-=======
-    pressure_scalar = require_scalar(pressure, "pressure")
-    decay_scalar = require_scalar(decay, "decay")
-
->>>>>>> theirs
-=======
-    pressure_scalar = require_scalar(pressure, "pressure")
-    decay_scalar = require_scalar(decay, "decay")
-
->>>>>>> theirs
     now = buffers.now.data
     recent = buffers.recent.data
     stable = buffers.stable.data
@@ -111,21 +31,7 @@ def scalar_step(
     neighbor_sum = aggregate_neighbors(now, topology)
     future = buffers.future.data
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-=======
     bias = future_bias(now, recent, stable)
-
->>>>>>> theirs
-=======
-    bias = future_bias(now, recent, stable)
-
->>>>>>> theirs
-=======
-    bias = future_bias(now, recent, stable)
-
->>>>>>> theirs
     fast_residual = now - recent
     slow_residual = now - stable
 
@@ -140,49 +46,11 @@ def scalar_step(
             + coupling
         )
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-        future[..., target, :] = now[..., target, :] + pressure * update - decay * slow_residual[
-            ..., target, :
-        ]
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-        future[..., target, :] = (
-            now[..., target, :]
-            + pressure_scalar * update
-            - decay_scalar * slow_residual[..., target, :]
-        )
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
         future[..., target, :] = (
             now[..., target, :]
             + pressure_scalar * (update + bias[..., target, :])
             - decay_scalar * slow_residual[..., target, :]
         )
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 
 
 __all__ = ["scalar_step"]

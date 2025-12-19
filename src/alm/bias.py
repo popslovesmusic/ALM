@@ -1,4 +1,5 @@
-"""Deterministic FUTURE bias source term.
+"""
+Static Φ bias derived from the live stencil slices.
 
 Phase 2 requires a static Φ term derived from the live stencil slices so the
 runtime cannot be tuned by external inputs. The bias gently anchors the FUTURE
@@ -13,13 +14,7 @@ import numpy as np
 
 
 def future_bias(now: np.ndarray, recent: np.ndarray, stable: np.ndarray) -> np.ndarray:
-    """Compute the Φ bias term from the current stencil history.
-
-    The bias is a pure function of the three historical slices and therefore
-    deterministic for a given state. It blends the history evenly and returns
-    the offset from ``NOW`` so callers can add it to the kernel update without
-    introducing new tunable parameters.
-    """
+    """Compute the Φ bias term from the current stencil history."""
 
     if now.shape != recent.shape or now.shape != stable.shape:
         raise ValueError("future_bias requires slices with matching shapes")
