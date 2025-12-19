@@ -18,6 +18,7 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     LANES,
 >>>>>>> theirs
@@ -34,6 +35,11 @@ from .constants import (
     LANES,
 >>>>>>> theirs
     LANES_PER_BLOCK,
+=======
+    LANES,
+    LANES_PER_BLOCK,
+    L2_CACHE_BUDGET_BYTES,
+>>>>>>> theirs
 =======
     LANES,
     LANES_PER_BLOCK,
@@ -53,6 +59,7 @@ from .constants import (
     REGISTER_NAMES,
     STENCIL_ORDER,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -91,11 +98,15 @@ from .boundary import apply_resonant_boundary, boundary_envelope
 =======
 from .boundary import apply_resonant_boundary, boundary_envelope
 >>>>>>> theirs
+=======
+from .boundary import apply_resonant_boundary, boundary_envelope
+>>>>>>> theirs
 from .coefficients import (
     CoefficientTables,
     build_canonical_coefficients,
     lane_pair_index,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -146,10 +157,14 @@ from .avx2 import avx2_step, avx2_equivalent_step
 =======
 from .bias import future_bias
 >>>>>>> theirs
+=======
+from .bias import future_bias
+>>>>>>> theirs
 from .focus import FocusTracker
 from .ingest import INGEST_REGISTER_INDEX, IngestController
 from .kernel import scalar_step
 from .avx2 import avx2_step, avx2_equivalent_step
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -179,6 +194,8 @@ from .state import StateSlice, StencilBuffers
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 from .observability import (
     observable_snapshot,
     observation_fingerprint,
@@ -187,6 +204,9 @@ from .observability import (
     TraceRecorder,
     TraceRetentionPolicy,
 )
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 from .state import (
     StateSlice,
@@ -197,8 +217,11 @@ from .state import (
 )
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 from .performance import (
@@ -207,6 +230,9 @@ from .performance import (
     validate_intrinsics_used,
 )
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -222,6 +248,7 @@ __all__ = [
     "DEFAULT_TOPOLOGY",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "CoefficientTables",
     "DeterministicConfig",
 <<<<<<< ours
@@ -241,6 +268,8 @@ __all__ = [
     "FocusTracker",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
     "ALLOWED_AVX2_INTRINSICS",
@@ -248,6 +277,10 @@ __all__ = [
     "DeterministicConfig",
     "FocusTracker",
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+    "future_bias",
 >>>>>>> theirs
 =======
     "future_bias",
@@ -256,6 +289,7 @@ __all__ = [
     "GRID_ROWS",
     "INGEST_REGISTER_INDEX",
     "IngestController",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -278,6 +312,9 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+    "L2_CACHE_BUDGET_BYTES",
 >>>>>>> theirs
 =======
     "L2_CACHE_BUDGET_BYTES",
@@ -299,6 +336,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -331,6 +369,8 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
     "LANES_PER_BLOCK",
@@ -339,6 +379,7 @@ __all__ = [
     "residency_report",
     "REGISTER_NAMES",
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
     "scalar_step",
     "spiral_components",
@@ -355,6 +396,8 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
     "scalar_step",
     "TraceRecorder",
     "TraceRetentionPolicy",
@@ -362,6 +405,9 @@ __all__ = [
     "spiral_observation",
     "observable_snapshot",
     "observation_fingerprint",
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
     "STENCIL_ORDER",
     "aggregate_neighbors",
@@ -375,6 +421,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -392,6 +439,8 @@ __all__ = [
     "stencil_payload_bytes",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
     "assert_cache_residency",
@@ -399,6 +448,9 @@ __all__ = [
     "slice_payload_bytes",
     "stencil_payload_bytes",
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

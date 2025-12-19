@@ -9,12 +9,18 @@ or archival snapshots.
 from __future__ import annotations
 
 <<<<<<< ours
+<<<<<<< ours
 from typing import Dict, Iterable
 =======
+=======
+>>>>>>> theirs
 import hashlib
 from collections import deque
 from dataclasses import dataclass
 from typing import Deque, Dict, Iterable, List, Tuple
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 
 import numpy as np
@@ -86,7 +92,10 @@ def spiral_observation(
 
 __all__ = ["observable_snapshot", "spiral_components", "spiral_observation"]
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 
 
 @dataclass(frozen=True)
@@ -160,4 +169,7 @@ __all__ += [
     "TraceRetentionPolicy",
     "observation_fingerprint",
 ]
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
