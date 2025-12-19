@@ -1,3 +1,5 @@
+# read MANDATORY INSTRUCTIONS SECTION!!
+
 # ALM Blueprint — Technical Consolidation
 
 ## Purpose and Scope
@@ -66,9 +68,10 @@ The blueprint depends on the following sources (all under `docs/blueprint/` unle
 - **Development record:** `ALM_Creation_Journal.md` retains the detailed rationale and historical derivation of the above rules. It informs traceability but does not override the contracts listed here.
 
 
-
-
 -----
+
+
+   **MANDATORY INSTRUCTIONS**
 
 1. Canonical ALM Directory Structure (Authoritative Execution)
 This is the only place where system state is allowed to evolve.
