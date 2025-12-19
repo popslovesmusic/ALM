@@ -2,8 +2,11 @@ import numpy as np
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from alm import DeterministicConfig, StencilBuffers, observable_snapshot, spiral_components, spiral_observation
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 from alm import (
@@ -17,6 +20,9 @@ from alm import (
     spiral_observation,
 )
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -79,7 +85,10 @@ def test_resolves_unknown_slice_name():
         raise AssertionError("Expected KeyError for unknown slice name")
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 
@@ -114,6 +123,9 @@ def test_trace_recorder_returns_copies_and_fingerprints():
     )
     assert recorder.window_fingerprints()[0] == expected_fingerprint
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

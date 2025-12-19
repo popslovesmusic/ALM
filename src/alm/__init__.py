@@ -19,6 +19,7 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     LANES,
 >>>>>>> theirs
@@ -35,6 +36,11 @@ from .constants import (
     LANES,
 >>>>>>> theirs
     LANES_PER_BLOCK,
+=======
+    LANES,
+    LANES_PER_BLOCK,
+    L2_CACHE_BUDGET_BYTES,
+>>>>>>> theirs
 =======
     LANES,
     LANES_PER_BLOCK,
@@ -59,6 +65,7 @@ from .constants import (
     REGISTER_NAMES,
     STENCIL_ORDER,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -101,11 +108,15 @@ from .boundary import apply_resonant_boundary, boundary_envelope
 =======
 from .boundary import apply_resonant_boundary, boundary_envelope
 >>>>>>> theirs
+=======
+from .boundary import apply_resonant_boundary, boundary_envelope
+>>>>>>> theirs
 from .coefficients import (
     CoefficientTables,
     build_canonical_coefficients,
     lane_pair_index,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -196,6 +207,15 @@ from .state import StateSlice, StencilBuffers
 =======
 =======
 >>>>>>> theirs
+=======
+from .bias import future_bias
+from .compliance import COMPONENT_REFERENCES, component_references, references_for
+from .focus import FocusTracker
+from .hardening import exercise_cadence
+from .ingest import INGEST_REGISTER_INDEX, IngestController
+from .kernel import scalar_step
+from .avx2 import avx2_step, avx2_equivalent_step
+>>>>>>> theirs
 from .observability import (
     observable_snapshot,
     observation_fingerprint,
@@ -205,6 +225,9 @@ from .observability import (
     TraceRetentionPolicy,
 )
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -218,8 +241,11 @@ from .state import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -231,6 +257,9 @@ from .performance import (
 )
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -246,6 +275,7 @@ from .topology import (
 __all__ = [
     "DEFAULT_NEIGHBOR_OFFSETS",
     "DEFAULT_TOPOLOGY",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -285,10 +315,21 @@ __all__ = [
 =======
     "future_bias",
 >>>>>>> theirs
+=======
+    "ALLOWED_AVX2_INTRINSICS",
+    "CoefficientTables",
+    "COMPONENT_REFERENCES",
+    "DeterministicConfig",
+    "FocusTracker",
+    "component_references",
+    "exercise_cadence",
+    "future_bias",
+>>>>>>> theirs
     "GRID_COLS",
     "GRID_ROWS",
     "INGEST_REGISTER_INDEX",
     "IngestController",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -312,6 +353,9 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+    "L2_CACHE_BUDGET_BYTES",
 >>>>>>> theirs
 =======
     "L2_CACHE_BUDGET_BYTES",
@@ -337,6 +381,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -369,6 +414,8 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -380,6 +427,7 @@ __all__ = [
     "REGISTER_NAMES",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
     "scalar_step",
     "spiral_components",
@@ -397,6 +445,9 @@ __all__ = [
 >>>>>>> theirs
 =======
 =======
+>>>>>>> theirs
+=======
+    "references_for",
 >>>>>>> theirs
     "scalar_step",
     "TraceRecorder",
@@ -406,6 +457,9 @@ __all__ = [
     "observable_snapshot",
     "observation_fingerprint",
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -422,6 +476,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -439,6 +494,8 @@ __all__ = [
     "stencil_payload_bytes",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -449,6 +506,9 @@ __all__ = [
     "stencil_payload_bytes",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

@@ -6,6 +6,10 @@ from alm.coefficients import lane_pair_index
 from alm.config import DeterministicConfig
 from alm.constants import GRID_COLS, GRID_ROWS, NUM_REGISTERS, STENCIL_ORDER
 <<<<<<< ours
+<<<<<<< ours
+=======
+from alm.observability import observable_snapshot
+>>>>>>> theirs
 =======
 from alm.observability import observable_snapshot
 >>>>>>> theirs
@@ -37,7 +41,10 @@ def _build_buffers(initializer) -> StencilBuffers:
 
 
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 def _copy_buffers(buffers: StencilBuffers) -> StencilBuffers:
     clone = DeterministicConfig().zeros()
     dup = StencilBuffers.build(clone)
@@ -48,6 +55,9 @@ def _copy_buffers(buffers: StencilBuffers) -> StencilBuffers:
     return dup
 
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 @pytest.mark.parametrize("engine_name", ENGINES.keys())
 @pytest.mark.parametrize("pressure", [0.0, 0.9])
@@ -133,7 +143,10 @@ def test_pressure_injection_rejected(engine_name, coefficients):
     with pytest.raises(ValueError):
         engine(buffers, coefficients, pressure=np.ones((GRID_ROWS, GRID_COLS)))
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 
 
 @pytest.mark.parametrize("engine_name", ENGINES.keys())
@@ -208,4 +221,7 @@ def test_equivalence_under_pressure_and_jitter(coefficients, pressure, jitter):
         rtol=1e-6,
         atol=1e-6,
     )
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs

@@ -18,6 +18,7 @@ from .config import ArrayInitializer
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from .constants import GRID_COLS, GRID_ROWS, NUM_REGISTERS, STENCIL_ORDER
 =======
 from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
@@ -41,6 +42,8 @@ from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 from .constants import (
     GRID_COLS,
     GRID_ROWS,
@@ -52,6 +55,9 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -77,7 +83,11 @@ class StateSlice:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS)
+=======
+        expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES)
+>>>>>>> theirs
 =======
         expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES)
 >>>>>>> theirs
@@ -117,6 +127,12 @@ class StateSlice:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+        if not self.data.flags["C_CONTIGUOUS"]:
+            raise ValueError("StateSlice data must be C-contiguous for cache residency")
+
+>>>>>>> theirs
 =======
         if not self.data.flags["C_CONTIGUOUS"]:
             raise ValueError("StateSlice data must be C-contiguous for cache residency")
@@ -152,7 +168,13 @@ class StateSlice:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         return cls(np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS), dtype=dtype))
+=======
+        return cls(
+            np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=dtype)
+        )
+>>>>>>> theirs
 =======
         return cls(
             np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=dtype)
@@ -254,7 +276,10 @@ class StencilBuffers:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -294,6 +319,9 @@ def assert_cache_residency(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

@@ -10,8 +10,11 @@ from __future__ import annotations
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from typing import Dict, Iterable
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 import hashlib
@@ -19,6 +22,9 @@ from collections import deque
 from dataclasses import dataclass
 from typing import Deque, Dict, Iterable, List, Tuple
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -93,7 +99,10 @@ def spiral_observation(
 __all__ = ["observable_snapshot", "spiral_components", "spiral_observation"]
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 
@@ -170,6 +179,9 @@ __all__ += [
     "observation_fingerprint",
 ]
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

@@ -12,6 +12,10 @@ import numpy as np
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+from .bias import future_bias
+>>>>>>> theirs
 =======
 from .bias import future_bias
 >>>>>>> theirs
@@ -27,6 +31,10 @@ from .topology import DEFAULT_TOPOLOGY, NeighborTopology, aggregate_neighbors
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+from .validators import require_scalar
+>>>>>>> theirs
 =======
 from .validators import require_scalar
 >>>>>>> theirs
@@ -65,6 +73,12 @@ def scalar_step(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    pressure_scalar = require_scalar(pressure, "pressure")
+    decay_scalar = require_scalar(decay, "decay")
+
+>>>>>>> theirs
 =======
     pressure_scalar = require_scalar(pressure, "pressure")
     decay_scalar = require_scalar(decay, "decay")
@@ -99,6 +113,11 @@ def scalar_step(
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    bias = future_bias(now, recent, stable)
+
+>>>>>>> theirs
 =======
     bias = future_bias(now, recent, stable)
 
@@ -121,6 +140,7 @@ def scalar_step(
             + coupling
         )
 
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -149,12 +169,17 @@ def scalar_step(
 =======
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
         future[..., target, :] = (
             now[..., target, :]
             + pressure_scalar * (update + bias[..., target, :])
             - decay_scalar * slow_residual[..., target, :]
         )
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
