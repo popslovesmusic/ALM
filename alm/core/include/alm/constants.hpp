@@ -1,0 +1,24 @@
+#pragma once
+
+#include <cstddef>
+#include <cstdint>
+
+namespace alm::core {
+
+// Grid geometry constants for the canonical 10x10 domain.
+inline constexpr std::size_t kGridWidth = 10;
+inline constexpr std::size_t kGridHeight = 10;
+inline constexpr std::size_t kCellCount = kGridWidth * kGridHeight;
+
+// Lane structure: four AVX2 lane blocks with 32 lanes each.
+inline constexpr std::size_t kLaneCount = 32;
+inline constexpr std::size_t kLaneBlocks = 4;
+inline constexpr std::size_t kLanesPerRegister = kLaneBlocks * kLaneCount;
+
+// Register count per cell (R, G, B, I).
+inline constexpr std::size_t kRegisterCount = 4;
+
+// Deterministic seed defaults for reproducible initialization.
+inline constexpr std::uint64_t kDefaultSeed = 0xA1B2C3D4u;
+
+}  // namespace alm::core
