@@ -1,0 +1,80 @@
+"""Passive observability helpers for the ALM stencil.
+
+Phase 7 introduces observables that expose stencil state without altering
+rotation, pressure channels, or topology. All helpers return copies so callers
+cannot accidentally mutate the live buffers while computing spiral projections
+or archival snapshots.
+"""
+
+from __future__ import annotations
+
+from typing import Dict, Iterable
+
+import numpy as np
+
+from .constants import GRID_COLS, GRID_ROWS, NUM_REGISTERS, STENCIL_ORDER
+from .state import StencilBuffers
+
+
+def _resolve_slice(stencil: StencilBuffers, name: str) -> np.ndarray:
+    normalized = name.strip().upper()
+    if normalized not in STENCIL_ORDER:
+        raise KeyError(f"Unknown stencil slice '{name}'")
+
+    return getattr(stencil, normalized.lower()).data
+
+
+def observable_snapshot(
+    stencil: StencilBuffers, slices: Iterable[str] = STENCIL_ORDER
+) -> Dict[str, np.ndarray]:
+    """Return copies of the requested stencil slices.
+
+    The returned arrays are detached from the live buffers to guarantee passive
+    observation. Callers may mutate the copies without affecting the stencil or
+    its rotation order.
+    """
+
+    snapshot: Dict[str, np.ndarray] = {}
+    for name in slices:
+        slice_data = _resolve_slice(stencil, name)
+        snapshot[name.upper()] = slice_data.copy()
+
+    return snapshot
+
+
+def spiral_components(state_slice: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """Compute radial magnitude and angular phase for spiral observables.
+
+    Radial magnitude uses the L2 norm across the four registers to capture
+    persistence, while angular phase derives from the R/G registers to preserve
+    the dual-frequency orientation without mutating the payload.
+    """
+
+    expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS, state_slice.shape[-1])
+    if state_slice.shape[:3] != expected_shape[:3]:
+        raise ValueError(
+            f"state_slice must have leading shape {expected_shape[:3]},"
+            f" got {state_slice.shape[:3]}"
+        )
+
+    radial = np.linalg.norm(state_slice, axis=2)
+    angular = np.arctan2(state_slice[..., 1, :], state_slice[..., 0, :])
+    return radial, angular
+
+
+def spiral_observation(
+    stencil: StencilBuffers, slice_name: str = "NOW"
+) -> Dict[str, np.ndarray]:
+    """Produce passive spiral observables from a stencil slice.
+
+    The observation is returned as detached arrays keyed by ``radial`` and
+    ``angular`` to allow downstream instrumentation without altering the live
+    stencil payload.
+    """
+
+    slice_data = _resolve_slice(stencil, slice_name)
+    radial, angular = spiral_components(slice_data)
+    return {"radial": radial.copy(), "angular": angular.copy()}
+
+
+__all__ = ["observable_snapshot", "spiral_components", "spiral_observation"]

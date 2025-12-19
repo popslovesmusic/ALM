@@ -13,6 +13,10 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    LANES,
+>>>>>>> theirs
 =======
     LANES,
 >>>>>>> theirs
@@ -32,6 +36,7 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from .state import StateSlice, StencilBuffers
 
 __all__ = [
@@ -45,11 +50,15 @@ __all__ = [
 =======
 from .boundary import apply_resonant_boundary, boundary_envelope
 >>>>>>> theirs
+=======
+from .boundary import apply_resonant_boundary, boundary_envelope
+>>>>>>> theirs
 from .coefficients import (
     CoefficientTables,
     build_canonical_coefficients,
     lane_pair_index,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -84,10 +93,20 @@ from .kernel import scalar_step
 from .avx2 import avx2_step, avx2_equivalent_step
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 from .focus import FocusTracker
 from .ingest import INGEST_REGISTER_INDEX, IngestController
 from .kernel import scalar_step
 from .avx2 import avx2_step, avx2_equivalent_step
+<<<<<<< ours
+>>>>>>> theirs
+=======
+from .observability import (
+    observable_snapshot,
+    spiral_components,
+    spiral_observation,
+)
 >>>>>>> theirs
 from .state import StateSlice, StencilBuffers
 from .topology import (
@@ -103,6 +122,10 @@ __all__ = [
     "CoefficientTables",
     "DeterministicConfig",
 <<<<<<< ours
+<<<<<<< ours
+=======
+    "FocusTracker",
+>>>>>>> theirs
 =======
     "FocusTracker",
 >>>>>>> theirs
@@ -112,6 +135,7 @@ __all__ = [
     "IngestController",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "LANE_BLOCKS",
 <<<<<<< ours
 =======
@@ -124,12 +148,17 @@ __all__ = [
     "LANES",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
     "apply_resonant_boundary",
     "avx2_equivalent_step",
     "avx2_step",
     "boundary_envelope",
     "LANE_BLOCKS",
     "LANES",
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
     "LANES_PER_BLOCK",
     "NUM_REGISTERS",
@@ -138,6 +167,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     "scalar_step",
 >>>>>>> theirs
@@ -146,6 +176,12 @@ __all__ = [
 >>>>>>> theirs
 =======
     "scalar_step",
+>>>>>>> theirs
+=======
+    "scalar_step",
+    "spiral_components",
+    "spiral_observation",
+    "observable_snapshot",
 >>>>>>> theirs
     "STENCIL_ORDER",
     "aggregate_neighbors",
@@ -154,6 +190,9 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
