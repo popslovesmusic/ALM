@@ -11,6 +11,10 @@ This plan breaks the ALM blueprint into small, buildable phases with traceabilit
 - Ingest the canonical coefficient tables (`α, β, Γ`) and enforce symmetry (`q[ℓ̄] = q[ℓ]`), normalization, and exact lane/block mapping.
 - Validate chromatic structure (12-hue/12-tone layout plus auxiliary lanes) at load time; fail fast on deviations.
 - Prepare static, read-only coefficient buffers accessible to both scalar and AVX2 paths to ensure deterministic equivalence.
+<<<<<<< ours
+=======
+- Define the FUTURE bias source term Φ as a deterministic function of NOW/RECENT/STABLE to prevent tuning drift while keeping rotation and decay laws intact.
+>>>>>>> theirs
 
 ## Phase 3: Topology & Ingest Contract
 - Implement the 12-neighbor symmetric topology with uniform weights and static closure; prohibit rewiring or per-lane specialization.
@@ -36,6 +40,10 @@ This plan breaks the ALM blueprint into small, buildable phases with traceabilit
 - Provide passive observables that sample state without altering stencil rotation, pressure channels, or topology.
 - Expose spiral observables (angular/radial trajectories) aligned with the dual-frequency dynamics.
 - Add lightweight logging/telemetry hooks that remain read-only and cache-resident.
+<<<<<<< ours
+=======
+- Specify diagnostic retention/durability policy for external observables so traces remain comparable across deployments while honoring the non-intrusive diagnostics contract.
+>>>>>>> theirs
 
 ## Phase 8: Testing & Compliance
 - Implement the invariant regression suite from `docs/tests_and_support/INVARIANT_REGRESSION_TESTS.md` to cover kernel laws, topology, timing, pressure, and scalar/AVX2 equivalence.
