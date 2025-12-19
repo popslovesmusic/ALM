@@ -17,11 +17,19 @@ def test_ingest_writes_future_aux_lane_only_once():
     controller.ingest(buffers, frame)
 
     # Only the ingest register receives data; other registers remain zeroed.
+<<<<<<< ours
     for register in range(buffers.future.data.shape[-1]):
         if register == controller.register_index:
             np.testing.assert_allclose(buffers.future.data[..., register], 0.5)
         else:
             assert np.allclose(buffers.future.data[..., register], 0.0)
+=======
+    for register in range(buffers.future.data.shape[-2]):
+        if register == controller.register_index:
+            np.testing.assert_allclose(buffers.future.data[..., register, :], 0.5)
+        else:
+            assert np.allclose(buffers.future.data[..., register, :], 0.0)
+>>>>>>> theirs
 
     # Second ingest without rotation is forbidden.
     try:
@@ -42,13 +50,22 @@ def test_ingest_resets_after_advance_and_tracks_rotation():
     controller.advance(buffers)
 
     # The ingested data rotates with the stencil ordering.
+<<<<<<< ours
     assert np.allclose(buffers.stable.data[..., controller.register_index], 2.0)
     assert np.allclose(buffers.future.data[..., controller.register_index], 0.0)
+=======
+    assert np.allclose(buffers.stable.data[..., controller.register_index, :], 2.0)
+    assert np.allclose(buffers.future.data[..., controller.register_index, :], 0.0)
+>>>>>>> theirs
 
     second_frame = np.full((GRID_ROWS, GRID_COLS), 3.0, dtype=np.float32)
     controller.ingest(buffers, second_frame)
 
+<<<<<<< ours
     assert np.allclose(buffers.future.data[..., controller.register_index], 3.0)
+=======
+    assert np.allclose(buffers.future.data[..., controller.register_index, :], 3.0)
+>>>>>>> theirs
 
 
 def test_ingest_validates_frame_shape():

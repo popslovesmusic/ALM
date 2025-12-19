@@ -6,7 +6,11 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+<<<<<<< ours
 from .constants import GRID_COLS, GRID_ROWS, REGISTER_NAMES
+=======
+from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
+>>>>>>> theirs
 from .state import StencilBuffers
 
 INGEST_REGISTER_INDEX = REGISTER_NAMES.index("I")
@@ -30,11 +34,23 @@ class IngestController:
             raise RuntimeError("ingest already applied for this step; advance first")
 
         frame_arr = np.asarray(frame)
+<<<<<<< ours
         if frame_arr.shape != (GRID_ROWS, GRID_COLS):
             raise ValueError("ingest frame must have shape (GRID_ROWS, GRID_COLS)")
 
         target = buffers.future.data[..., self.register_index]
         buffers.future.data[..., self.register_index] = target + frame_arr.astype(target.dtype) * self.scale
+=======
+        if frame_arr.shape == (GRID_ROWS, GRID_COLS):
+            frame_arr = np.broadcast_to(frame_arr[..., None], (GRID_ROWS, GRID_COLS, LANES))
+        if frame_arr.shape != (GRID_ROWS, GRID_COLS, LANES):
+            raise ValueError(
+                "ingest frame must have shape (GRID_ROWS, GRID_COLS) or (GRID_ROWS, GRID_COLS, LANES)"
+            )
+
+        target = buffers.future.data[..., self.register_index, :]
+        buffers.future.data[..., self.register_index, :] = target + frame_arr.astype(target.dtype) * self.scale
+>>>>>>> theirs
         self._applied_this_step = True
 
     def advance(self, buffers: StencilBuffers) -> None:

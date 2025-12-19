@@ -12,7 +12,11 @@ from typing import Callable
 
 import numpy as np
 
+<<<<<<< ours
 from .constants import GRID_COLS, GRID_ROWS, NUM_REGISTERS, STENCIL_ORDER
+=======
+from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
+>>>>>>> theirs
 
 ArrayInitializer = Callable[[str], np.ndarray]
 
@@ -40,7 +44,11 @@ class DeterministicConfig:
 
         def _init(_: str) -> np.ndarray:
             return rng.standard_normal(
+<<<<<<< ours
                 size=(GRID_ROWS, GRID_COLS, NUM_REGISTERS), dtype=self.dtype
+=======
+                size=(GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=self.dtype
+>>>>>>> theirs
             )
 
         return _init
@@ -49,7 +57,13 @@ class DeterministicConfig:
         """Return a zeroed initializer for stencil slices."""
 
         def _init(_: str) -> np.ndarray:
+<<<<<<< ours
             return np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS), dtype=self.dtype)
+=======
+            return np.zeros(
+                (GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=self.dtype
+            )
+>>>>>>> theirs
 
         return _init
 

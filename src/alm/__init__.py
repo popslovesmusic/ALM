@@ -10,11 +10,16 @@ from .constants import (
     GRID_COLS,
     GRID_ROWS,
     LANE_BLOCKS,
+<<<<<<< ours
+=======
+    LANES,
+>>>>>>> theirs
     LANES_PER_BLOCK,
     NUM_REGISTERS,
     REGISTER_NAMES,
     STENCIL_ORDER,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 from .state import StateSlice, StencilBuffers
@@ -23,11 +28,14 @@ __all__ = [
 =======
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 from .coefficients import (
     CoefficientTables,
     build_canonical_coefficients,
     lane_pair_index,
 )
+<<<<<<< ours
 <<<<<<< ours
 from .state import StateSlice, StencilBuffers
 
@@ -49,6 +57,10 @@ __all__ = [
 >>>>>>> theirs
 =======
 from .ingest import INGEST_REGISTER_INDEX, IngestController
+=======
+from .ingest import INGEST_REGISTER_INDEX, IngestController
+from .kernel import scalar_step
+>>>>>>> theirs
 from .state import StateSlice, StencilBuffers
 from .topology import (
     DEFAULT_NEIGHBOR_OFFSETS,
@@ -67,14 +79,25 @@ __all__ = [
     "INGEST_REGISTER_INDEX",
     "IngestController",
     "LANE_BLOCKS",
+<<<<<<< ours
+=======
+    "LANES",
+>>>>>>> theirs
     "LANES_PER_BLOCK",
     "NUM_REGISTERS",
     "NeighborTopology",
     "REGISTER_NAMES",
+<<<<<<< ours
+=======
+    "scalar_step",
+>>>>>>> theirs
     "STENCIL_ORDER",
     "aggregate_neighbors",
     "build_canonical_coefficients",
     "lane_pair_index",
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
     "StateSlice",
     "StencilBuffers",

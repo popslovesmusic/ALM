@@ -5,6 +5,10 @@ from alm import (
     DEFAULT_TOPOLOGY,
     GRID_COLS,
     GRID_ROWS,
+<<<<<<< ours
+=======
+    LANES,
+>>>>>>> theirs
     aggregate_neighbors,
 )
 
@@ -43,15 +47,31 @@ def test_topology_is_symmetric():
 
 
 def test_aggregate_neighbors_matches_manual_average():
+<<<<<<< ours
     field = np.arange(GRID_ROWS * GRID_COLS, dtype=np.float32).reshape(GRID_ROWS, GRID_COLS, 1)
+=======
+    field = (
+        np.arange(GRID_ROWS * GRID_COLS, dtype=np.float32)
+        .reshape(GRID_ROWS, GRID_COLS, 1, 1)
+        .repeat(LANES, axis=-1)
+    )
+>>>>>>> theirs
     aggregated = aggregate_neighbors(field)
 
     def manual_average(r, c):
         values = []
         for (nrow, ncol), _ in DEFAULT_TOPOLOGY.neighbors_of(r, c):
+<<<<<<< ours
             values.append(field[nrow, ncol, 0])
+=======
+            values.append(field[nrow, ncol, 0, 0])
+>>>>>>> theirs
         return sum(values) / len(values)
 
     for r in range(GRID_ROWS):
         for c in range(GRID_COLS):
+<<<<<<< ours
             assert np.isclose(aggregated[r, c, 0], manual_average(r, c))
+=======
+            assert np.isclose(aggregated[r, c, 0, 0], manual_average(r, c))
+>>>>>>> theirs

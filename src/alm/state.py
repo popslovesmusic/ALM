@@ -9,7 +9,11 @@ from typing import Iterable, List, MutableSequence
 import numpy as np
 
 from .config import ArrayInitializer
+<<<<<<< ours
 from .constants import GRID_COLS, GRID_ROWS, NUM_REGISTERS, STENCIL_ORDER
+=======
+from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
+>>>>>>> theirs
 
 
 @dataclass
@@ -19,7 +23,11 @@ class StateSlice:
     data: np.ndarray
 
     def __post_init__(self) -> None:
+<<<<<<< ours
         expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS)
+=======
+        expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES)
+>>>>>>> theirs
         if self.data.shape != expected_shape:
             raise ValueError(
                 f"StateSlice requires shape {expected_shape}, got {self.data.shape}"
@@ -34,7 +42,13 @@ class StateSlice:
 
     @classmethod
     def zeros(cls, dtype: np.dtype = np.float32) -> "StateSlice":
+<<<<<<< ours
         return cls(np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS), dtype=dtype))
+=======
+        return cls(
+            np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=dtype)
+        )
+>>>>>>> theirs
 
 
 class StencilBuffers:

@@ -14,5 +14,9 @@ NUM_REGISTERS: int = len(REGISTER_NAMES)
 
 LANE_BLOCKS: int = 4
 LANES_PER_BLOCK: int = 8  # 4 blocks × 8 lanes == 32 lanes total
+<<<<<<< ours
+=======
+LANES: int = LANE_BLOCKS * LANES_PER_BLOCK
+>>>>>>> theirs
 
 STENCIL_ORDER: Tuple[str, str, str, str] = ("FUTURE", "NOW", "RECENT", "STABLE")
