@@ -13,7 +13,11 @@ target_compile_options(alm_core INTERFACE
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
   $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic>)
+=======
+  $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -mavx2>)
+>>>>>>> theirs
 =======
   $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -mavx2>)
 >>>>>>> theirs
