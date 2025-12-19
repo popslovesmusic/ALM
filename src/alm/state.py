@@ -10,7 +10,11 @@ import numpy as np
 
 from .config import ArrayInitializer
 <<<<<<< ours
+<<<<<<< ours
 from .constants import GRID_COLS, GRID_ROWS, NUM_REGISTERS, STENCIL_ORDER
+=======
+from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
+>>>>>>> theirs
 =======
 from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
 >>>>>>> theirs
@@ -24,7 +28,11 @@ class StateSlice:
 
     def __post_init__(self) -> None:
 <<<<<<< ours
+<<<<<<< ours
         expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS)
+=======
+        expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES)
+>>>>>>> theirs
 =======
         expected_shape = (GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES)
 >>>>>>> theirs
@@ -43,7 +51,13 @@ class StateSlice:
     @classmethod
     def zeros(cls, dtype: np.dtype = np.float32) -> "StateSlice":
 <<<<<<< ours
+<<<<<<< ours
         return cls(np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS), dtype=dtype))
+=======
+        return cls(
+            np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=dtype)
+        )
+>>>>>>> theirs
 =======
         return cls(
             np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=dtype)

@@ -18,17 +18,23 @@ def test_ingest_writes_future_aux_lane_only_once():
 
     # Only the ingest register receives data; other registers remain zeroed.
 <<<<<<< ours
+<<<<<<< ours
     for register in range(buffers.future.data.shape[-1]):
         if register == controller.register_index:
             np.testing.assert_allclose(buffers.future.data[..., register], 0.5)
         else:
             assert np.allclose(buffers.future.data[..., register], 0.0)
 =======
+=======
+>>>>>>> theirs
     for register in range(buffers.future.data.shape[-2]):
         if register == controller.register_index:
             np.testing.assert_allclose(buffers.future.data[..., register, :], 0.5)
         else:
             assert np.allclose(buffers.future.data[..., register, :], 0.0)
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 
     # Second ingest without rotation is forbidden.
@@ -51,8 +57,13 @@ def test_ingest_resets_after_advance_and_tracks_rotation():
 
     # The ingested data rotates with the stencil ordering.
 <<<<<<< ours
+<<<<<<< ours
     assert np.allclose(buffers.stable.data[..., controller.register_index], 2.0)
     assert np.allclose(buffers.future.data[..., controller.register_index], 0.0)
+=======
+    assert np.allclose(buffers.stable.data[..., controller.register_index, :], 2.0)
+    assert np.allclose(buffers.future.data[..., controller.register_index, :], 0.0)
+>>>>>>> theirs
 =======
     assert np.allclose(buffers.stable.data[..., controller.register_index, :], 2.0)
     assert np.allclose(buffers.future.data[..., controller.register_index, :], 0.0)
@@ -62,7 +73,11 @@ def test_ingest_resets_after_advance_and_tracks_rotation():
     controller.ingest(buffers, second_frame)
 
 <<<<<<< ours
+<<<<<<< ours
     assert np.allclose(buffers.future.data[..., controller.register_index], 3.0)
+=======
+    assert np.allclose(buffers.future.data[..., controller.register_index, :], 3.0)
+>>>>>>> theirs
 =======
     assert np.allclose(buffers.future.data[..., controller.register_index, :], 3.0)
 >>>>>>> theirs

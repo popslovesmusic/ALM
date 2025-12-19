@@ -7,7 +7,11 @@ from dataclasses import dataclass, field
 import numpy as np
 
 <<<<<<< ours
+<<<<<<< ours
 from .constants import GRID_COLS, GRID_ROWS, REGISTER_NAMES
+=======
+from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
+>>>>>>> theirs
 =======
 from .constants import GRID_COLS, GRID_ROWS, LANES, REGISTER_NAMES
 >>>>>>> theirs
@@ -35,12 +39,15 @@ class IngestController:
 
         frame_arr = np.asarray(frame)
 <<<<<<< ours
+<<<<<<< ours
         if frame_arr.shape != (GRID_ROWS, GRID_COLS):
             raise ValueError("ingest frame must have shape (GRID_ROWS, GRID_COLS)")
 
         target = buffers.future.data[..., self.register_index]
         buffers.future.data[..., self.register_index] = target + frame_arr.astype(target.dtype) * self.scale
 =======
+=======
+>>>>>>> theirs
         if frame_arr.shape == (GRID_ROWS, GRID_COLS):
             frame_arr = np.broadcast_to(frame_arr[..., None], (GRID_ROWS, GRID_COLS, LANES))
         if frame_arr.shape != (GRID_ROWS, GRID_COLS, LANES):
@@ -50,6 +57,9 @@ class IngestController:
 
         target = buffers.future.data[..., self.register_index, :]
         buffers.future.data[..., self.register_index, :] = target + frame_arr.astype(target.dtype) * self.scale
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
         self._applied_this_step = True
 

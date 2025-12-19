@@ -11,6 +11,10 @@ from .constants import (
     GRID_ROWS,
     LANE_BLOCKS,
 <<<<<<< ours
+<<<<<<< ours
+=======
+    LANES,
+>>>>>>> theirs
 =======
     LANES,
 >>>>>>> theirs
@@ -22,10 +26,13 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from .state import StateSlice, StencilBuffers
 
 __all__ = [
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -35,6 +42,7 @@ from .coefficients import (
     build_canonical_coefficients,
     lane_pair_index,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 from .state import StateSlice, StencilBuffers
@@ -61,6 +69,11 @@ from .ingest import INGEST_REGISTER_INDEX, IngestController
 from .ingest import INGEST_REGISTER_INDEX, IngestController
 from .kernel import scalar_step
 >>>>>>> theirs
+=======
+from .ingest import INGEST_REGISTER_INDEX, IngestController
+from .kernel import scalar_step
+from .avx2 import avx2_step, avx2_equivalent_step
+>>>>>>> theirs
 from .state import StateSlice, StencilBuffers
 from .topology import (
     DEFAULT_NEIGHBOR_OFFSETS,
@@ -78,9 +91,16 @@ __all__ = [
     "GRID_ROWS",
     "INGEST_REGISTER_INDEX",
     "IngestController",
+<<<<<<< ours
     "LANE_BLOCKS",
 <<<<<<< ours
 =======
+    "LANES",
+>>>>>>> theirs
+=======
+    "avx2_equivalent_step",
+    "avx2_step",
+    "LANE_BLOCKS",
     "LANES",
 >>>>>>> theirs
     "LANES_PER_BLOCK",
@@ -88,6 +108,10 @@ __all__ = [
     "NeighborTopology",
     "REGISTER_NAMES",
 <<<<<<< ours
+<<<<<<< ours
+=======
+    "scalar_step",
+>>>>>>> theirs
 =======
     "scalar_step",
 >>>>>>> theirs
@@ -96,6 +120,9 @@ __all__ = [
     "build_canonical_coefficients",
     "lane_pair_index",
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
