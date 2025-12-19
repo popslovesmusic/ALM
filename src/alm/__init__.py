@@ -15,9 +15,21 @@ from .constants import (
     REGISTER_NAMES,
     STENCIL_ORDER,
 )
+<<<<<<< ours
 from .state import StateSlice, StencilBuffers
 
 __all__ = [
+=======
+from .coefficients import (
+    CoefficientTables,
+    build_canonical_coefficients,
+    lane_pair_index,
+)
+from .state import StateSlice, StencilBuffers
+
+__all__ = [
+    "CoefficientTables",
+>>>>>>> theirs
     "DeterministicConfig",
     "GRID_COLS",
     "GRID_ROWS",
@@ -26,6 +38,11 @@ __all__ = [
     "NUM_REGISTERS",
     "REGISTER_NAMES",
     "STENCIL_ORDER",
+<<<<<<< ours
+=======
+    "build_canonical_coefficients",
+    "lane_pair_index",
+>>>>>>> theirs
     "StateSlice",
     "StencilBuffers",
 ]
