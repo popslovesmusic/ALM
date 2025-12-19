@@ -12,6 +12,10 @@ from .constants import (
     LANE_BLOCKS,
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    LANES,
+>>>>>>> theirs
 =======
     LANES,
 >>>>>>> theirs
@@ -27,6 +31,7 @@ from .constants import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from .state import StateSlice, StencilBuffers
 
 __all__ = [
@@ -37,11 +42,15 @@ __all__ = [
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+from .boundary import apply_resonant_boundary, boundary_envelope
+>>>>>>> theirs
 from .coefficients import (
     CoefficientTables,
     build_canonical_coefficients,
     lane_pair_index,
 )
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -74,6 +83,12 @@ from .ingest import INGEST_REGISTER_INDEX, IngestController
 from .kernel import scalar_step
 from .avx2 import avx2_step, avx2_equivalent_step
 >>>>>>> theirs
+=======
+from .focus import FocusTracker
+from .ingest import INGEST_REGISTER_INDEX, IngestController
+from .kernel import scalar_step
+from .avx2 import avx2_step, avx2_equivalent_step
+>>>>>>> theirs
 from .state import StateSlice, StencilBuffers
 from .topology import (
     DEFAULT_NEIGHBOR_OFFSETS,
@@ -87,10 +102,15 @@ __all__ = [
     "DEFAULT_TOPOLOGY",
     "CoefficientTables",
     "DeterministicConfig",
+<<<<<<< ours
+=======
+    "FocusTracker",
+>>>>>>> theirs
     "GRID_COLS",
     "GRID_ROWS",
     "INGEST_REGISTER_INDEX",
     "IngestController",
+<<<<<<< ours
 <<<<<<< ours
     "LANE_BLOCKS",
 <<<<<<< ours
@@ -103,12 +123,24 @@ __all__ = [
     "LANE_BLOCKS",
     "LANES",
 >>>>>>> theirs
+=======
+    "apply_resonant_boundary",
+    "avx2_equivalent_step",
+    "avx2_step",
+    "boundary_envelope",
+    "LANE_BLOCKS",
+    "LANES",
+>>>>>>> theirs
     "LANES_PER_BLOCK",
     "NUM_REGISTERS",
     "NeighborTopology",
     "REGISTER_NAMES",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    "scalar_step",
+>>>>>>> theirs
 =======
     "scalar_step",
 >>>>>>> theirs
@@ -121,6 +153,9 @@ __all__ = [
     "lane_pair_index",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

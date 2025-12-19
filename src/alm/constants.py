@@ -16,6 +16,10 @@ LANE_BLOCKS: int = 4
 LANES_PER_BLOCK: int = 8  # 4 blocks × 8 lanes == 32 lanes total
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+LANES: int = LANE_BLOCKS * LANES_PER_BLOCK
+>>>>>>> theirs
 =======
 LANES: int = LANE_BLOCKS * LANES_PER_BLOCK
 >>>>>>> theirs

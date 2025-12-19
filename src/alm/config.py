@@ -14,7 +14,11 @@ import numpy as np
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from .constants import GRID_COLS, GRID_ROWS, NUM_REGISTERS, STENCIL_ORDER
+=======
+from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
+>>>>>>> theirs
 =======
 from .constants import GRID_COLS, GRID_ROWS, LANES, NUM_REGISTERS, STENCIL_ORDER
 >>>>>>> theirs
@@ -50,7 +54,11 @@ class DeterministicConfig:
             return rng.standard_normal(
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
                 size=(GRID_ROWS, GRID_COLS, NUM_REGISTERS), dtype=self.dtype
+=======
+                size=(GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=self.dtype
+>>>>>>> theirs
 =======
                 size=(GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=self.dtype
 >>>>>>> theirs
@@ -67,7 +75,13 @@ class DeterministicConfig:
         def _init(_: str) -> np.ndarray:
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
             return np.zeros((GRID_ROWS, GRID_COLS, NUM_REGISTERS), dtype=self.dtype)
+=======
+            return np.zeros(
+                (GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=self.dtype
+            )
+>>>>>>> theirs
 =======
             return np.zeros(
                 (GRID_ROWS, GRID_COLS, NUM_REGISTERS, LANES), dtype=self.dtype
