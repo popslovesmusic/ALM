@@ -12,7 +12,10 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -30,6 +33,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -49,6 +55,14 @@ This document links the canonical blueprint references to the implementation art
 - **Implementation artifacts:** `alm/core/include/alm/stencil.hpp`, `alm/core/include/alm/kernel.hpp`
 - **Regression coverage:** `tests/test_invariants.py` (scalar/AVX2 equivalence), `tests/test_residency.py` (stencil payload sizing)
 
+<<<<<<< ours
+=======
+## Deterministic Initialization and Seed Discipline
+- **Blueprint references:** `TIME_STENCIL_MECHANICS.md`, `Relational Kernel Law Spec v0.md`
+- **Implementation artifacts:** `alm/core/include/alm/initialization.hpp`, `alm/core/include/alm/config.hpp`, `alm/core/include/alm/constants.hpp`
+- **Regression coverage:** `tests/test_initialization.py` (seed canonicalization and padding zeroing), `tests/test_invariants.py` (stencil rotation geometry checks)
+
+>>>>>>> theirs
 ## Boundary Conditioning and Focus Orthogonality
 - **Blueprint references:** `Resonant Semantic Conditioning via Dynamic Boundary Constraints.md`, `PRESSURE_SIGNAL_ORTHOGONALITY.md`, `JITTER_FOCUS_TRANSFER.md`
 - **Implementation artifacts:** `alm/core/include/alm/boundary.hpp`, `alm/core/include/alm/focus.hpp`
@@ -58,7 +72,10 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -73,6 +90,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -97,6 +117,7 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 =======
@@ -116,6 +137,8 @@ This document links the canonical blueprint references to the implementation art
 >>>>>>> theirs
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 
@@ -124,6 +147,9 @@ This document links the canonical blueprint references to the implementation art
 - **Implementation artifacts:** `alm/core/include/alm/constants.hpp`, `alm/core/include/alm/stencil.hpp`, `alm/core/include/alm/performance.hpp`
 - **Regression coverage:** `tests/test_residency.py` (slice payload and headroom validation), `tests/test_performance.py` (geometry literals and residency assertions), `tests/test_invariants.py` (stencil rotation geometry checks)
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -134,6 +160,9 @@ This document links the canonical blueprint references to the implementation art
 - **Regression coverage:** `tests/test_performance.py` (compile-option allowlist parsing and enforcement), `tests/test_compliance_docs.py` (traceability enforcement)
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -149,6 +178,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -176,10 +208,13 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -212,6 +247,7 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -230,16 +266,22 @@ This document links the canonical blueprint references to the implementation art
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 
 ## Performance Profiling and Instruction Mix Evidence
 - **Blueprint references:** `CACHE_RESIDENCY_PROOF.md`, `SIMD as Ontology.md`, `AVX2_KERNEL_RULES.md`
 - **Implementation artifacts:** `alm/core/include/alm/performance.hpp`, `src/alm/performance.py`, `tests/test_performance.py`
 - **Regression coverage:** `tests/test_performance.py` (profiling metadata and intrinsic mix validation), `tests/test_residency.py` (residency headroom confirmation), `tests/test_hardening.py` (blueprint checklist enforcement)
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 
 ## Stress Resilience and Observability Traceability
 - **Blueprint references:** `PRESSURE_AND_DECAY_LAWS.md`, `PRESSURE_SIGNAL_ORTHOGONALITY.md`, `JITTER_FOCUS_TRANSFER.md`, `SPIRAL_OBSERVABLES.md`
 - **Implementation artifacts:** `alm/core/include/alm/ingest.hpp`, `alm/core/include/alm/focus.hpp`, `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -280,6 +322,8 @@ This document links the canonical blueprint references to the implementation art
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 - **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (ingest/focus/observability guards), `tests/test_compliance_docs.py` (compliance map traceability)
 
 ## Diagnostic Retention and Durability
@@ -293,6 +337,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -318,8 +365,11 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -346,6 +396,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
