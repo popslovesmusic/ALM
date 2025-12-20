@@ -10,7 +10,10 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -22,6 +25,9 @@ This document links the canonical blueprint references to the implementation art
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -44,7 +50,10 @@ This document links the canonical blueprint references to the implementation art
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 ## Pressure Decay and Orthogonality Compliance
@@ -53,6 +62,9 @@ This document links the canonical blueprint references to the implementation art
 - **Regression coverage:** `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (pressure and focus stress guards), `tests/test_performance.py` (pressure/decay compliance harness)
 
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -71,6 +83,7 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 =======
@@ -89,11 +102,21 @@ This document links the canonical blueprint references to the implementation art
 =======
 >>>>>>> theirs
 =======
+=======
+
+## Geometry, Slice Layout, and Cache Residency Lockdown
+- **Blueprint references:** `CACHE_RESIDENCY_PROOF.md`, `ALM Lane Map and Coefficient Tables Spec v0.md`
+- **Implementation artifacts:** `alm/core/include/alm/constants.hpp`, `alm/core/include/alm/stencil.hpp`, `alm/core/include/alm/performance.hpp`
+- **Regression coverage:** `tests/test_residency.py` (slice payload and headroom validation), `tests/test_performance.py` (geometry literals and residency assertions), `tests/test_invariants.py` (stencil rotation geometry checks)
+>>>>>>> theirs
 
 ## Canonical Compile Option Allowlist Enforcement
 - **Blueprint references:** `SIMD as Ontology.md`, `AVX2_KERNEL_RULES.md`
 - **Implementation artifacts:** `CMakeLists.txt`, `alm/core/CMakeLists.txt`, `src/alm/performance.py`
 - **Regression coverage:** `tests/test_performance.py` (compile-option allowlist parsing and enforcement), `tests/test_compliance_docs.py` (traceability enforcement)
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 
 ## Language Authority and Reference Isolation
@@ -103,6 +126,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -124,10 +150,13 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -154,6 +183,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -173,6 +205,7 @@ This document links the canonical blueprint references to the implementation art
 ## Stress Resilience and Observability Traceability
 - **Blueprint references:** `PRESSURE_AND_DECAY_LAWS.md`, `PRESSURE_SIGNAL_ORTHOGONALITY.md`, `JITTER_FOCUS_TRANSFER.md`, `SPIRAL_OBSERVABLES.md`
 - **Implementation artifacts:** `alm/core/include/alm/ingest.hpp`, `alm/core/include/alm/focus.hpp`, `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -207,6 +240,8 @@ This document links the canonical blueprint references to the implementation art
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 - **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (ingest/focus/observability guards), `tests/test_compliance_docs.py` (compliance map traceability)
 
 ## Diagnostic Retention and Durability
@@ -218,6 +253,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -237,8 +275,11 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -259,6 +300,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

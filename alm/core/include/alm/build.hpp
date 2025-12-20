@@ -21,6 +21,10 @@
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+#include <bit>
+>>>>>>> theirs
 =======
 #include <bit>
 >>>>>>> theirs
@@ -111,6 +115,7 @@ namespace alm::core {
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 static_assert(__cplusplus >= 202002L, "Canonical builds require C++20 or later.");
 
@@ -120,6 +125,8 @@ static_assert(__cplusplus >= 202002L, "Canonical builds require C++20 or later."
 
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -187,6 +194,9 @@ static_assert(std::endian::native == std::endian::little,
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -268,7 +278,10 @@ static_assert(sizeof(float) == 4, "Binary32 width must remain 4 bytes.");
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -346,6 +359,9 @@ static_assert(std::numeric_limits<float>::digits10 == 6,
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
