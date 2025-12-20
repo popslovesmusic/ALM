@@ -5,10 +5,15 @@ import pytest
 
 REQUIRED_SECTIONS = [
     "Ingest, Topology, and Timing Guards",
+<<<<<<< ours
+=======
+    "Ingest Lane Binding and Topology Closure Authority",
+>>>>>>> theirs
     "Coefficient Canonicalization and Chromatic Structure",
     "Deterministic Time Stencil and Kernel Equivalence",
     "Boundary Conditioning and Focus Orthogonality",
     "Compile-Time Guardrails and Canonical Flags",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -49,6 +54,9 @@ REQUIRED_SECTIONS = [
 =======
     "Language Authority and Reference Isolation",
 >>>>>>> theirs
+=======
+    "Language Authority and Reference Isolation",
+>>>>>>> theirs
     "Toolchain and Architecture Enforcement",
     "Performance Residency and Intrinsic Allowlist",
     "Stress Resilience and Observability Traceability",
@@ -56,6 +64,9 @@ REQUIRED_SECTIONS = [
     "Invariant Regression and Readiness Compliance",
     "Ontology and Provenance Traceability",
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -69,6 +80,10 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    "alm/core/include/alm/types.hpp",
+>>>>>>> theirs
 =======
     "alm/core/include/alm/types.hpp",
 >>>>>>> theirs
@@ -92,6 +107,7 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
     "alm/core/include/alm/config.hpp",
@@ -114,10 +130,15 @@ REQUIRED_ARTIFACTS = [
     "alm/core/include/alm/performance.hpp",
     "alm/core/include/alm/observability.hpp",
 =======
+=======
+>>>>>>> theirs
     "alm/core/include/alm/config.hpp",
     "alm/core/include/alm/performance.hpp",
     "alm/core/include/alm/observability.hpp",
     "agents.md",
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
     "src/alm/performance.py",
     "docs/tests_and_support/INVARIANT_REGRESSION_TESTS.md",
@@ -126,6 +147,9 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -146,10 +170,16 @@ COVERAGE_ITEMS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
     "tests/test_hardening.py",
+    "tests/test_compliance_docs.py",
+>>>>>>> theirs
+=======
+    "tests/test_hardening.py",
+    "tests/test_stress_paths.py",
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
@@ -220,6 +250,7 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
         "PRESSURE_AND_DECAY_LAWS.md",
         "SPIRAL_OBSERVABLES.md",
@@ -265,6 +296,20 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+        "agents.md",
+        "INGEST_LANE_BINDING.md",
+        "Final Topology Closure.md",
+        "PRESSURE_AND_DECAY_LAWS.md",
+        "SPIRAL_OBSERVABLES.md",
+        "Chromatic Structure as Conserved Ontology.md",
+        "NOT_IS ANALYSIS.md",
+        "The Spiral Concept in ALM.md",
+        "ALM_Creation_Journal.md",
+        "docs/tests_and_support/INVARIANT_REGRESSION_TESTS.md",
+        "docs/blueprint/Blueprint checklist.md",
+        "ALM_READINESS_REPORT.md",
+>>>>>>> theirs
     ],
 )
 def test_compliance_map_references_canonical_sources(reference):
@@ -278,7 +323,10 @@ def test_compliance_map_references_canonical_sources(reference):
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -307,6 +355,9 @@ def test_compliance_map_mentions_regression_coverage():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

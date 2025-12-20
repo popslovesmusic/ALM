@@ -7,6 +7,14 @@ This document links the canonical blueprint references to the implementation art
 - **Implementation artifacts:** `alm/core/include/alm/topology.hpp`, `alm/core/include/alm/ingest.hpp`
 - **Regression coverage:** `tests/test_invariants.py` (topology closure), `tests/test_hardening.py` (blueprint checklist sections)
 
+<<<<<<< ours
+=======
+## Ingest Lane Binding and Topology Closure Authority
+- **Blueprint references:** `INGEST_LANE_BINDING.md`, `Final Topology Closure.md`
+- **Implementation artifacts:** `alm/core/include/alm/ingest.hpp`, `alm/core/include/alm/topology.hpp`
+- **Regression coverage:** `tests/test_stress_paths.py` (ingest alignment and closure guards), `tests/test_compliance_docs.py` (traceability enforcement)
+
+>>>>>>> theirs
 ## Coefficient Canonicalization and Chromatic Structure
 - **Blueprint references:** `COEFFICIENT CANONICALIZATION CONTRACT.md`, `ALM Lane Map and Coefficient Tables Spec v0.md`
 - **Implementation artifacts:** `alm/core/include/alm/coefficients.hpp`, `alm/core/include/alm/constants.hpp`
@@ -34,6 +42,7 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 =======
@@ -47,11 +56,16 @@ This document links the canonical blueprint references to the implementation art
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 
 ## Language Authority and Reference Isolation
 - **Blueprint references:** `agents.md` (LANGUAGE_AUTHORITY_POLICY)
 - **Implementation artifacts:** `agents.md`, `src/alm/performance.py`
 - **Regression coverage:** `tests/test_performance.py` (non-canonical language validation), `tests/test_hardening.py` (blueprint checklist enforcement), `tests/test_compliance_docs.py` (traceability)
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 
 ## Toolchain and Architecture Enforcement
@@ -64,10 +78,13 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -85,6 +102,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -98,6 +118,7 @@ This document links the canonical blueprint references to the implementation art
 ## Stress Resilience and Observability Traceability
 - **Blueprint references:** `PRESSURE_AND_DECAY_LAWS.md`, `PRESSURE_SIGNAL_ORTHOGONALITY.md`, `JITTER_FOCUS_TRANSFER.md`, `SPIRAL_OBSERVABLES.md`
 - **Implementation artifacts:** `alm/core/include/alm/ingest.hpp`, `alm/core/include/alm/focus.hpp`, `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -123,6 +144,8 @@ This document links the canonical blueprint references to the implementation art
 =======
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 - **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (ingest/focus/observability guards), `tests/test_compliance_docs.py` (compliance map traceability)
 
 ## Diagnostic Retention and Durability
@@ -131,6 +154,9 @@ This document links the canonical blueprint references to the implementation art
 - **Regression coverage:** `tests/test_stress_paths.py` (non-invasive observability retention), `tests/test_compliance_docs.py` (compliance map traceability)
 
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -141,8 +167,11 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -154,6 +183,9 @@ This document links the canonical blueprint references to the implementation art
 - **Regression coverage:** `tests/test_invariants.py` (chromatic symmetry and layout), `tests/test_stress_paths.py` (non-invasive observability), `tests/test_compliance_docs.py` (traceability enforcement)
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
