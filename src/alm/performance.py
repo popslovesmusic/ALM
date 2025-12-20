@@ -36,6 +36,7 @@ _CONST_PATTERN = re.compile(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 _COMPILE_OPTIONS_PATTERN = re.compile(
     r"target_compile_options\(alm_core\s+INTERFACE(?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
@@ -55,6 +56,8 @@ _COMPILE_OPTIONS_PATTERN = re.compile(
 _COMPILE_OPTIONS_PATTERN = re.compile(
     r"target_compile_options\(alm_core\s+INTERFACE(?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 _COMPILE_OPTIONS_PATTERN = re.compile(
@@ -63,16 +66,22 @@ _COMPILE_OPTIONS_PATTERN = re.compile(
 _FORBIDDEN_FLAGS_PATTERN = re.compile(
     r"set\(ALM_FORBIDDEN_FLAGS\s+(?P<body>[^\)]*)\)", re.MULTILINE
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 )
 _BUILD_GUARD_MARKERS = (
     "__cplusplus >= 202002L",
 =======
+=======
+>>>>>>> theirs
 )
 _BUILD_GUARD_MARKERS = (
     "__cplusplus >= 202002L",
     "sizeof(void*) == 8",
     "std::endian::native == std::endian::little",
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
     "__AVX2__",
     "__FAST_MATH__",
@@ -87,6 +96,9 @@ _BUILD_GUARD_MARKERS = (
 )
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -135,7 +147,10 @@ def extract_intrinsics_from_header(header: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -171,6 +186,9 @@ def collect_intrinsics_from_tree(root: Path, pattern: str = "*.hpp") -> Sequence
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -203,6 +221,7 @@ def parse_cxx_constants(header: Path) -> Mapping[str, int]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
 <<<<<<< ours
@@ -219,6 +238,8 @@ __all__ = [
 >>>>>>> theirs
     "extract_intrinsics_from_header",
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -255,7 +276,10 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -269,8 +293,11 @@ def extract_build_guard_markers(build_header: Path) -> set[str]:
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 def parse_forbidden_flags(cmake_lists: Path) -> Sequence[str]:
@@ -293,6 +320,9 @@ def parse_forbidden_flags(cmake_lists: Path) -> Sequence[str]:
 
 
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -300,6 +330,7 @@ __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
     "collect_intrinsics_from_tree",
     "extract_intrinsics_from_header",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -313,6 +344,11 @@ __all__ = [
 >>>>>>> theirs
 =======
     "extract_build_guard_markers",
+    "parse_compile_options",
+>>>>>>> theirs
+=======
+    "extract_build_guard_markers",
+    "parse_forbidden_flags",
     "parse_compile_options",
 >>>>>>> theirs
 =======

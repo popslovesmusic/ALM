@@ -4,7 +4,10 @@ project(ALMCore LANGUAGES CXX)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -15,6 +18,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
