@@ -7,6 +7,7 @@ project(ALMCore LANGUAGES CXX)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -15,6 +16,8 @@ project(ALMCore LANGUAGES CXX)
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 if (NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -34,8 +37,11 @@ else()
 endif()
 
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 if (NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   message(FATAL_ERROR "Canonical ALM build currently requires GCC or Clang for deterministic AVX2 enforcement.")
 endif()
@@ -68,6 +74,9 @@ foreach(flag IN LISTS ALM_FORBIDDEN_FLAGS)
   endforeach()
 endforeach()
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -78,6 +87,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -88,5 +98,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+add_compile_options(-Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off)
+
 >>>>>>> theirs
 add_subdirectory(alm/core)

@@ -12,6 +12,7 @@ import pytest
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from alm.constants import L2_CACHE_BUDGET_BYTES
 from alm.performance import (
     ALLOWED_AVX2_INTRINSICS,
@@ -62,6 +63,8 @@ from alm.performance import (
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 from alm.constants import L2_CACHE_BUDGET_BYTES, STENCIL_ORDER
 from alm.performance import (
     ALLOWED_AVX2_INTRINSICS,
@@ -73,6 +76,7 @@ from alm.performance import (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     parse_compile_options,
 >>>>>>> theirs
 =======
@@ -94,6 +98,11 @@ from alm.performance import (
 =======
     parse_forbidden_flags,
     parse_compile_options,
+>>>>>>> theirs
+=======
+    parse_forbidden_flags,
+    parse_compile_options,
+    parse_global_compile_options,
 >>>>>>> theirs
     parse_cxx_constants,
     residency_report,
@@ -130,6 +139,7 @@ def test_kernel_intrinsics_constrained_to_allow_list():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 def test_cxx_residency_constants_are_literal_and_consistent():
     header = Path("alm/core/include/alm/performance.hpp")
     constants = parse_cxx_constants(header)
@@ -142,6 +152,8 @@ def test_cxx_residency_constants_are_literal_and_consistent():
     assert constants["kStencilBytesLiteral"] <= constants["kL2CacheBudgetBytes"]
     assert constants["kCacheHeadroomBytes"] == constants["kL2CacheBudgetBytes"] - constants[
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -191,6 +203,12 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+        "kRegisterBlockBytesLiteral",
+        "kRegisterArrayBytesLiteral",
+        "kFrameBytesLiteral",
+>>>>>>> theirs
 =======
         "kRegisterBlockBytesLiteral",
         "kRegisterArrayBytesLiteral",
@@ -271,6 +289,7 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     expected_stencil_bytes = expected_slice_bytes * perf_constants["kStencilSlices"]
 
     assert perf_constants["kSliceElementsLiteral"] == expected_elements
@@ -303,6 +322,8 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
     expected_block_bytes = geom_constants["kLaneCount"] * 4  # sizeof(float)
     expected_array_bytes = expected_block_bytes * geom_constants["kLaneBlocks"]
     expected_frame_bytes = expected_array_bytes * geom_constants["kRegisterCount"]
@@ -316,6 +337,9 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -355,10 +379,13 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
         "kStencilBytesLiteral"
     ]
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -395,9 +422,12 @@ def test_cpp_stencil_slice_count_matches_python_ordering():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -429,6 +459,9 @@ def test_core_cmake_constrains_compiler_and_flags():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -463,12 +496,15 @@ def test_core_compile_options_pin_avx2_and_deterministic_fp():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -497,7 +533,10 @@ def test_core_compile_options_include_warning_hardening():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -538,6 +577,7 @@ def test_core_cmake_rejects_forbidden_fast_math_flags():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -546,6 +586,8 @@ def test_core_cmake_rejects_forbidden_fast_math_flags():
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 def test_top_level_cmake_constrains_compiler_and_flags():
     cmake_lists = Path("CMakeLists.txt")
     content = cmake_lists.read_text(encoding="utf-8")
@@ -556,6 +598,31 @@ def test_top_level_cmake_constrains_compiler_and_flags():
         assert flag in content
 
 
+<<<<<<< ours
+=======
+def test_top_level_compile_options_pin_avx2_and_deterministic_fp():
+    cmake_lists = Path("CMakeLists.txt")
+    options = set(parse_global_compile_options(cmake_lists))
+
+    required = {"-mavx2", "-fno-fast-math", "-ffp-contract=off"}
+    missing = required.difference(options)
+
+    if missing:
+        pytest.fail(f"missing required global compile options for deterministic AVX2 build: {sorted(missing)}")
+
+
+def test_top_level_compile_options_include_warning_hardening():
+    cmake_lists = Path("CMakeLists.txt")
+    options = set(parse_global_compile_options(cmake_lists))
+
+    required = {"-Wall", "-Wextra", "-Wpedantic"}
+    missing = required.difference(options)
+
+    if missing:
+        pytest.fail(f"missing global warning hardening options: {sorted(missing)}")
+
+
+>>>>>>> theirs
 def test_top_level_cmake_rejects_forbidden_fast_math_flags():
     cmake_lists = Path("CMakeLists.txt")
     forbidden = set(parse_forbidden_flags(cmake_lists))
@@ -584,6 +651,9 @@ def test_top_level_cmake_rejects_forbidden_fast_math_flags():
     assert "Forbidden compiler flag detected" in content
 
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 def test_cxx_standard_enforced_without_extensions():
     top_level = Path("CMakeLists.txt").read_text(encoding="utf-8")
@@ -608,6 +678,11 @@ def test_build_guards_cover_binary32_and_avx2_requirements():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+        "sizeof(void*) == 8",
+        "std::endian::native == std::endian::little",
+>>>>>>> theirs
 =======
         "sizeof(void*) == 8",
         "std::endian::native == std::endian::little",
@@ -645,10 +720,13 @@ def test_build_guards_cover_binary32_and_avx2_requirements():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -665,12 +743,15 @@ def test_core_cmake_rejects_non_64bit_layouts():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
     assert "CMAKE_CXX_BYTE_ORDER" in cmake_lists
     assert "requires little-endian layout" in cmake_lists
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
     assert "CMAKE_CXX_BYTE_ORDER" in cmake_lists
@@ -686,6 +767,9 @@ def test_top_level_cmake_rejects_non_64bit_or_big_endian():
     assert "TestBigEndian" in cmake_lists
     assert "requires little-endian layout" in cmake_lists
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

@@ -39,6 +39,7 @@ _CONST_PATTERN = re.compile(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 _COMPILE_OPTIONS_PATTERN = re.compile(
     r"target_compile_options\(alm_core\s+INTERFACE(?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
@@ -86,6 +87,16 @@ _BUILD_GUARD_MARKERS = (
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+_COMPILE_OPTIONS_PATTERN = re.compile(
+    r"target_compile_options\(alm_core\s+INTERFACE(?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
+)
+_ADD_COMPILE_OPTIONS_PATTERN = re.compile(
+    r"add_compile_options\((?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
+)
+_FORBIDDEN_FLAGS_PATTERN = re.compile(
+    r"set\(ALM_FORBIDDEN_FLAGS\s+(?P<body>[^\)]*)\)", re.MULTILINE
+>>>>>>> theirs
 )
 _BUILD_GUARD_MARKERS = (
     "__cplusplus >= 202002L",
@@ -94,6 +105,9 @@ _BUILD_GUARD_MARKERS = (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -117,6 +131,9 @@ _BUILD_GUARD_MARKERS = (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -174,7 +191,10 @@ def extract_intrinsics_from_header(header: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -219,6 +239,9 @@ def collect_intrinsics_from_tree(root: Path, pattern: str = "*.hpp") -> Sequence
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -260,6 +283,7 @@ def parse_cxx_constants(header: Path) -> Mapping[str, int]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
 <<<<<<< ours
@@ -276,6 +300,8 @@ __all__ = [
 >>>>>>> theirs
     "extract_intrinsics_from_header",
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -321,6 +347,7 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -331,6 +358,30 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+def parse_global_compile_options(cmake_lists: Path) -> Sequence[str]:
+    """Extract project-wide compile options declared via add_compile_options."""
+
+    content = cmake_lists.read_text(encoding="utf-8")
+    matches = list(_ADD_COMPILE_OPTIONS_PATTERN.finditer(content))
+    tokens: list[str] = []
+
+    for match in matches:
+        body = match.group("body")
+
+        for expr in re.finditer(r"\$<[^>]+>:(?P<opts>[^>]*)>", body):
+            tokens.extend(expr.group("opts").split())
+
+        if not tokens:
+            for raw_line in body.splitlines():
+                line = raw_line.strip()
+                if line:
+                    tokens.extend(line.split())
+
+    return tokens
+
+
 >>>>>>> theirs
 def extract_build_guard_markers(build_header: Path) -> set[str]:
     """Collect required guard markers from the build guard header."""
@@ -344,8 +395,11 @@ def extract_build_guard_markers(build_header: Path) -> set[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -377,6 +431,9 @@ def parse_forbidden_flags(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -396,6 +453,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "parse_compile_options",
 <<<<<<< ours
 <<<<<<< ours
@@ -432,6 +490,12 @@ __all__ = [
     "extract_build_guard_markers",
     "parse_forbidden_flags",
     "parse_compile_options",
+>>>>>>> theirs
+=======
+    "extract_build_guard_markers",
+    "parse_forbidden_flags",
+    "parse_compile_options",
+    "parse_global_compile_options",
 >>>>>>> theirs
     "parse_cxx_constants",
     "residency_report",
