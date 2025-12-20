@@ -56,9 +56,12 @@ class Stencil {
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
   std::array<Frame, 4> frames_{};
   std::array<std::size_t, 4> order_{0, 1, 2, 3};
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -129,6 +132,9 @@ class Stencil {
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

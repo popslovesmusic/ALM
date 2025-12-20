@@ -33,6 +33,7 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 =======
@@ -44,6 +45,13 @@ This document links the canonical blueprint references to the implementation art
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+
+## Language Authority and Reference Isolation
+- **Blueprint references:** `agents.md` (LANGUAGE_AUTHORITY_POLICY)
+- **Implementation artifacts:** `agents.md`, `src/alm/performance.py`
+- **Regression coverage:** `tests/test_performance.py` (non-canonical language validation), `tests/test_hardening.py` (blueprint checklist enforcement), `tests/test_compliance_docs.py` (traceability)
 >>>>>>> theirs
 
 ## Toolchain and Architecture Enforcement
@@ -55,10 +63,13 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -73,6 +84,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -84,6 +98,7 @@ This document links the canonical blueprint references to the implementation art
 ## Stress Resilience and Observability Traceability
 - **Blueprint references:** `PRESSURE_AND_DECAY_LAWS.md`, `PRESSURE_SIGNAL_ORTHOGONALITY.md`, `JITTER_FOCUS_TRANSFER.md`, `SPIRAL_OBSERVABLES.md`
 - **Implementation artifacts:** `alm/core/include/alm/ingest.hpp`, `alm/core/include/alm/focus.hpp`, `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -106,6 +121,8 @@ This document links the canonical blueprint references to the implementation art
 - **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (ingest/focus/observability guards), `tests/test_compliance_docs.py` (compliance map traceability)
 
 =======
+=======
+>>>>>>> theirs
 - **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (ingest/focus/observability guards), `tests/test_compliance_docs.py` (compliance map traceability)
 
 ## Diagnostic Retention and Durability
@@ -113,6 +130,9 @@ This document links the canonical blueprint references to the implementation art
 - **Implementation artifacts:** `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
 - **Regression coverage:** `tests/test_stress_paths.py` (non-invasive observability retention), `tests/test_compliance_docs.py` (compliance map traceability)
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 ## Invariant Regression and Readiness Compliance
 - **Blueprint references:** `docs/tests_and_support/INVARIANT_REGRESSION_TESTS.md`, `docs/blueprint/Blueprint checklist.md`, `ALM_READINESS_REPORT.md`
@@ -120,8 +140,11 @@ This document links the canonical blueprint references to the implementation art
 - **Regression coverage:** `tests/test_invariants.py` (kernel/topology invariants), `tests/test_hardening.py` (checklist enforcement), `tests/test_compliance_docs.py` (compliance map traceability)
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 
@@ -130,6 +153,9 @@ This document links the canonical blueprint references to the implementation art
 - **Implementation artifacts:** `alm/core/include/alm/types.hpp`, `alm/core/include/alm/constants.hpp`, `alm/core/include/alm/observability.hpp`
 - **Regression coverage:** `tests/test_invariants.py` (chromatic symmetry and layout), `tests/test_stress_paths.py` (non-invasive observability), `tests/test_compliance_docs.py` (traceability enforcement)
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
