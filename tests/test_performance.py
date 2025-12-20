@@ -5,6 +5,7 @@ import pytest
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from alm.constants import L2_CACHE_BUDGET_BYTES
 from alm.performance import (
     ALLOWED_AVX2_INTRINSICS,
@@ -21,14 +22,21 @@ from alm.performance import (
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 from alm.constants import L2_CACHE_BUDGET_BYTES, STENCIL_ORDER
 from alm.performance import (
     ALLOWED_AVX2_INTRINSICS,
     collect_intrinsics_from_tree,
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
     extract_intrinsics_from_header,
+=======
+    extract_intrinsics_from_header,
+    parse_compile_options,
+>>>>>>> theirs
 =======
     extract_intrinsics_from_header,
     parse_compile_options,
@@ -65,6 +73,7 @@ def test_kernel_intrinsics_constrained_to_allow_list():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 def test_cxx_residency_constants_are_literal_and_consistent():
     header = Path("alm/core/include/alm/performance.hpp")
     constants = parse_cxx_constants(header)
@@ -77,6 +86,8 @@ def test_cxx_residency_constants_are_literal_and_consistent():
     assert constants["kStencilBytesLiteral"] <= constants["kL2CacheBudgetBytes"]
     assert constants["kCacheHeadroomBytes"] == constants["kL2CacheBudgetBytes"] - constants[
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -105,6 +116,12 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+        "kRegisterBlockBytesLiteral",
+        "kRegisterArrayBytesLiteral",
+        "kFrameBytesLiteral",
+>>>>>>> theirs
 =======
         "kRegisterBlockBytesLiteral",
         "kRegisterArrayBytesLiteral",
@@ -143,6 +160,7 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     expected_stencil_bytes = expected_slice_bytes * perf_constants["kStencilSlices"]
 
     assert perf_constants["kSliceElementsLiteral"] == expected_elements
@@ -161,12 +179,17 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
     expected_block_bytes = geom_constants["kLaneCount"] * 4  # sizeof(float)
     expected_array_bytes = expected_block_bytes * geom_constants["kLaneBlocks"]
     expected_frame_bytes = expected_array_bytes * geom_constants["kRegisterCount"]
     expected_stencil_bytes = expected_slice_bytes * geom_constants["kStencilSlices"]
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -185,10 +208,13 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
         "kStencilBytesLiteral"
     ]
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -204,9 +230,12 @@ def test_cpp_stencil_slice_count_matches_python_ordering():
     assert cpp_constants["kStencilSlices"] == len(STENCIL_ORDER)
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 =======
+=======
+>>>>>>> theirs
 
 
 def test_core_cmake_constrains_compiler_and_flags():
@@ -217,6 +246,9 @@ def test_core_cmake_constrains_compiler_and_flags():
     assert "check_cxx_compiler_flag" in content
     for flag in ("-mavx2", "-fno-fast-math", "-ffp-contract=off"):
         assert flag in content
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 
 
@@ -230,6 +262,9 @@ def test_core_compile_options_pin_avx2_and_deterministic_fp():
     if missing:
         pytest.fail(f"missing required compile options for deterministic AVX2 build: {sorted(missing)}")
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
