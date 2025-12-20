@@ -32,8 +32,11 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -51,10 +54,13 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -66,6 +72,9 @@ This document links the canonical blueprint references to the implementation art
 - **Regression coverage:** `tests/test_performance.py` (intrinsic allowlist and compile-option enforcement), `tests/test_residency.py` (cache headroom validation)
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -75,6 +84,7 @@ This document links the canonical blueprint references to the implementation art
 ## Stress Resilience and Observability Traceability
 - **Blueprint references:** `PRESSURE_AND_DECAY_LAWS.md`, `PRESSURE_SIGNAL_ORTHOGONALITY.md`, `JITTER_FOCUS_TRANSFER.md`, `SPIRAL_OBSERVABLES.md`
 - **Implementation artifacts:** `alm/core/include/alm/ingest.hpp`, `alm/core/include/alm/focus.hpp`, `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -95,16 +105,31 @@ This document links the canonical blueprint references to the implementation art
 >>>>>>> theirs
 - **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (ingest/focus/observability guards), `tests/test_compliance_docs.py` (compliance map traceability)
 
+=======
+- **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (ingest/focus/observability guards), `tests/test_compliance_docs.py` (compliance map traceability)
+
+## Diagnostic Retention and Durability
+- **Blueprint references:** `SPIRAL_OBSERVABLES.md`
+- **Implementation artifacts:** `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
+- **Regression coverage:** `tests/test_stress_paths.py` (non-invasive observability retention), `tests/test_compliance_docs.py` (compliance map traceability)
+
+>>>>>>> theirs
 ## Invariant Regression and Readiness Compliance
 - **Blueprint references:** `docs/tests_and_support/INVARIANT_REGRESSION_TESTS.md`, `docs/blueprint/Blueprint checklist.md`, `ALM_READINESS_REPORT.md`
 - **Implementation artifacts:** `docs/tests_and_support/INVARIANT_REGRESSION_TESTS.md`, `docs/blueprint/Blueprint checklist.md`, `ALM_READINESS_REPORT.md`
 - **Regression coverage:** `tests/test_invariants.py` (kernel/topology invariants), `tests/test_hardening.py` (checklist enforcement), `tests/test_compliance_docs.py` (compliance map traceability)
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 
 ## Ontology and Provenance Traceability
 - **Blueprint references:** `NOT_IS ANALYSIS.md`, `Chromatic Structure as Conserved Ontology.md`, `The Spiral Concept in ALM.md`, `ALM_Creation_Journal.md`
 - **Implementation artifacts:** `alm/core/include/alm/types.hpp`, `alm/core/include/alm/constants.hpp`, `alm/core/include/alm/observability.hpp`
 - **Regression coverage:** `tests/test_invariants.py` (chromatic symmetry and layout), `tests/test_stress_paths.py` (non-invasive observability), `tests/test_compliance_docs.py` (traceability enforcement)
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs

@@ -49,6 +49,7 @@ inline constexpr std::size_t kRegisterCount = 4;
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 // Topology constants: each cell connects to 12 symmetric neighbors.
 inline constexpr std::size_t kNeighborCount = 12;
@@ -95,6 +96,8 @@ inline constexpr std::size_t kNeighborCount = 12;
 
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -164,6 +167,9 @@ inline constexpr std::size_t kNeighborCount = 12;
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
