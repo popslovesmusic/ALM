@@ -42,6 +42,7 @@ _CONST_PATTERN = re.compile(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 _COMPILE_OPTIONS_PATTERN = re.compile(
     r"target_compile_options\(alm_core\s+INTERFACE(?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
@@ -90,6 +91,8 @@ _BUILD_GUARD_MARKERS = (
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -102,6 +105,7 @@ _ADD_COMPILE_OPTIONS_PATTERN = re.compile(
 )
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 _FORBIDDEN_FLAGS_PATTERN = re.compile(
     r"set\(ALM_FORBIDDEN_FLAGS\s+(?P<body>[^\)]*)\)", re.MULTILINE
 >>>>>>> theirs
@@ -113,6 +117,8 @@ _FORBIDDEN_FLAGS_PATTERN = re.compile(
     r"set\(ALM_FORBIDDEN_FLAGS\s+(?P<body>[^\)]*)\)", re.MULTILINE
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 _CANONICAL_COMPILE_OPTIONS_PATTERN = re.compile(
     r"set\(ALM_CANONICAL_COMPILE_OPTIONS\s+(?P<body>[^\)]*)\)", re.MULTILINE
 )
@@ -122,6 +128,13 @@ _CANONICAL_COMPILE_OPTION_ALLOWLIST_PATTERN = re.compile(
 )
 _FORBIDDEN_FLAGS_PATTERN = re.compile(
     r"set\(ALM_FORBIDDEN_FLAGS\s+(?P<body>[^\)]*)\)", re.MULTILINE
+<<<<<<< ours
+>>>>>>> theirs
+=======
+)
+_FLAG_SCOPE_PATTERN = re.compile(
+    r"set\(\s*(?P<scope>CMAKE_CXX_FLAGS(?:_[A-Z]+)?)\s+\"?(?P<body>[^\)]*?)\"?\)",
+    re.MULTILINE,
 >>>>>>> theirs
 )
 _BUILD_GUARD_MARKERS = (
@@ -134,6 +147,9 @@ _BUILD_GUARD_MARKERS = (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -166,6 +182,9 @@ _BUILD_GUARD_MARKERS = (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -232,7 +251,10 @@ def extract_intrinsics_from_header(header: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -286,6 +308,9 @@ def collect_intrinsics_from_tree(root: Path, pattern: str = "*.hpp") -> Sequence
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -336,6 +361,7 @@ def parse_cxx_constants(header: Path) -> Mapping[str, int]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
 <<<<<<< ours
@@ -374,12 +400,20 @@ __all__ = [
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
     """Extract canonical compile options for the core target."""
 
     content = cmake_lists.read_text(encoding="utf-8")
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    canonical_options = parse_canonical_compile_options(cmake_lists)
+    if not canonical_options:
+        canonical_options = parse_canonical_compile_options(Path("CMakeLists.txt"))
+>>>>>>> theirs
 =======
     canonical_options = parse_canonical_compile_options(cmake_lists)
     if not canonical_options:
@@ -400,8 +434,11 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
     for match in re.finditer(r"\$<[^>]+>:(?P<opts>[^>]*)>", body):
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         tokens.extend(match.group("opts").split())
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
         options = match.group("opts").split()
@@ -411,6 +448,9 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
             else:
                 tokens.append(option)
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -421,8 +461,11 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
             if line:
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
                 tokens.extend(line.split())
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
                 for option in line.split():
@@ -431,6 +474,9 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
                     else:
                         tokens.append(option)
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -447,6 +493,7 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -459,6 +506,8 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -469,6 +518,10 @@ def parse_global_compile_options(cmake_lists: Path) -> Sequence[str]:
     content = cmake_lists.read_text(encoding="utf-8")
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    canonical_options = parse_canonical_compile_options(cmake_lists)
+>>>>>>> theirs
 =======
     canonical_options = parse_canonical_compile_options(cmake_lists)
 >>>>>>> theirs
@@ -484,8 +537,11 @@ def parse_global_compile_options(cmake_lists: Path) -> Sequence[str]:
         for expr in re.finditer(r"\$<[^>]+>:(?P<opts>[^>]*)>", body):
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
             tokens.extend(expr.group("opts").split())
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
             options = expr.group("opts").split()
@@ -495,6 +551,9 @@ def parse_global_compile_options(cmake_lists: Path) -> Sequence[str]:
                 else:
                     tokens.append(option)
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -505,8 +564,11 @@ def parse_global_compile_options(cmake_lists: Path) -> Sequence[str]:
                 if line:
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
                     tokens.extend(line.split())
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
                     for option in line.split():
@@ -529,6 +591,7 @@ def parse_canonical_compile_options(cmake_lists: Path) -> Sequence[str]:
     body = match.group("body")
     tokens: list[str] = []
 <<<<<<< ours
+<<<<<<< ours
 
     for raw in body.split():
         token = raw.strip("\" ")
@@ -536,6 +599,8 @@ def parse_canonical_compile_options(cmake_lists: Path) -> Sequence[str]:
             tokens.append(token)
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
     allowlist: Sequence[str] | None = None
 
     for raw in body.split():
@@ -568,6 +633,9 @@ def parse_canonical_compile_option_allowlist(cmake_lists: Path) -> Sequence[str]
         token = raw.strip("\" ")
         if token and token != "CACHE" and token != "INTERNAL":
             tokens.append(token)
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 
     return tokens
@@ -575,6 +643,9 @@ def parse_canonical_compile_option_allowlist(cmake_lists: Path) -> Sequence[str]
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -595,8 +666,11 @@ def extract_build_guard_markers(build_header: Path) -> set[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -637,6 +711,7 @@ def parse_forbidden_flags(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -651,6 +726,20 @@ def parse_forbidden_flags(cmake_lists: Path) -> Sequence[str]:
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+def parse_flag_scopes(cmake_lists: Path) -> dict[str, str]:
+    """Parse CMake flag scope assignments (CMAKE_CXX_FLAGS*)."""
+
+    content = cmake_lists.read_text(encoding="utf-8")
+    scopes: dict[str, str] = {}
+
+    for match in _FLAG_SCOPE_PATTERN.finditer(content):
+        scopes[match.group("scope")] = match.group("body").strip()
+
+    return scopes
+
+
 >>>>>>> theirs
 __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
@@ -665,6 +754,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "parse_compile_options",
 <<<<<<< ours
 <<<<<<< ours
@@ -716,10 +806,18 @@ __all__ = [
     "parse_global_compile_options",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
     "extract_build_guard_markers",
     "parse_canonical_compile_options",
     "parse_canonical_compile_option_allowlist",
     "parse_forbidden_flags",
+<<<<<<< ours
+    "parse_compile_options",
+    "parse_global_compile_options",
+>>>>>>> theirs
+=======
+    "parse_flag_scopes",
     "parse_compile_options",
     "parse_global_compile_options",
 >>>>>>> theirs

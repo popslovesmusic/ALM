@@ -10,6 +10,7 @@ project(ALMCore LANGUAGES CXX)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -18,6 +19,8 @@ project(ALMCore LANGUAGES CXX)
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -46,8 +49,11 @@ endif()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -89,6 +95,9 @@ endforeach()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -100,6 +109,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -131,11 +141,17 @@ add_compile_options(${ALM_CANONICAL_COMPILE_OPTIONS})
 
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 set(ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST
     -Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off
     CACHE INTERNAL "Canonical compile option allowlist")
 
 set(ALM_CANONICAL_COMPILE_OPTIONS ${ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST})
+<<<<<<< ours
+=======
+list(JOIN ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST " " ALM_CANONICAL_COMPILE_OPTIONS_STRING)
+>>>>>>> theirs
 
 foreach(option IN LISTS ALM_CANONICAL_COMPILE_OPTIONS)
   list(FIND ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST ${option} _allow_idx)
@@ -150,6 +166,17 @@ foreach(option IN LISTS ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST)
     message(FATAL_ERROR "Canonical compile option missing: ${option}")
   endif()
 endforeach()
+
+<<<<<<< ours
+add_compile_options(${ALM_CANONICAL_COMPILE_OPTIONS})
+
+>>>>>>> theirs
+=======
+set(CMAKE_CXX_FLAGS "${ALM_CANONICAL_COMPILE_OPTIONS_STRING}")
+set(CMAKE_CXX_FLAGS_RELEASE "${ALM_CANONICAL_COMPILE_OPTIONS_STRING}")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${ALM_CANONICAL_COMPILE_OPTIONS_STRING}")
+set(CMAKE_CXX_FLAGS_MINSIZEREL "${ALM_CANONICAL_COMPILE_OPTIONS_STRING}")
+set(CMAKE_CXX_FLAGS_DEBUG "${ALM_CANONICAL_COMPILE_OPTIONS_STRING}")
 
 add_compile_options(${ALM_CANONICAL_COMPILE_OPTIONS})
 
