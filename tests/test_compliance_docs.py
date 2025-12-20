@@ -9,6 +9,7 @@ REQUIRED_SECTIONS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     "Ingest Lane Binding and Topology Closure Authority",
 >>>>>>> theirs
@@ -65,12 +66,15 @@ REQUIRED_SECTIONS = [
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
     "Ingest Lane Binding and Topology Closure Authority",
     "Coefficient Canonicalization and Chromatic Structure",
     "Deterministic Time Stencil and Kernel Equivalence",
     "Boundary Conditioning and Focus Orthogonality",
     "Pressure Decay and Orthogonality Compliance",
     "Compile-Time Guardrails and Canonical Flags",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
     "Language Authority and Reference Isolation",
@@ -86,6 +90,14 @@ REQUIRED_SECTIONS = [
 >>>>>>> theirs
     "Toolchain and Architecture Enforcement",
     "Performance Residency and Intrinsic Allowlist",
+=======
+    "Geometry, Slice Layout, and Cache Residency Lockdown",
+    "Canonical Compile Option Allowlist Enforcement",
+    "Language Authority and Reference Isolation",
+    "Toolchain and Architecture Enforcement",
+    "Performance Residency and Intrinsic Allowlist",
+    "Performance Profiling and Instruction Mix Evidence",
+>>>>>>> theirs
     "Stress Resilience and Observability Traceability",
     "Diagnostic Retention and Durability",
     "Invariant Regression and Readiness Compliance",
@@ -95,6 +107,9 @@ REQUIRED_SECTIONS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -120,6 +135,10 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    "alm/core/include/alm/types.hpp",
+>>>>>>> theirs
 =======
     "alm/core/include/alm/types.hpp",
 >>>>>>> theirs
@@ -159,6 +178,7 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
     "alm/core/include/alm/config.hpp",
@@ -189,6 +209,8 @@ REQUIRED_ARTIFACTS = [
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
     "alm/core/include/alm/config.hpp",
     "alm/core/include/alm/performance.hpp",
     "alm/core/include/alm/observability.hpp",
@@ -197,6 +219,9 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -217,6 +242,9 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -249,10 +277,16 @@ COVERAGE_ITEMS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
     "tests/test_hardening.py",
+    "tests/test_compliance_docs.py",
+>>>>>>> theirs
+=======
+    "tests/test_hardening.py",
+    "tests/test_stress_paths.py",
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
@@ -347,6 +381,7 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
         "PRESSURE_AND_DECAY_LAWS.md",
         "SPIRAL_OBSERVABLES.md",
@@ -399,6 +434,8 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
         "agents.md",
         "INGEST_LANE_BINDING.md",
         "Final Topology Closure.md",
@@ -414,6 +451,9 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -438,7 +478,10 @@ def test_compliance_map_references_canonical_sources(reference):
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -479,6 +522,9 @@ def test_compliance_map_mentions_regression_coverage():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
