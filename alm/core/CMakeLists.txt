@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 3.20)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -14,6 +15,8 @@ cmake_minimum_required(VERSION 3.20)
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 if (NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -21,8 +24,11 @@ if (NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
 endif()
 
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 if (DEFINED CMAKE_CXX_BYTE_ORDER)
   if (NOT CMAKE_CXX_BYTE_ORDER STREQUAL "LITTLE_ENDIAN")
     message(FATAL_ERROR "Canonical ALM build requires little-endian layout for deterministic AVX2 packing.")
@@ -35,6 +41,9 @@ else()
   endif()
 endif()
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 if (NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   message(FATAL_ERROR "Canonical ALM build currently requires GCC or Clang for deterministic AVX2 enforcement.")
@@ -56,6 +65,7 @@ endforeach()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -63,6 +73,8 @@ add_library(alm_core INTERFACE)
 
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -86,6 +98,9 @@ endforeach()
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -101,6 +116,9 @@ set_target_properties(alm_core PROPERTIES
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -116,6 +134,7 @@ target_include_directories(alm_core
 target_compile_features(alm_core INTERFACE cxx_std_20)
 
 target_compile_options(alm_core INTERFACE
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -174,6 +193,8 @@ target_link_libraries(alm_core_checks PRIVATE alm_core)
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
   $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off>)
 
 add_library(alm_core_checks OBJECT checks.cpp)
@@ -184,6 +205,9 @@ target_link_libraries(alm_core_checks PRIVATE alm_core)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
