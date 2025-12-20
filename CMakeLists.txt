@@ -6,6 +6,7 @@ project(ALMCore LANGUAGES CXX)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -14,6 +15,8 @@ project(ALMCore LANGUAGES CXX)
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 if (NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
   message(FATAL_ERROR "Canonical ALM build requires 64-bit pointers for deterministic AVX2 layout.")
 endif()
@@ -30,6 +33,41 @@ else()
   endif()
 endif()
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
+if (NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  message(FATAL_ERROR "Canonical ALM build currently requires GCC or Clang for deterministic AVX2 enforcement.")
+endif()
+
+include(CheckCXXCompilerFlag)
+
+set(_ALM_REQUIRED_FLAGS "-mavx2" "-fno-fast-math" "-ffp-contract=off")
+foreach(flag IN LISTS _ALM_REQUIRED_FLAGS)
+  string(REPLACE "-" "_" flag_var ${flag})
+  check_cxx_compiler_flag(${flag} ALM_HAS${flag_var})
+  if (NOT ALM_HAS${flag_var})
+    message(FATAL_ERROR "Compiler does not support required flag ${flag} for deterministic AVX2 builds.")
+  endif()
+endforeach()
+
+set(ALM_FORBIDDEN_FLAGS "-ffast-math" "-Ofast" "-ffinite-math-only" "-funsafe-math-optimizations")
+set(ALM_FLAG_SCOPES
+    CMAKE_CXX_FLAGS
+    CMAKE_CXX_FLAGS_RELEASE
+    CMAKE_CXX_FLAGS_RELWITHDEBINFO
+    CMAKE_CXX_FLAGS_MINSIZEREL
+    CMAKE_CXX_FLAGS_DEBUG)
+
+foreach(flag IN LISTS ALM_FORBIDDEN_FLAGS)
+  string(REPLACE "-" "\\-" _flag_pattern ${flag})
+  foreach(scope IN LISTS ALM_FLAG_SCOPES)
+    if (${scope} MATCHES "(^|[ ;])${_flag_pattern}([ ;]|$)")
+      message(FATAL_ERROR "Forbidden compiler flag detected in ${scope}: ${flag}")
+    endif()
+  endforeach()
+endforeach()
+
 >>>>>>> theirs
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -39,6 +77,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
