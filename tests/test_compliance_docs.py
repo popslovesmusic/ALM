@@ -12,6 +12,7 @@ REQUIRED_SECTIONS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     "Stress Resilience and Observability Traceability",
 >>>>>>> theirs
@@ -21,6 +22,11 @@ REQUIRED_SECTIONS = [
 >>>>>>> theirs
 =======
     "Toolchain and Architecture Enforcement",
+    "Stress Resilience and Observability Traceability",
+>>>>>>> theirs
+=======
+    "Toolchain and Architecture Enforcement",
+    "Performance Residency and Intrinsic Allowlist",
     "Stress Resilience and Observability Traceability",
 >>>>>>> theirs
 ]
@@ -39,12 +45,17 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
     "alm/core/include/alm/config.hpp",
 >>>>>>> theirs
 =======
     "alm/core/include/alm/config.hpp",
+>>>>>>> theirs
+=======
+    "alm/core/include/alm/config.hpp",
+    "alm/core/include/alm/performance.hpp",
 >>>>>>> theirs
     "alm/core/include/alm/observability.hpp",
     "src/alm/performance.py",
@@ -56,10 +67,16 @@ COVERAGE_ITEMS = [
     "tests/test_invariants.py",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
     "tests/test_hardening.py",
+    "tests/test_compliance_docs.py",
+>>>>>>> theirs
+=======
+    "tests/test_hardening.py",
+    "tests/test_stress_paths.py",
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
@@ -100,6 +117,11 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+        "PRESSURE_AND_DECAY_LAWS.md",
+        "SPIRAL_OBSERVABLES.md",
+>>>>>>> theirs
 =======
         "PRESSURE_AND_DECAY_LAWS.md",
         "SPIRAL_OBSERVABLES.md",
@@ -120,7 +142,10 @@ def test_compliance_map_references_canonical_sources(reference):
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -134,6 +159,9 @@ def test_compliance_map_mentions_regression_coverage():
         assert coverage_item in content, f"missing regression coverage item: {coverage_item}"
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

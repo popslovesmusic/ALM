@@ -29,8 +29,11 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 
@@ -39,18 +42,30 @@ This document links the canonical blueprint references to the implementation art
 - **Implementation artifacts:** `CMakeLists.txt`, `alm/core/CMakeLists.txt`, `alm/core/include/alm/build.hpp`, `alm/core/include/alm/config.hpp`, `alm/core/checks.cpp`
 - **Regression coverage:** `tests/test_performance.py` (architecture and compiler hardening), `tests/test_hardening.py` (blueprint checklist enforcement)
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+
+## Performance Residency and Intrinsic Allowlist
+- **Blueprint references:** `CACHE_RESIDENCY_PROOF.md`, `SIMD as Ontology.md`, `AVX2_KERNEL_RULES.md`
+- **Implementation artifacts:** `alm/core/include/alm/constants.hpp`, `alm/core/include/alm/performance.hpp`, `src/alm/performance.py`
+- **Regression coverage:** `tests/test_performance.py` (intrinsic allowlist and compile-option enforcement), `tests/test_residency.py` (cache headroom validation)
 >>>>>>> theirs
 
 ## Stress Resilience and Observability Traceability
 - **Blueprint references:** `PRESSURE_AND_DECAY_LAWS.md`, `PRESSURE_SIGNAL_ORTHOGONALITY.md`, `JITTER_FOCUS_TRANSFER.md`, `SPIRAL_OBSERVABLES.md`
 - **Implementation artifacts:** `alm/core/include/alm/ingest.hpp`, `alm/core/include/alm/focus.hpp`, `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
 <<<<<<< ours
+<<<<<<< ours
 - **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_compliance_docs.py` (compliance map traceability)
 <<<<<<< ours
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+- **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (ingest/focus/observability guards), `tests/test_compliance_docs.py` (compliance map traceability)
 >>>>>>> theirs
 =======
 - **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (ingest/focus/observability guards), `tests/test_compliance_docs.py` (compliance map traceability)
