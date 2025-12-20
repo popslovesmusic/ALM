@@ -4,12 +4,19 @@ cmake_minimum_required(VERSION 3.20)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+if (NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+  message(FATAL_ERROR "Canonical ALM build requires 64-bit pointers for deterministic AVX2 layout.")
+endif()
+
 >>>>>>> theirs
 if (NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   message(FATAL_ERROR "Canonical ALM build currently requires GCC or Clang for deterministic AVX2 enforcement.")
@@ -29,6 +36,7 @@ endforeach()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -36,6 +44,8 @@ add_library(alm_core INTERFACE)
 
 =======
 =======
+=======
+>>>>>>> theirs
 set(ALM_FORBIDDEN_FLAGS "-ffast-math" "-Ofast" "-ffinite-math-only" "-funsafe-math-optimizations")
 set(ALM_FLAG_SCOPES
     CMAKE_CXX_FLAGS
@@ -53,6 +63,9 @@ foreach(flag IN LISTS ALM_FORBIDDEN_FLAGS)
   endforeach()
 endforeach()
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 add_library(alm_core INTERFACE)
 
@@ -62,6 +75,9 @@ set_target_properties(alm_core PROPERTIES
   CXX_EXTENSIONS NO)
 
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -73,6 +89,7 @@ target_include_directories(alm_core
 target_compile_features(alm_core INTERFACE cxx_std_20)
 
 target_compile_options(alm_core INTERFACE
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -125,6 +142,8 @@ target_link_libraries(alm_core_checks PRIVATE alm_core)
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
   $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off>)
 
 add_library(alm_core_checks OBJECT checks.cpp)
@@ -133,6 +152,9 @@ target_link_libraries(alm_core_checks PRIVATE alm_core)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

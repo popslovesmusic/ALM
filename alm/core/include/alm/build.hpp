@@ -1,9 +1,14 @@
 #pragma once
 
+<<<<<<< ours
+=======
+#include <bit>
+>>>>>>> theirs
 #include <limits>
 
 namespace alm::core {
 
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 =======
@@ -12,6 +17,15 @@ static_assert(__cplusplus >= 202002L, "Canonical builds require C++20 or later."
 >>>>>>> theirs
 =======
 static_assert(__cplusplus >= 202002L, "Canonical builds require C++20 or later.");
+
+>>>>>>> theirs
+=======
+static_assert(__cplusplus >= 202002L, "Canonical builds require C++20 or later.");
+
+static_assert(sizeof(void*) == 8, "Canonical builds require 64-bit pointers for AVX2 layout stability.");
+
+static_assert(std::endian::native == std::endian::little,
+              "Canonical builds require little-endian layout for deterministic packing.");
 
 >>>>>>> theirs
 #ifndef __AVX2__
@@ -33,7 +47,10 @@ static_assert(sizeof(float) == 4, "Binary32 width must remain 4 bytes.");
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 static_assert(std::numeric_limits<float>::radix == 2,
@@ -48,6 +65,9 @@ static_assert(std::numeric_limits<float>::digits10 == 6,
               "Binary32 decimal precision must remain 6 digits for invariant reporting.");
 
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

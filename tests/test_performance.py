@@ -8,6 +8,7 @@ import pytest
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 from alm.constants import L2_CACHE_BUDGET_BYTES
 from alm.performance import (
     ALLOWED_AVX2_INTRINSICS,
@@ -50,6 +51,8 @@ from alm.performance import (
 =======
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 from alm.constants import L2_CACHE_BUDGET_BYTES, STENCIL_ORDER
 from alm.performance import (
     ALLOWED_AVX2_INTRINSICS,
@@ -57,6 +60,11 @@ from alm.performance import (
     collect_intrinsics_from_tree,
     extract_intrinsics_from_header,
 <<<<<<< ours
+<<<<<<< ours
+    parse_compile_options,
+>>>>>>> theirs
+=======
+    parse_forbidden_flags,
     parse_compile_options,
 >>>>>>> theirs
 =======
@@ -94,6 +102,7 @@ def test_kernel_intrinsics_constrained_to_allow_list():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 def test_cxx_residency_constants_are_literal_and_consistent():
     header = Path("alm/core/include/alm/performance.hpp")
     constants = parse_cxx_constants(header)
@@ -106,6 +115,8 @@ def test_cxx_residency_constants_are_literal_and_consistent():
     assert constants["kStencilBytesLiteral"] <= constants["kL2CacheBudgetBytes"]
     assert constants["kCacheHeadroomBytes"] == constants["kL2CacheBudgetBytes"] - constants[
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -143,6 +154,12 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+        "kRegisterBlockBytesLiteral",
+        "kRegisterArrayBytesLiteral",
+        "kFrameBytesLiteral",
+>>>>>>> theirs
 =======
         "kRegisterBlockBytesLiteral",
         "kRegisterArrayBytesLiteral",
@@ -199,6 +216,7 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     expected_stencil_bytes = expected_slice_bytes * perf_constants["kStencilSlices"]
 
     assert perf_constants["kSliceElementsLiteral"] == expected_elements
@@ -223,6 +241,8 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
     expected_block_bytes = geom_constants["kLaneCount"] * 4  # sizeof(float)
     expected_array_bytes = expected_block_bytes * geom_constants["kLaneBlocks"]
     expected_frame_bytes = expected_array_bytes * geom_constants["kRegisterCount"]
@@ -232,6 +252,9 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -259,10 +282,13 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
         "kStencilBytesLiteral"
     ]
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -287,9 +313,12 @@ def test_cpp_stencil_slice_count_matches_python_ordering():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -309,6 +338,9 @@ def test_core_cmake_constrains_compiler_and_flags():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -331,12 +363,15 @@ def test_core_compile_options_pin_avx2_and_deterministic_fp():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 
@@ -353,7 +388,10 @@ def test_core_compile_options_include_warning_hardening():
 
 
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 def test_core_cmake_rejects_forbidden_fast_math_flags():
     cmake_lists = Path("alm/core/CMakeLists.txt")
     forbidden = set(parse_forbidden_flags(cmake_lists))
@@ -382,6 +420,9 @@ def test_core_cmake_rejects_forbidden_fast_math_flags():
     assert "Forbidden compiler flag detected" in content
 
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 def test_cxx_standard_enforced_without_extensions():
     top_level = Path("CMakeLists.txt").read_text(encoding="utf-8")
@@ -402,6 +443,11 @@ def test_build_guards_cover_binary32_and_avx2_requirements():
 
     required = {
         "__cplusplus >= 202002L",
+<<<<<<< ours
+=======
+        "sizeof(void*) == 8",
+        "std::endian::native == std::endian::little",
+>>>>>>> theirs
         "__AVX2__",
         "__FAST_MATH__",
         "__FINITE_MATH_ONLY__",
@@ -419,6 +465,16 @@ def test_build_guards_cover_binary32_and_avx2_requirements():
     if missing:
         pytest.fail(f"missing build guard markers: {sorted(missing)}")
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+
+
+def test_core_cmake_rejects_non_64bit_layouts():
+    cmake_lists = Path("alm/core/CMakeLists.txt").read_text(encoding="utf-8")
+
+    assert "CMAKE_SIZEOF_VOID_P" in cmake_lists
+    assert "requires 64-bit pointers" in cmake_lists
 >>>>>>> theirs
