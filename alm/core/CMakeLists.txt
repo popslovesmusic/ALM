@@ -12,6 +12,7 @@ cmake_minimum_required(VERSION 3.20)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -20,6 +21,8 @@ cmake_minimum_required(VERSION 3.20)
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -45,8 +48,11 @@ endif()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -77,6 +83,9 @@ endif()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -97,7 +106,10 @@ endif()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -108,8 +120,11 @@ endif()
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 if (NOT DEFINED ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST)
@@ -117,11 +132,17 @@ if (NOT DEFINED ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST)
 endif()
 
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 if (NOT DEFINED ALM_CANONICAL_COMPILE_OPTIONS_STRING)
   message(FATAL_ERROR "Canonical compile option string must be provided by the top-level configuration.")
 endif()
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 foreach(option IN LISTS ALM_CANONICAL_COMPILE_OPTIONS)
   list(FIND ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST ${option} _allow_idx)
@@ -138,14 +159,20 @@ foreach(option IN LISTS ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST)
 endforeach()
 
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 set(CMAKE_CXX_FLAGS "${ALM_CANONICAL_COMPILE_OPTIONS_STRING}")
 set(CMAKE_CXX_FLAGS_RELEASE "${ALM_CANONICAL_COMPILE_OPTIONS_STRING}")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${ALM_CANONICAL_COMPILE_OPTIONS_STRING}")
 set(CMAKE_CXX_FLAGS_MINSIZEREL "${ALM_CANONICAL_COMPILE_OPTIONS_STRING}")
 set(CMAKE_CXX_FLAGS_DEBUG "${ALM_CANONICAL_COMPILE_OPTIONS_STRING}")
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 include(CheckCXXCompilerFlag)
 
@@ -169,6 +196,7 @@ endforeach()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -176,6 +204,8 @@ add_library(alm_core INTERFACE)
 
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -217,6 +247,9 @@ endforeach()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -250,6 +283,9 @@ set_target_properties(alm_core PROPERTIES
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -277,6 +313,7 @@ target_include_directories(alm_core
 target_compile_features(alm_core INTERFACE cxx_std_20)
 
 target_compile_options(alm_core INTERFACE
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -384,12 +421,17 @@ target_link_libraries(alm_core_checks PRIVATE alm_core)
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
   $<$<CXX_COMPILER_ID:GNU,Clang>:${ALM_CANONICAL_COMPILE_OPTIONS}>)
 
 add_library(alm_core_checks OBJECT checks.cpp)
 target_link_libraries(alm_core_checks PRIVATE alm_core)
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
