@@ -2,6 +2,10 @@
 
 #include "alm/constants.hpp"
 <<<<<<< ours
+<<<<<<< ours
+=======
+#include "alm/types.hpp"
+>>>>>>> theirs
 =======
 #include "alm/types.hpp"
 >>>>>>> theirs
@@ -10,9 +14,12 @@
 
 namespace alm::core {
 
+<<<<<<< ours
 // Count of stencil slices participating in the four-phase rotation.
 inline constexpr std::size_t kStencilSlices = 4;
 
+=======
+>>>>>>> theirs
 // Cache budget for the four-slice stencil payload (256 KiB envelope).
 inline constexpr std::size_t kL2CacheBudgetBytes = 262144U;
 
@@ -22,6 +29,7 @@ inline constexpr std::size_t kSliceBytes = kSliceElements * sizeof(float);
 inline constexpr std::size_t kStencilBytes = kSliceBytes * kStencilSlices;
 
 <<<<<<< ours
+<<<<<<< ours
 // Literal stencil payload size used for cross-language validation.
 <<<<<<< ours
 =======
@@ -29,6 +37,8 @@ inline constexpr std::size_t kSliceElementsLiteral = 512U;
 inline constexpr std::size_t kSliceBytesLiteral = 2048U;
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 inline constexpr std::size_t kRegisterBlockBytes = sizeof(RegisterBlock);
 inline constexpr std::size_t kRegisterArrayBytes = sizeof(RegisterArray);
 inline constexpr std::size_t kFrameBytes = sizeof(Frame);
@@ -40,6 +50,9 @@ inline constexpr std::size_t kRegisterArrayBytesLiteral = 512U;
 inline constexpr std::size_t kFrameBytesLiteral = 2048U;
 inline constexpr std::size_t kSliceElementsLiteral = 512U;
 inline constexpr std::size_t kSliceBytesLiteral = 2048U;
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 inline constexpr std::size_t kStencilBytesLiteral = 8192U;
 
@@ -47,8 +60,11 @@ inline constexpr std::size_t kCacheHeadroomBytes = 253952U;
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
+=======
+>>>>>>> theirs
 static_assert(alignof(RegisterBlock) == 32, "Register blocks must remain 32-byte aligned.");
 static_assert(kRegisterBlockBytes == kRegisterBlockBytesLiteral,
               "Register block byte size must remain stable for residency proofing.");
@@ -57,22 +73,31 @@ static_assert(kRegisterArrayBytes == kRegisterArrayBytesLiteral,
 static_assert(kFrameBytes == kFrameBytesLiteral,
               "Frame byte size must remain stable for residency proofing.");
 static_assert(kFrameBytes == kSliceBytes, "Frame byte size must match derived slice bytes.");
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 static_assert(kSliceElements == kSliceElementsLiteral,
               "Slice element count must remain stable for residency proofing.");
 static_assert(kSliceBytes == kSliceBytesLiteral,
               "Slice payload size must remain stable for residency proofing.");
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 static_assert(kStencilBytes == kStencilBytesLiteral,
               "Stencil payload size must remain stable for residency proofing.");
 =======
+=======
+>>>>>>> theirs
 static_assert(kFrameBytesLiteral == kSliceBytesLiteral,
               "Frame literal byte size must match slice literal byte size.");
 static_assert(kStencilBytes == kStencilBytesLiteral,
               "Stencil payload size must remain stable for residency proofing.");
 static_assert(kStencilBytesFromLayout == kStencilBytes,
               "Stencil payload must be consistent across layout and geometry derivations.");
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 static_assert(kStencilBytesLiteral <= kL2CacheBudgetBytes,
               "Stencil payload must remain within the L2 cache budget.");

@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pytest
 
+<<<<<<< ours
 from alm.constants import L2_CACHE_BUDGET_BYTES
 from alm.performance import (
     ALLOWED_AVX2_INTRINSICS,
@@ -11,6 +12,12 @@ from alm.performance import (
     collect_intrinsics_from_tree,
 >>>>>>> theirs
 =======
+    collect_intrinsics_from_tree,
+>>>>>>> theirs
+=======
+from alm.constants import L2_CACHE_BUDGET_BYTES, STENCIL_ORDER
+from alm.performance import (
+    ALLOWED_AVX2_INTRINSICS,
     collect_intrinsics_from_tree,
 >>>>>>> theirs
     extract_intrinsics_from_header,
@@ -39,6 +46,7 @@ def test_kernel_intrinsics_constrained_to_allow_list():
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 def test_cxx_residency_constants_are_literal_and_consistent():
     header = Path("alm/core/include/alm/performance.hpp")
     constants = parse_cxx_constants(header)
@@ -51,6 +59,8 @@ def test_cxx_residency_constants_are_literal_and_consistent():
     assert constants["kStencilBytesLiteral"] <= constants["kL2CacheBudgetBytes"]
     assert constants["kCacheHeadroomBytes"] == constants["kL2CacheBudgetBytes"] - constants[
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 def test_all_headers_intrinsics_constrained_to_allow_list():
@@ -70,6 +80,12 @@ def test_cxx_residency_constants_are_literal_and_consistent():
 
     required = {
 <<<<<<< ours
+<<<<<<< ours
+=======
+        "kRegisterBlockBytesLiteral",
+        "kRegisterArrayBytesLiteral",
+        "kFrameBytesLiteral",
+>>>>>>> theirs
 =======
         "kRegisterBlockBytesLiteral",
         "kRegisterArrayBytesLiteral",
@@ -90,6 +106,7 @@ def test_cxx_residency_constants_are_literal_and_consistent():
     )
     expected_slice_bytes = expected_elements * 4  # sizeof(float)
 <<<<<<< ours
+<<<<<<< ours
     expected_stencil_bytes = expected_slice_bytes * perf_constants["kStencilSlices"]
 
     assert perf_constants["kSliceElementsLiteral"] == expected_elements
@@ -103,6 +120,12 @@ def test_cxx_residency_constants_are_literal_and_consistent():
     expected_array_bytes = expected_block_bytes * geom_constants["kLaneBlocks"]
     expected_frame_bytes = expected_array_bytes * geom_constants["kRegisterCount"]
     expected_stencil_bytes = expected_slice_bytes * perf_constants["kStencilSlices"]
+=======
+    expected_block_bytes = geom_constants["kLaneCount"] * 4  # sizeof(float)
+    expected_array_bytes = expected_block_bytes * geom_constants["kLaneBlocks"]
+    expected_frame_bytes = expected_array_bytes * geom_constants["kRegisterCount"]
+    expected_stencil_bytes = expected_slice_bytes * geom_constants["kStencilSlices"]
+>>>>>>> theirs
 
     assert perf_constants["kRegisterBlockBytesLiteral"] == expected_block_bytes
     assert perf_constants["kRegisterArrayBytesLiteral"] == expected_array_bytes
@@ -113,6 +136,18 @@ def test_cxx_residency_constants_are_literal_and_consistent():
     assert perf_constants["kStencilBytesLiteral"] == expected_stencil_bytes
     assert perf_constants["kStencilBytesLiteral"] <= perf_constants["kL2CacheBudgetBytes"]
     assert perf_constants["kCacheHeadroomBytes"] == perf_constants["kL2CacheBudgetBytes"] - perf_constants[
+<<<<<<< ours
 >>>>>>> theirs
         "kStencilBytesLiteral"
     ]
+=======
+        "kStencilBytesLiteral"
+    ]
+
+
+def test_cpp_stencil_slice_count_matches_python_ordering():
+    constants_header = Path("alm/core/include/alm/constants.hpp")
+    cpp_constants = parse_cxx_constants(constants_header)
+
+    assert cpp_constants["kStencilSlices"] == len(STENCIL_ORDER)
+>>>>>>> theirs

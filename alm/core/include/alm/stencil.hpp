@@ -33,8 +33,15 @@ class Stencil {
   constexpr void Rotate() { std::rotate(order_.begin(), order_.begin() + 1, order_.end()); }
 
  private:
+<<<<<<< ours
   std::array<Frame, 4> frames_{};
   std::array<std::size_t, 4> order_{0, 1, 2, 3};
+=======
+  static_assert(kStencilSlices == 4, "Stencil rotation requires four slices.");
+
+  std::array<Frame, kStencilSlices> frames_{};
+  std::array<std::size_t, kStencilSlices> order_{0, 1, 2, 3};
+>>>>>>> theirs
 };
 
 }  // namespace alm::core

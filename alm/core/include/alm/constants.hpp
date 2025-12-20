@@ -27,6 +27,7 @@ inline constexpr std::size_t kRegisterCount = 4;
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 // Topology constants: each cell connects to 12 symmetric neighbors.
 inline constexpr std::size_t kNeighborCount = 12;
@@ -68,6 +69,14 @@ inline constexpr std::size_t kNeighborCount = 12;
 
 >>>>>>> theirs
 =======
+// Topology constants: each cell connects to 12 symmetric neighbors.
+inline constexpr std::size_t kNeighborCount = 12;
+
+>>>>>>> theirs
+=======
+// Four-slice time stencil: FUTURE, NOW, RECENT, STABLE.
+inline constexpr std::size_t kStencilSlices = 4;
+
 // Topology constants: each cell connects to 12 symmetric neighbors.
 inline constexpr std::size_t kNeighborCount = 12;
 

@@ -66,7 +66,10 @@ def extract_intrinsics_from_header(header: Path) -> Sequence[str]:
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 def collect_intrinsics_from_tree(root: Path, pattern: str = "*.hpp") -> Sequence[str]:
@@ -81,6 +84,9 @@ def collect_intrinsics_from_tree(root: Path, pattern: str = "*.hpp") -> Sequence
 
 
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -97,6 +103,10 @@ __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    "collect_intrinsics_from_tree",
+>>>>>>> theirs
 =======
     "collect_intrinsics_from_tree",
 >>>>>>> theirs
