@@ -6,6 +6,10 @@
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+#include "alm/types.hpp"
+>>>>>>> theirs
 =======
 #include "alm/types.hpp"
 >>>>>>> theirs
@@ -30,9 +34,12 @@ namespace alm::core {
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 // Count of stencil slices participating in the four-phase rotation.
 inline constexpr std::size_t kStencilSlices = 4;
 
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -54,6 +61,7 @@ inline constexpr std::size_t kStencilBytes = kSliceBytes * kStencilSlices;
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 // Literal stencil payload size used for cross-language validation.
 <<<<<<< ours
 =======
@@ -61,6 +69,8 @@ inline constexpr std::size_t kSliceElementsLiteral = 512U;
 inline constexpr std::size_t kSliceBytesLiteral = 2048U;
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -84,6 +94,9 @@ inline constexpr std::size_t kSliceBytesLiteral = 2048U;
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -103,8 +116,11 @@ inline constexpr std::size_t kCacheHeadroomBytes = 253952U;
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -125,6 +141,9 @@ static_assert(kFrameBytes == kSliceBytes, "Frame byte size must match derived sl
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -143,10 +162,13 @@ static_assert(kSliceBytes == kSliceBytesLiteral,
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 static_assert(kStencilBytes == kStencilBytesLiteral,
               "Stencil payload size must remain stable for residency proofing.");
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -165,6 +187,9 @@ static_assert(kStencilBytesFromLayout == kStencilBytes,
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

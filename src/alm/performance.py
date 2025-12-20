@@ -33,6 +33,7 @@ _CONST_PATTERN = re.compile(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 _COMPILE_OPTIONS_PATTERN = re.compile(
     r"target_compile_options\(alm_core\s+INTERFACE(?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
@@ -46,6 +47,24 @@ _COMPILE_OPTIONS_PATTERN = re.compile(
 =======
 _COMPILE_OPTIONS_PATTERN = re.compile(
     r"target_compile_options\(alm_core\s+INTERFACE(?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
+)
+>>>>>>> theirs
+=======
+_COMPILE_OPTIONS_PATTERN = re.compile(
+    r"target_compile_options\(alm_core\s+INTERFACE(?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
+)
+_BUILD_GUARD_MARKERS = (
+    "__cplusplus >= 202002L",
+    "__AVX2__",
+    "__FAST_MATH__",
+    "__FINITE_MATH_ONLY__",
+    "numeric_limits<float>::is_iec559",
+    "sizeof(float) == 4",
+    "numeric_limits<float>::radix == 2",
+    "numeric_limits<float>::digits == 24",
+    "numeric_limits<float>::max_exponent == 128",
+    "numeric_limits<float>::min_exponent == -125",
+    "numeric_limits<float>::digits10 == 6",
 )
 >>>>>>> theirs
 
@@ -88,7 +107,10 @@ def extract_intrinsics_from_header(header: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -115,6 +137,9 @@ def collect_intrinsics_from_tree(root: Path, pattern: str = "*.hpp") -> Sequence
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -138,6 +163,7 @@ def parse_cxx_constants(header: Path) -> Mapping[str, int]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
 <<<<<<< ours
@@ -154,6 +180,8 @@ __all__ = [
 >>>>>>> theirs
     "extract_intrinsics_from_header",
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -181,10 +209,21 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
     return tokens
 
 
+<<<<<<< ours
+=======
+def extract_build_guard_markers(build_header: Path) -> set[str]:
+    """Collect required guard markers from the build guard header."""
+
+    content = build_header.read_text(encoding="utf-8")
+    return {marker for marker in _BUILD_GUARD_MARKERS if marker in content}
+
+
+>>>>>>> theirs
 __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
     "collect_intrinsics_from_tree",
     "extract_intrinsics_from_header",
+<<<<<<< ours
     "parse_compile_options",
 <<<<<<< ours
 <<<<<<< ours
@@ -192,6 +231,10 @@ __all__ = [
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+    "extract_build_guard_markers",
+    "parse_compile_options",
 >>>>>>> theirs
     "parse_cxx_constants",
     "residency_report",
