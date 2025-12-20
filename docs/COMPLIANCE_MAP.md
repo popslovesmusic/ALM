@@ -26,3 +26,11 @@ This document links the canonical blueprint references to the implementation art
 - **Blueprint references:** `CACHE_RESIDENCY_PROOF.md`, `SIMD as Ontology.md`
 - **Implementation artifacts:** `CMakeLists.txt`, `alm/core/CMakeLists.txt`, `alm/core/include/alm/build.hpp`, `alm/core/checks.cpp`
 - **Regression coverage:** `tests/test_performance.py` (flag allowlist and architecture guards), `tests/test_residency.py` (cache budget headroom)
+<<<<<<< ours
+=======
+
+## Stress Resilience and Observability Traceability
+- **Blueprint references:** `PRESSURE_AND_DECAY_LAWS.md`, `PRESSURE_SIGNAL_ORTHOGONALITY.md`, `JITTER_FOCUS_TRANSFER.md`, `SPIRAL_OBSERVABLES.md`
+- **Implementation artifacts:** `alm/core/include/alm/ingest.hpp`, `alm/core/include/alm/focus.hpp`, `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
+- **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_compliance_docs.py` (compliance map traceability)
+>>>>>>> theirs
