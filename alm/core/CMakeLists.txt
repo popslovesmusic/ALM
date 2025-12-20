@@ -10,6 +10,7 @@ cmake_minimum_required(VERSION 3.20)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -18,6 +19,8 @@ cmake_minimum_required(VERSION 3.20)
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -37,8 +40,11 @@ endif()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -63,6 +69,9 @@ endif()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -77,10 +86,34 @@ if (NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 endif()
 
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 if (NOT DEFINED ALM_CANONICAL_COMPILE_OPTIONS)
   message(FATAL_ERROR "Canonical compile options must be provided by the top-level configuration.")
 endif()
+
+<<<<<<< ours
+>>>>>>> theirs
+=======
+if (NOT DEFINED ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST)
+  message(FATAL_ERROR "Canonical compile option allowlist must be provided by the top-level configuration.")
+endif()
+
+foreach(option IN LISTS ALM_CANONICAL_COMPILE_OPTIONS)
+  list(FIND ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST ${option} _allow_idx)
+  if (_allow_idx EQUAL -1)
+    message(FATAL_ERROR "Non-canonical compile option detected in core scope: ${option}")
+  endif()
+endforeach()
+
+foreach(option IN LISTS ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST)
+  list(FIND ALM_CANONICAL_COMPILE_OPTIONS ${option} _canon_idx)
+  if (_canon_idx EQUAL -1)
+    message(FATAL_ERROR "Canonical compile option missing from core scope: ${option}")
+  endif()
+endforeach()
 
 >>>>>>> theirs
 include(CheckCXXCompilerFlag)
@@ -103,6 +136,7 @@ endforeach()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -110,6 +144,8 @@ add_library(alm_core INTERFACE)
 
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -145,6 +181,9 @@ endforeach()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -172,6 +211,9 @@ set_target_properties(alm_core PROPERTIES
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -195,6 +237,7 @@ target_include_directories(alm_core
 target_compile_features(alm_core INTERFACE cxx_std_20)
 
 target_compile_options(alm_core INTERFACE
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -296,8 +339,13 @@ target_link_libraries(alm_core_checks PRIVATE alm_core)
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
   $<$<CXX_COMPILER_ID:GNU,Clang>:${ALM_CANONICAL_COMPILE_OPTIONS}>)
 
 add_library(alm_core_checks OBJECT checks.cpp)
 target_link_libraries(alm_core_checks PRIVATE alm_core)
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs

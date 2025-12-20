@@ -9,6 +9,7 @@ project(ALMCore LANGUAGES CXX)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -17,6 +18,8 @@ project(ALMCore LANGUAGES CXX)
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -42,8 +45,11 @@ endif()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -82,6 +88,9 @@ endforeach()
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -91,6 +100,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -116,6 +126,30 @@ add_compile_options(-Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract
 =======
 set(ALM_CANONICAL_COMPILE_OPTIONS
     -Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off)
+
+add_compile_options(${ALM_CANONICAL_COMPILE_OPTIONS})
+
+>>>>>>> theirs
+=======
+set(ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST
+    -Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off
+    CACHE INTERNAL "Canonical compile option allowlist")
+
+set(ALM_CANONICAL_COMPILE_OPTIONS ${ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST})
+
+foreach(option IN LISTS ALM_CANONICAL_COMPILE_OPTIONS)
+  list(FIND ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST ${option} _allow_idx)
+  if (_allow_idx EQUAL -1)
+    message(FATAL_ERROR "Non-canonical compile option detected: ${option}")
+  endif()
+endforeach()
+
+foreach(option IN LISTS ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST)
+  list(FIND ALM_CANONICAL_COMPILE_OPTIONS ${option} _canon_idx)
+  if (_canon_idx EQUAL -1)
+    message(FATAL_ERROR "Canonical compile option missing: ${option}")
+  endif()
+endforeach()
 
 add_compile_options(${ALM_CANONICAL_COMPILE_OPTIONS})
 
