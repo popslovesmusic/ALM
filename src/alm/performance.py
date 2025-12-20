@@ -30,6 +30,12 @@ _INTRINSIC_PATTERN = re.compile(r"_mm256_[A-Za-z0-9_]+")
 _CONST_PATTERN = re.compile(
     r"inline constexpr std::size_t\s+(?P<name>k[A-Za-z0-9_]+)\s*=\s*(?P<value>[0-9_]+)U?;"
 )
+<<<<<<< ours
+=======
+_COMPILE_OPTIONS_PATTERN = re.compile(
+    r"target_compile_options\(alm_core\s+INTERFACE(?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
+)
+>>>>>>> theirs
 
 
 def residency_report(
@@ -67,7 +73,10 @@ def extract_intrinsics_from_header(header: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -85,6 +94,9 @@ def collect_intrinsics_from_tree(root: Path, pattern: str = "*.hpp") -> Sequence
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -99,6 +111,7 @@ def parse_cxx_constants(header: Path) -> Mapping[str, int]:
     return parsed
 
 
+<<<<<<< ours
 __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
 <<<<<<< ours
@@ -114,6 +127,36 @@ __all__ = [
     "collect_intrinsics_from_tree",
 >>>>>>> theirs
     "extract_intrinsics_from_header",
+=======
+def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
+    """Extract canonical compile options for the core target."""
+
+    content = cmake_lists.read_text(encoding="utf-8")
+    match = _COMPILE_OPTIONS_PATTERN.search(content)
+    if not match:
+        return []
+
+    body = match.group("body")
+    tokens: list[str] = []
+
+    for match in re.finditer(r"\$<[^>]+>:(?P<opts>[^>]*)>", body):
+        tokens.extend(match.group("opts").split())
+
+    if not tokens:
+        for raw_line in body.splitlines():
+            line = raw_line.strip()
+            if line:
+                tokens.extend(line.split())
+
+    return tokens
+
+
+__all__ = [
+    "ALLOWED_AVX2_INTRINSICS",
+    "collect_intrinsics_from_tree",
+    "extract_intrinsics_from_header",
+    "parse_compile_options",
+>>>>>>> theirs
     "parse_cxx_constants",
     "residency_report",
     "validate_intrinsics_used",

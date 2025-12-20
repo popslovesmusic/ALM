@@ -18,6 +18,7 @@ target_compile_options(alm_core INTERFACE
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
   $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic>)
 =======
   $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -mavx2>)
@@ -47,4 +48,10 @@ target_link_libraries(alm_core_checks PRIVATE alm_core)
 <<<<<<< ours
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+  $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off>)
+
+add_library(alm_core_checks OBJECT checks.cpp)
+target_link_libraries(alm_core_checks PRIVATE alm_core)
 >>>>>>> theirs

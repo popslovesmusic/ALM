@@ -1,8 +1,27 @@
+<<<<<<< ours
+=======
+#include <limits>
+
+>>>>>>> theirs
 #include "alm/performance.hpp"
 #include "alm/types.hpp"
 
 namespace alm::core {
 
+<<<<<<< ours
+=======
+#ifndef __AVX2__
+#error "Canonical ALM build requires AVX2 targeting."
+#endif
+
+#ifdef __FAST_MATH__
+#error "Fast-math transforms violate deterministic floating-point semantics."
+#endif
+
+static_assert(std::numeric_limits<float>::is_iec559,
+              "IEEE-754 binary32 support is required for deterministic layout.");
+
+>>>>>>> theirs
 static_assert(alignof(RegisterBlock) == 32, "Register blocks must remain 32-byte aligned.");
 static_assert(sizeof(RegisterBlock) == kRegisterBlockBytesLiteral,
               "Register block size must match literal residency budget.");
