@@ -11,7 +11,12 @@ REQUIRED_SECTIONS = [
     "Compile-Time Guardrails and Canonical Flags",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+    "Stress Resilience and Observability Traceability",
+>>>>>>> theirs
+=======
+    "Toolchain and Architecture Enforcement",
     "Stress Resilience and Observability Traceability",
 >>>>>>> theirs
 =======
@@ -33,7 +38,11 @@ REQUIRED_ARTIFACTS = [
     "alm/core/checks.cpp",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+    "alm/core/include/alm/config.hpp",
+>>>>>>> theirs
 =======
     "alm/core/include/alm/config.hpp",
 >>>>>>> theirs
@@ -46,10 +55,16 @@ COVERAGE_ITEMS = [
     "tests/test_residency.py",
     "tests/test_invariants.py",
 <<<<<<< ours
+<<<<<<< ours
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
     "tests/test_hardening.py",
+    "tests/test_compliance_docs.py",
+>>>>>>> theirs
+=======
+    "tests/test_hardening.py",
+    "tests/test_stress_paths.py",
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 ]
@@ -84,6 +99,11 @@ def test_compliance_map_includes_required_sections_and_artifacts():
         "SIMD as Ontology.md",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+        "PRESSURE_AND_DECAY_LAWS.md",
+        "SPIRAL_OBSERVABLES.md",
+>>>>>>> theirs
 =======
         "PRESSURE_AND_DECAY_LAWS.md",
         "SPIRAL_OBSERVABLES.md",
@@ -99,7 +119,10 @@ def test_compliance_map_references_canonical_sources(reference):
     assert reference in content, f"missing blueprint reference in compliance map: {reference}"
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 
@@ -110,6 +133,9 @@ def test_compliance_map_mentions_regression_coverage():
     for coverage_item in COVERAGE_ITEMS:
         assert coverage_item in content, f"missing regression coverage item: {coverage_item}"
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
