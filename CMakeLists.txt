@@ -8,6 +8,7 @@ project(ALMCore LANGUAGES CXX)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -16,6 +17,8 @@ project(ALMCore LANGUAGES CXX)
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -38,8 +41,11 @@ endif()
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 if (NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
@@ -75,6 +81,9 @@ foreach(flag IN LISTS ALM_FORBIDDEN_FLAGS)
 endforeach()
 
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -82,6 +91,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -101,6 +111,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 >>>>>>> theirs
 =======
 add_compile_options(-Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off)
+
+>>>>>>> theirs
+=======
+set(ALM_CANONICAL_COMPILE_OPTIONS
+    -Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off)
+
+add_compile_options(${ALM_CANONICAL_COMPILE_OPTIONS})
 
 >>>>>>> theirs
 add_subdirectory(alm/core)
