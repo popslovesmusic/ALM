@@ -3,7 +3,10 @@ cmake_minimum_required(VERSION 3.20)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -25,12 +28,32 @@ endforeach()
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 add_library(alm_core INTERFACE)
 
 =======
+=======
+set(ALM_FORBIDDEN_FLAGS "-ffast-math" "-Ofast" "-ffinite-math-only" "-funsafe-math-optimizations")
+set(ALM_FLAG_SCOPES
+    CMAKE_CXX_FLAGS
+    CMAKE_CXX_FLAGS_RELEASE
+    CMAKE_CXX_FLAGS_RELWITHDEBINFO
+    CMAKE_CXX_FLAGS_MINSIZEREL
+    CMAKE_CXX_FLAGS_DEBUG)
+
+foreach(flag IN LISTS ALM_FORBIDDEN_FLAGS)
+  string(REPLACE "-" "\\-" _flag_pattern ${flag})
+  foreach(scope IN LISTS ALM_FLAG_SCOPES)
+    if (${scope} MATCHES "(^|[ ;])${_flag_pattern}([ ;]|$)")
+      message(FATAL_ERROR "Forbidden compiler flag detected in ${scope}: ${flag}")
+    endif()
+  endforeach()
+endforeach()
+
+>>>>>>> theirs
 add_library(alm_core INTERFACE)
 
 set_target_properties(alm_core PROPERTIES
@@ -38,6 +61,9 @@ set_target_properties(alm_core PROPERTIES
   CXX_STANDARD_REQUIRED YES
   CXX_EXTENSIONS NO)
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 target_include_directories(alm_core
     INTERFACE
@@ -47,6 +73,7 @@ target_include_directories(alm_core
 target_compile_features(alm_core INTERFACE cxx_std_20)
 
 target_compile_options(alm_core INTERFACE
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -96,6 +123,8 @@ target_link_libraries(alm_core_checks PRIVATE alm_core)
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
   $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off>)
 
 add_library(alm_core_checks OBJECT checks.cpp)
@@ -103,6 +132,9 @@ target_link_libraries(alm_core_checks PRIVATE alm_core)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
