@@ -65,7 +65,10 @@ def extract_intrinsics_from_header(header: Path) -> Sequence[str]:
 
 
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 def collect_intrinsics_from_tree(root: Path, pattern: str = "*.hpp") -> Sequence[str]:
     """Aggregate unique AVX2 intrinsics across a header tree for compliance checks."""
 
@@ -77,6 +80,9 @@ def collect_intrinsics_from_tree(root: Path, pattern: str = "*.hpp") -> Sequence
     return sorted(intrinsics)
 
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 def parse_cxx_constants(header: Path) -> Mapping[str, int]:
     """Extract literal std::size_t constants from a C++ header."""
@@ -90,6 +96,10 @@ def parse_cxx_constants(header: Path) -> Mapping[str, int]:
 __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
 <<<<<<< ours
+<<<<<<< ours
+=======
+    "collect_intrinsics_from_tree",
+>>>>>>> theirs
 =======
     "collect_intrinsics_from_tree",
 >>>>>>> theirs

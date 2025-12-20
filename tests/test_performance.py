@@ -6,6 +6,10 @@ from alm.constants import L2_CACHE_BUDGET_BYTES
 from alm.performance import (
     ALLOWED_AVX2_INTRINSICS,
 <<<<<<< ours
+<<<<<<< ours
+=======
+    collect_intrinsics_from_tree,
+>>>>>>> theirs
 =======
     collect_intrinsics_from_tree,
 >>>>>>> theirs
@@ -34,6 +38,7 @@ def test_kernel_intrinsics_constrained_to_allow_list():
 
 
 <<<<<<< ours
+<<<<<<< ours
 def test_cxx_residency_constants_are_literal_and_consistent():
     header = Path("alm/core/include/alm/performance.hpp")
     constants = parse_cxx_constants(header)
@@ -46,6 +51,8 @@ def test_cxx_residency_constants_are_literal_and_consistent():
     assert constants["kStencilBytesLiteral"] <= constants["kL2CacheBudgetBytes"]
     assert constants["kCacheHeadroomBytes"] == constants["kL2CacheBudgetBytes"] - constants[
 =======
+=======
+>>>>>>> theirs
 def test_all_headers_intrinsics_constrained_to_allow_list():
     headers_root = Path("alm/core/include/alm")
     intrinsics = collect_intrinsics_from_tree(headers_root)
@@ -62,6 +69,12 @@ def test_cxx_residency_constants_are_literal_and_consistent():
     geom_constants = parse_cxx_constants(constants_header)
 
     required = {
+<<<<<<< ours
+=======
+        "kRegisterBlockBytesLiteral",
+        "kRegisterArrayBytesLiteral",
+        "kFrameBytesLiteral",
+>>>>>>> theirs
         "kL2CacheBudgetBytes",
         "kSliceElementsLiteral",
         "kSliceBytesLiteral",
@@ -76,10 +89,27 @@ def test_cxx_residency_constants_are_literal_and_consistent():
         geom_constants["kRegisterCount"] * geom_constants["kLaneBlocks"] * geom_constants["kLaneCount"]
     )
     expected_slice_bytes = expected_elements * 4  # sizeof(float)
+<<<<<<< ours
     expected_stencil_bytes = expected_slice_bytes * perf_constants["kStencilSlices"]
 
     assert perf_constants["kSliceElementsLiteral"] == expected_elements
     assert perf_constants["kSliceBytesLiteral"] == expected_slice_bytes
+    assert perf_constants["kStencilBytesLiteral"] == expected_stencil_bytes
+    assert perf_constants["kStencilBytesLiteral"] <= perf_constants["kL2CacheBudgetBytes"]
+    assert perf_constants["kCacheHeadroomBytes"] == perf_constants["kL2CacheBudgetBytes"] - perf_constants[
+>>>>>>> theirs
+=======
+    expected_block_bytes = geom_constants["kLaneCount"] * 4  # sizeof(float)
+    expected_array_bytes = expected_block_bytes * geom_constants["kLaneBlocks"]
+    expected_frame_bytes = expected_array_bytes * geom_constants["kRegisterCount"]
+    expected_stencil_bytes = expected_slice_bytes * perf_constants["kStencilSlices"]
+
+    assert perf_constants["kRegisterBlockBytesLiteral"] == expected_block_bytes
+    assert perf_constants["kRegisterArrayBytesLiteral"] == expected_array_bytes
+    assert perf_constants["kFrameBytesLiteral"] == expected_frame_bytes
+    assert perf_constants["kSliceElementsLiteral"] == expected_elements
+    assert perf_constants["kSliceBytesLiteral"] == expected_slice_bytes
+    assert perf_constants["kFrameBytesLiteral"] == perf_constants["kSliceBytesLiteral"]
     assert perf_constants["kStencilBytesLiteral"] == expected_stencil_bytes
     assert perf_constants["kStencilBytesLiteral"] <= perf_constants["kL2CacheBudgetBytes"]
     assert perf_constants["kCacheHeadroomBytes"] == perf_constants["kL2CacheBudgetBytes"] - perf_constants[
