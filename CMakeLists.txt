@@ -28,6 +28,7 @@ project(ALMCore LANGUAGES CXX)
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -36,6 +37,8 @@ project(ALMCore LANGUAGES CXX)
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -118,8 +121,11 @@ endif()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -215,6 +221,9 @@ endforeach()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -262,6 +271,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -347,6 +357,8 @@ add_compile_options(${ALM_CANONICAL_COMPILE_OPTIONS})
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 set(ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST
     -Wall -Wextra -Wpedantic -mavx2 -fno-fast-math -ffp-contract=off
     CACHE INTERNAL "Canonical compile option allowlist")
@@ -370,6 +382,10 @@ set(ALM_CANONICAL_COMPILE_OPTIONS ${ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST})
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+list(JOIN ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST " " ALM_CANONICAL_COMPILE_OPTIONS_STRING)
+>>>>>>> theirs
 =======
 list(JOIN ALM_CANONICAL_COMPILE_OPTION_ALLOWLIST " " ALM_CANONICAL_COMPILE_OPTIONS_STRING)
 >>>>>>> theirs
@@ -457,10 +473,13 @@ endforeach()
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 add_compile_options(${ALM_CANONICAL_COMPILE_OPTIONS})
 
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -520,6 +539,9 @@ add_compile_options(${ALM_CANONICAL_COMPILE_OPTIONS})
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

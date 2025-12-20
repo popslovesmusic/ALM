@@ -12,6 +12,7 @@ REQUIRED_SECTIONS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     "Ingest Lane Binding and Topology Closure Authority",
 >>>>>>> theirs
@@ -103,11 +104,21 @@ REQUIRED_SECTIONS = [
     "Deterministic Time Stencil and Kernel Equivalence",
     "Time Stencil Provenance and Rotation Discipline",
 >>>>>>> theirs
+=======
+    "Ingest Lane Binding and Topology Closure Authority",
+    "Coefficient Canonicalization and Chromatic Structure",
+    "Deterministic Time Stencil and Kernel Equivalence",
+    "Relational Kernel Dual-Frequency and Residual Discipline",
+    "Time Stencil Provenance and Rotation Discipline",
+>>>>>>> theirs
     "Deterministic Initialization and Seed Discipline",
     "Boundary Conditioning and Focus Orthogonality",
     "Pressure Decay and Orthogonality Compliance",
     "Compile-Time Guardrails and Canonical Flags",
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -119,6 +130,9 @@ REQUIRED_SECTIONS = [
     "Performance Profiling and Instruction Mix Evidence",
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -136,6 +150,9 @@ REQUIRED_SECTIONS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -170,6 +187,7 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     "alm/core/include/alm/types.hpp",
 >>>>>>> theirs
@@ -197,6 +215,8 @@ REQUIRED_ARTIFACTS = [
     "alm/core/include/alm/stencil.hpp",
     "alm/core/include/alm/kernel.hpp",
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
     "alm/core/include/alm/types.hpp",
@@ -204,6 +224,9 @@ REQUIRED_ARTIFACTS = [
     "alm/core/include/alm/kernel.hpp",
     "alm/core/include/alm/initialization.hpp",
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -211,6 +234,7 @@ REQUIRED_ARTIFACTS = [
     "alm/core/include/alm/focus.hpp",
     "alm/core/include/alm/build.hpp",
     "alm/core/checks.cpp",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -262,6 +286,8 @@ REQUIRED_ARTIFACTS = [
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
     "alm/core/include/alm/config.hpp",
     "alm/core/include/alm/performance.hpp",
     "alm/core/include/alm/observability.hpp",
@@ -273,6 +299,9 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -302,6 +331,9 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -343,6 +375,7 @@ COVERAGE_ITEMS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
@@ -405,6 +438,8 @@ COVERAGE_ITEMS = [
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
     "tests/test_hardening.py",
@@ -412,6 +447,9 @@ COVERAGE_ITEMS = [
     "tests/test_initialization.py",
     "tests/test_compliance_docs.py",
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -437,6 +475,10 @@ def test_compliance_map_includes_required_sections_and_artifacts():
         "TOPOLOGY & INGEST CONTRACT.md",
         "TIME_STENCIL_MECHANICS.md",
 <<<<<<< ours
+<<<<<<< ours
+=======
+        "Time Stencil Mechanics.md",
+>>>>>>> theirs
 =======
         "Time Stencil Mechanics.md",
 >>>>>>> theirs
@@ -449,6 +491,7 @@ def test_compliance_map_includes_required_sections_and_artifacts():
         "JITTER_FOCUS_TRANSFER.md",
         "CACHE_RESIDENCY_PROOF.md",
         "SIMD as Ontology.md",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -522,6 +565,8 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
         "agents.md",
         "INGEST_LANE_BINDING.md",
         "Final Topology Closure.md",
@@ -540,6 +585,9 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -573,7 +621,10 @@ def test_compliance_map_references_canonical_sources(reference):
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -623,6 +674,9 @@ def test_compliance_map_mentions_regression_coverage():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
