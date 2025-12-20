@@ -1,13 +1,20 @@
 <<<<<<< ours
+<<<<<<< ours
 =======
 #include <limits>
 
+>>>>>>> theirs
+=======
+#include <limits>
+
+#include "alm/build.hpp"
 >>>>>>> theirs
 #include "alm/performance.hpp"
 #include "alm/types.hpp"
 
 namespace alm::core {
 
+<<<<<<< ours
 <<<<<<< ours
 =======
 #ifndef __AVX2__
@@ -21,6 +28,8 @@ namespace alm::core {
 static_assert(std::numeric_limits<float>::is_iec559,
               "IEEE-754 binary32 support is required for deterministic layout.");
 
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 static_assert(alignof(RegisterBlock) == 32, "Register blocks must remain 32-byte aligned.");
 static_assert(sizeof(RegisterBlock) == kRegisterBlockBytesLiteral,
