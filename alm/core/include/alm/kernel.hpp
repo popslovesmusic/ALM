@@ -38,7 +38,13 @@
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 #include "alm/coefficients.hpp"
+=======
+#include "alm/boundary.hpp"
+#include "alm/coefficients.hpp"
+#include "alm/focus.hpp"
+>>>>>>> theirs
 =======
 #include "alm/boundary.hpp"
 #include "alm/coefficients.hpp"
@@ -274,10 +280,13 @@
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 
 namespace alm::core {
 
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -446,6 +455,9 @@ inline __m256 AccumulateCoupling(const Frame &neighbor_sum, const RegisterGammaC
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -578,7 +590,12 @@ inline void ScalarKernelStep(Stencil &stencil, const CoefficientTables &coeffici
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
                              float decay = 0.0F) {
+=======
+                             float decay = 0.0F, const BoundaryProfile *boundary = nullptr,
+                             const FocusState *focus = nullptr, float focus_gain = 1.0F) {
+>>>>>>> theirs
 =======
                              float decay = 0.0F, const BoundaryProfile *boundary = nullptr,
                              const FocusState *focus = nullptr, float focus_gain = 1.0F) {
@@ -811,6 +828,7 @@ inline void ScalarKernelStep(Stencil &stencil, const CoefficientTables &coeffici
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 }
 
 <<<<<<< ours
@@ -819,6 +837,8 @@ inline void Avx2KernelStep(Stencil &stencil, const CoefficientTables &coefficien
                            const NeighborMap &topology = kCanonicalTopology, float pressure = 1.0F,
                            float decay = 0.0F) {
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -944,6 +964,9 @@ inline void Avx2KernelStep(Stencil &stencil, const CoefficientTables &coefficien
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -1137,10 +1160,13 @@ inline void Avx2KernelStep(Stencil &stencil, const CoefficientTables &coefficien
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 }
 
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -1262,6 +1288,9 @@ inline void Avx2KernelStep(Stencil &stencil, const CoefficientTables &coefficien
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
