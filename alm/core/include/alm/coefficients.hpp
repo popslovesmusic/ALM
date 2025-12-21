@@ -6,6 +6,10 @@
 #include <array>
 #include <cassert>
 #include <cmath>
+<<<<<<< ours
+=======
+#include <optional>
+>>>>>>> theirs
 #include <string_view>
 
 namespace alm::core {
@@ -76,6 +80,12 @@ struct CanonicalizationStatus {
   bool ok{true};
   std::string_view channel{};
   std::string_view reason{};
+<<<<<<< ours
+=======
+  std::size_t block{kLaneBlocks};
+  std::size_t reg{kRegisterCount};
+  std::size_t source{kRegisterCount};
+>>>>>>> theirs
   std::size_t lane{kLaneCount};
 };
 
@@ -85,6 +95,7 @@ struct CanonicalizationStatus {
     sum += v * v;
   }
   return std::sqrt(sum);
+<<<<<<< ours
 }
 
 [[nodiscard]] inline bool FiniteCoefficients(const std::array<float, kLaneCount> &values) {
@@ -239,6 +250,123 @@ inline CoefficientTables BuildUniformCoefficients(float alpha = 0.5F, float beta
   std::array<float, kLaneCount> beta_vector{};
   std::array<float, kLaneCount> gamma_vector{};
 
+=======
+}
+
+[[nodiscard]] inline std::optional<std::size_t> FirstNonFiniteLane(const std::array<float, kLaneCount> &values) {
+  for (std::size_t lane = 0; lane < values.size(); ++lane) {
+    if (!std::isfinite(values[lane])) {
+      return lane;
+    }
+  }
+  return std::nullopt;
+}
+
+[[nodiscard]] inline CanonicalizationStatus ValidateSymmetry(const std::array<float, kLaneCount> &values,
+                                                             std::string_view channel,
+                                                             std::size_t block = kLaneBlocks,
+                                                             std::size_t reg = kRegisterCount,
+                                                             std::size_t source = kRegisterCount) {
+  for (std::size_t lane = 0; lane < kLaneCount; ++lane) {
+    const auto conjugate = kConjugateLaneMap[lane];
+    const float delta = std::fabs(values[lane] - values[conjugate]);
+    if (delta > kCoefficientTolerance) {
+      return {false, channel, "symmetry_violation", block, reg, source, lane};
+    }
+  }
+  return {true, channel, {}, kLaneBlocks, kRegisterCount, kRegisterCount, kLaneCount};
+}
+
+[[nodiscard]] inline CanonicalizationStatus ValidateNormalization(const std::array<float, kLaneCount> &values,
+                                                                  std::string_view channel,
+                                                                  std::size_t block = kLaneBlocks,
+                                                                  std::size_t reg = kRegisterCount,
+                                                                  std::size_t source = kRegisterCount) {
+  const float norm = L2Norm(values);
+  const float delta = std::fabs(norm - 1.0F);
+  if (delta > kCoefficientTolerance) {
+    return {false, channel, "normalization_violation", block, reg, source, kLaneCount};
+  }
+  return {true, channel, {}, kLaneBlocks, kRegisterCount, kRegisterCount, kLaneCount};
+}
+
+[[nodiscard]] inline CanonicalizationStatus ValidateLaneCoefficients(const LaneCoefficients &coeffs,
+                                                                     std::string_view channel,
+                                                                     std::size_t block,
+                                                                     std::size_t reg) {
+  if (const auto non_finite = FirstNonFiniteLane(coeffs.alpha)) {
+    return {false, channel, "non_finite", block, reg, kRegisterCount, *non_finite};
+  }
+
+  if (const auto non_finite = FirstNonFiniteLane(coeffs.beta)) {
+    return {false, channel, "non_finite", block, reg, kRegisterCount, *non_finite};
+  }
+
+  if (const auto non_finite = FirstNonFiniteLane(coeffs.gamma)) {
+    return {false, channel, "non_finite", block, reg, kRegisterCount, *non_finite};
+  }
+
+  const auto symmetry = ValidateSymmetry(coeffs.alpha, channel, block, reg);
+  if (!symmetry.ok) {
+    return symmetry;
+  }
+
+  const auto beta_symmetry = ValidateSymmetry(coeffs.beta, channel, block, reg);
+  if (!beta_symmetry.ok) {
+    return beta_symmetry;
+  }
+
+  const auto gamma_symmetry = ValidateSymmetry(coeffs.gamma, channel, block, reg);
+  if (!gamma_symmetry.ok) {
+    return gamma_symmetry;
+  }
+
+  const auto alpha_norm = ValidateNormalization(coeffs.alpha, channel, block, reg);
+  if (!alpha_norm.ok) {
+    return alpha_norm;
+  }
+
+  return ValidateNormalization(coeffs.beta, channel, block, reg);
+}
+
+[[nodiscard]] inline CanonicalizationStatus ValidateCoefficients(const CoefficientTables &coefficients) {
+  for (std::size_t block = 0; block < kLaneBlocks; ++block) {
+    for (std::size_t reg = 0; reg < kRegisterCount; ++reg) {
+      const auto &coeff_block = coefficients.blocks[block];
+      const auto &alpha = coeff_block.alpha_for(reg).lanes;
+      const auto &beta = coeff_block.beta_for(reg).lanes;
+
+      LaneCoefficients lane_coeffs{alpha, beta, coeff_block.gamma_for(reg).for_source(reg).lanes};
+      const auto status = ValidateLaneCoefficients(lane_coeffs, "block_coefficients", block, reg);
+      if (!status.ok) {
+        return status;
+      }
+
+      for (std::size_t source = 0; source < kRegisterCount; ++source) {
+        const auto &gamma = coeff_block.gamma_for(reg).for_source(source).lanes;
+        if (const auto non_finite = FirstNonFiniteLane(gamma)) {
+          return {false, "gamma", "non_finite", block, reg, source, *non_finite};
+        }
+
+        const auto gamma_symmetry = ValidateSymmetry(gamma, "gamma", block, reg, source);
+        if (!gamma_symmetry.ok) {
+          return gamma_symmetry;
+        }
+      }
+    }
+  }
+
+  return {true, "coefficients", {}, kLaneBlocks, kRegisterCount, kRegisterCount, kLaneCount};
+}
+
+inline CoefficientTables BuildUniformCoefficients(float alpha = 0.5F, float beta = 0.5F, float gamma = 0.0F) {
+  CoefficientTables tables{};
+
+  std::array<float, kLaneCount> alpha_vector{};
+  std::array<float, kLaneCount> beta_vector{};
+  std::array<float, kLaneCount> gamma_vector{};
+
+>>>>>>> theirs
   for (std::size_t lane = 0; lane < kLaneCount; ++lane) {
     alpha_vector[lane] = alpha;
     beta_vector[lane] = beta;
@@ -256,6 +384,9 @@ inline CoefficientTables BuildUniformCoefficients(float alpha = 0.5F, float beta
     }
   }
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
   return tables;
 }

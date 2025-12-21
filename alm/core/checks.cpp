@@ -3,6 +3,7 @@
 #include "alm/kernel.hpp"
 
 <<<<<<< ours
+<<<<<<< ours
 namespace alm::core {
 
 InvariantReport VerifyInitializationDeterminism(const SeedConfig &config) {
@@ -30,6 +31,13 @@ InvariantReport VerifyStencilRotation() {
 
 <<<<<<< ours
 =======
+=======
+#include <array>
+#include <cmath>
+
+namespace alm::core {
+
+>>>>>>> theirs
 InvariantReport VerifyInitializationDeterminism(const SeedConfig &config) {
   Frame first{};
   Frame second{};
@@ -50,11 +58,15 @@ InvariantReport VerifyStencilRotation() {
   return CheckFrameEquivalence(snapshot, stencil.recent(), "rotation_geometry");
 }
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 InvariantReport VerifyTopologyConsistency(const NeighborMap &topology = kCanonicalTopology) {
   InvariantReport report{};
 
   for (std::size_t linear = 0; linear < kCellCount; ++linear) {
+<<<<<<< ours
 <<<<<<< ours
     const auto [block, lane] = BlockAndLane(linear);
     const auto &neighbors = topology.for_cell(linear);
@@ -64,6 +76,8 @@ InvariantReport VerifyTopologyConsistency(const NeighborMap &topology = kCanonic
       report.failures.push_back({"topology", "no_neighbors", Register::kR, block, lane, 0.0F, 0.0F});
     }
 =======
+=======
+>>>>>>> theirs
     const auto &neighbors = topology.for_cell(linear);
 
     if (neighbors.size() != kNeighborCount) {
@@ -100,7 +114,18 @@ InvariantReport VerifyTopologyConsistency(const NeighborMap &topology = kCanonic
   }
 
   const float expected_weight = 1.0F / static_cast<float>(kNeighborCount);
+<<<<<<< ours
   if (!ApproximatelyEqual(topology.weight, expected_weight)) {
+    report.passed = false;
+    report.failures.push_back({"topology", "weight_mismatch", Register::kR, kLaneBlocks, kLaneCount, topology.weight,
+                               expected_weight});
+>>>>>>> theirs
+=======
+  if (!std::isfinite(topology.weight) || topology.weight <= 0.0F) {
+    report.passed = false;
+    report.failures.push_back({"topology", "invalid_weight", Register::kR, kLaneBlocks, kLaneCount, topology.weight,
+                               expected_weight});
+  } else if (!ApproximatelyEqual(topology.weight, expected_weight)) {
     report.passed = false;
     report.failures.push_back({"topology", "weight_mismatch", Register::kR, kLaneBlocks, kLaneCount, topology.weight,
                                expected_weight});

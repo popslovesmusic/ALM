@@ -6,12 +6,15 @@ Authority Order
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 Authority Status
 - Authority mechanically established in Phase 0 for structural enforcement only.
 
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 Authority Status
@@ -27,6 +30,9 @@ Gate Artifacts (present on disk)
 - docs/FROZEN_NO_EDITS
 
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -54,7 +60,10 @@ Phase Boundaries
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -67,6 +76,9 @@ Phase 0 Report (per agents.md §10)
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
