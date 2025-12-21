@@ -4,9 +4,24 @@ Authority Order
 - Governance acknowledged per agents.md and agents_plan.md.
 
 <<<<<<< ours
+<<<<<<< ours
 =======
 Authority Status
 - Authority mechanically established in Phase 0 for structural enforcement only.
+
+>>>>>>> theirs
+=======
+Authority Status
+- Authority mechanically established in Phase 0 for structural enforcement only.
+
+Gate Artifacts (present on disk)
+- alm/core/CANONICAL_EXECUTION
+- alm/core/FROZEN_NO_EDITS
+- src/alm/FROZEN_NO_EDITS
+- src/alm/REFERENCE_ONLY
+- tests/FROZEN_NO_EDITS
+- tests/REFERENCE_ONLY
+- docs/FROZEN_NO_EDITS
 
 >>>>>>> theirs
 Canonical Paths
@@ -31,13 +46,19 @@ Phase Boundaries
 - Phase 0 active; no advancement beyond Phase 0 authorized.
 
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 Phase 0 Report (per agents.md §10)
 - Authority established or confirmed: yes (Phase 0 declaration and markers).
 - Structural changes performed: marker files placed for canonical, reference, and documentation scopes.
 - Invariants now enforced: modification freezes applied to canonical execution, reference/validation, and documentation zones.
 - Remaining undefined areas: none flagged in Phase 0; later phases may introduce new invariants.
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 Classification Counts (buckets A/B/C/D)
 - A (Canonical Execution): 19 files (alm/core, including markers and include assets).

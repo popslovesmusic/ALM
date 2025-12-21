@@ -1,370 +1,43 @@
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-=======
-#include <limits>
-
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-=======
-#include <limits>
-
-#include "alm/build.hpp"
->>>>>>> theirs
-#include "alm/performance.hpp"
-#include "alm/types.hpp"
+#include "alm/compliance.hpp"
+#include "alm/initialization.hpp"
+#include "alm/kernel.hpp"
 
 namespace alm::core {
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-=======
-#ifndef __AVX2__
-#error "Canonical ALM build requires AVX2 targeting."
-#endif
+InvariantReport VerifyInitializationDeterminism(const SeedConfig &config) {
+  Frame first{};
+  Frame second{};
 
-#ifdef __FAST_MATH__
-#error "Fast-math transforms violate deterministic floating-point semantics."
-#endif
+  InitializeFrame(first, config);
+  InitializeFrame(second, config);
 
-static_assert(std::numeric_limits<float>::is_iec559,
-              "IEEE-754 binary32 support is required for deterministic layout.");
+  return CheckFrameEquivalence(first, second, "deterministic_initialization");
+}
 
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-static_assert(alignof(RegisterBlock) == 32, "Register blocks must remain 32-byte aligned.");
-static_assert(sizeof(RegisterBlock) == kRegisterBlockBytesLiteral,
-              "Register block size must match literal residency budget.");
-static_assert(sizeof(RegisterArray) == kRegisterArrayBytesLiteral,
-              "Register array size must match literal residency budget.");
-static_assert(sizeof(Frame) == kFrameBytesLiteral, "Frame size must match literal residency budget.");
-static_assert(sizeof(Frame) == kSliceBytesLiteral, "Frame size must match slice literal budget.");
-static_assert(kStencilSlices * sizeof(Frame) == kStencilBytesLiteral,
-              "Stencil footprint must match literal residency budget.");
-static_assert(kStencilBytesLiteral <= kL2CacheBudgetBytes,
-              "Stencil footprint must remain within the L2 budget envelope.");
+InvariantReport VerifyStencilRotation() {
+  Stencil stencil{};
+  InitializeStencil(stencil);
+
+  Frame snapshot = stencil.now();
+  stencil.Rotate();
+
+  return CheckFrameEquivalence(snapshot, stencil.recent(), "rotation_geometry");
+}
+
+InvariantReport VerifyTopologyConsistency(const NeighborMap &topology = kCanonicalTopology) {
+  InvariantReport report{};
+
+  for (std::size_t linear = 0; linear < kCellCount; ++linear) {
+    const auto [block, lane] = BlockAndLane(linear);
+    const auto &neighbors = topology.for_cell(linear);
+
+    if (neighbors.empty()) {
+      report.passed = false;
+      report.failures.push_back({"topology", "no_neighbors", Register::kR, block, lane, 0.0F, 0.0F});
+    }
+  }
+
+  return report;
+}
 
 }  // namespace alm::core

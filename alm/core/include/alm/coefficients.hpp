@@ -6,21 +6,16 @@
 #include <array>
 #include <cassert>
 #include <cmath>
-#include <cstddef>
 #include <string_view>
 
 namespace alm::core {
 
-inline constexpr float kCoefficientTolerance = 1e-6F;
-inline constexpr float kBiasNormalizationTolerance = 1e-6F;
-
-// Lane pairing map to enforce q[\bar{\ell}] = q[\ell] symmetry.
 inline constexpr std::array<std::size_t, kLaneCount> kConjugateLaneMap = [] {
-  std::array<std::size_t, kLaneCount> pairs{};
+  std::array<std::size_t, kLaneCount> map{};
   for (std::size_t lane = 0; lane < kLaneCount; ++lane) {
-    pairs[lane] = (kLaneCount - 1U) - lane;
+    map[lane] = kLaneCount - 1U - lane;
   }
-  return pairs;
+  return map;
 }();
 
 static_assert(kLaneCount % 2U == 0U, "Lane count must be even for conjugate pairing.");
@@ -28,156 +23,12 @@ static_assert(kConjugateLaneMap.front() == kLaneCount - 1U, "Lane 0 must pair wi
 static_assert(kConjugateLaneMap.back() == 0U, "Last lane must pair with lane 0.");
 static_assert(kConjugateLaneMap[1] == kLaneCount - 2U, "Lane pairing must be symmetric across the payload.");
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
 struct LaneCoefficients {
   std::array<float, kLaneCount> alpha{};
   std::array<float, kLaneCount> beta{};
   std::array<float, kLaneCount> gamma{};
 };
 
-struct CoefficientTables {
-  std::array<LaneCoefficients, kLaneBlocks> blocks{};
-
-  [[nodiscard]] constexpr const LaneCoefficients &block(std::size_t index) const {
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 struct RegisterLaneCoefficients {
   std::array<float, kLaneCount> lanes{};
 };
@@ -206,9 +57,9 @@ struct RegisterCoefficientTables {
     return beta[reg_index];
   }
 
-  [[nodiscard]] constexpr const RegisterGammaCoefficients &gamma_for(std::size_t target_index) const {
-    assert(target_index < gamma.size());
-    return gamma[target_index];
+  [[nodiscard]] constexpr const RegisterGammaCoefficients &gamma_for(std::size_t reg_index) const {
+    assert(reg_index < gamma.size());
+    return gamma[reg_index];
   }
 };
 
@@ -216,145 +67,6 @@ struct CoefficientTables {
   std::array<RegisterCoefficientTables, kLaneBlocks> blocks{};
 
   [[nodiscard]] constexpr const RegisterCoefficientTables &block(std::size_t index) const {
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
     assert(index < blocks.size());
     return blocks[index];
   }
@@ -399,334 +111,83 @@ struct CanonicalizationStatus {
 [[nodiscard]] inline CanonicalizationStatus ValidateNormalization(const std::array<float, kLaneCount> &values,
                                                                   std::string_view channel) {
   const float norm = L2Norm(values);
-  if (std::fabs(norm - 1.0F) > kCoefficientTolerance) {
-    return {false, channel, "normalization", kLaneCount};
+  const float delta = std::fabs(norm - 1.0F);
+  if (delta > kCoefficientTolerance) {
+    return {false, channel, "normalization_violation", kLaneCount};
   }
   return {true, channel, {}, kLaneCount};
 }
 
-[[nodiscard]] inline CanonicalizationStatus ValidateCoefficients(const std::array<float, kLaneCount> &values,
-                                                                std::string_view channel) {
-  if (!FiniteCoefficients(values)) {
+[[nodiscard]] inline CanonicalizationStatus ValidateLaneCoefficients(const LaneCoefficients &coeffs,
+                                                                     std::string_view channel) {
+  if (!FiniteCoefficients(coeffs.alpha) || !FiniteCoefficients(coeffs.beta) || !FiniteCoefficients(coeffs.gamma)) {
     return {false, channel, "non_finite", kLaneCount};
   }
-  const auto symmetry = ValidateSymmetry(values, channel);
+
+  const auto symmetry = ValidateSymmetry(coeffs.alpha, channel);
   if (!symmetry.ok) {
     return symmetry;
   }
-  return ValidateNormalization(values, channel);
+
+  const auto beta_symmetry = ValidateSymmetry(coeffs.beta, channel);
+  if (!beta_symmetry.ok) {
+    return beta_symmetry;
+  }
+
+  const auto gamma_symmetry = ValidateSymmetry(coeffs.gamma, channel);
+  if (!gamma_symmetry.ok) {
+    return gamma_symmetry;
+  }
+
+  const auto alpha_norm = ValidateNormalization(coeffs.alpha, channel);
+  if (!alpha_norm.ok) {
+    return alpha_norm;
+  }
+
+  return ValidateNormalization(coeffs.beta, channel);
 }
 
-[[nodiscard]] inline CanonicalizationStatus CanonicalizeCoefficients(
-    const std::array<float, kLaneCount> &alpha, const std::array<float, kLaneCount> &beta,
-    const std::array<float, kLaneCount> &gamma, CoefficientTables &output) {
-  const auto alpha_ok = ValidateCoefficients(alpha, "alpha");
-  if (!alpha_ok.ok) {
-    return alpha_ok;
+[[nodiscard]] inline CanonicalizationStatus ValidateCoefficients(const CoefficientTables &coefficients) {
+  for (std::size_t block = 0; block < kLaneBlocks; ++block) {
+    for (std::size_t reg = 0; reg < kRegisterCount; ++reg) {
+      const auto &alpha = coefficients.blocks[block].alpha_for(reg).lanes;
+      const auto &beta = coefficients.blocks[block].beta_for(reg).lanes;
+      LaneCoefficients lane_coeffs{alpha, beta, coefficients.blocks[block].gamma_for(reg).for_source(reg).lanes};
+      const auto status = ValidateLaneCoefficients(lane_coeffs, "block_coefficients");
+      if (!status.ok) {
+        return status;
+      }
+    }
   }
-  const auto beta_ok = ValidateCoefficients(beta, "beta");
-  if (!beta_ok.ok) {
-    return beta_ok;
-  }
-  const auto gamma_ok = ValidateCoefficients(gamma, "gamma");
-  if (!gamma_ok.ok) {
-    return gamma_ok;
+
+  return {true, "coefficients", {}, kLaneCount};
+}
+
+inline CoefficientTables BuildUniformCoefficients(float alpha = 0.5F, float beta = 0.5F, float gamma = 0.0F) {
+  CoefficientTables tables{};
+
+  std::array<float, kLaneCount> alpha_vector{};
+  std::array<float, kLaneCount> beta_vector{};
+  std::array<float, kLaneCount> gamma_vector{};
+
+  for (std::size_t lane = 0; lane < kLaneCount; ++lane) {
+    alpha_vector[lane] = alpha;
+    beta_vector[lane] = beta;
+    gamma_vector[lane] = gamma;
   }
 
   for (std::size_t block = 0; block < kLaneBlocks; ++block) {
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-    output.blocks[block].alpha = alpha;
-    output.blocks[block].beta = beta;
-    output.blocks[block].gamma = gamma;
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
     for (std::size_t reg = 0; reg < kRegisterCount; ++reg) {
-      output.blocks[block].alpha[reg].lanes = alpha;
-      output.blocks[block].beta[reg].lanes = beta;
+      tables.blocks[block].alpha[reg].lanes = alpha_vector;
+      tables.blocks[block].beta[reg].lanes = beta_vector;
 
       for (std::size_t source = 0; source < kRegisterCount; ++source) {
-        output.blocks[block].gamma[reg].sources[source].lanes = gamma;
+        tables.blocks[block].gamma[reg].sources[source].lanes = gamma_vector;
       }
     }
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   }
 
-  return {};
+  return tables;
 }
 
 inline void DerivePhiBias(const Frame &now, const Frame &recent, const Frame &stable, Frame &bias_out,
@@ -756,4 +217,3 @@ inline void DerivePhiBias(const Frame &now, const Frame &recent, const Frame &st
 }
 
 }  // namespace alm::core
-

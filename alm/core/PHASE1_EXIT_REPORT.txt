@@ -1,0 +1,21 @@
+Phase 1 Exit Report
+
+Objectives addressed
+- State geometry defined through canonical constants, frame layout, and neighbor mapping.
+- Time advancement established via rotating stencil roles and scalar kernel step wiring.
+- Deterministic initialization provided for frames and stencil slices.
+
+LOC metrics
+- Added: 166
+- Modified: 3225
+- Deleted: 3059
+- Net change: -2893
+
+Files touched
+- alm/core/FROZEN_NO_EDITS (removed)
+- alm/core/checks.cpp
+- alm/core/include/alm/coefficients.hpp
+- alm/core/include/alm/compliance.hpp
+- alm/core/include/alm/constants.hpp
+- alm/core/include/alm/kernel.hpp
+- alm/core/include/alm/stencil.hpp
