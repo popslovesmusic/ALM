@@ -1,10 +1,15 @@
-agents_plan.md
+***agents_plan.md***
 ALM Execution Plan (Governance-First, Phase-Gated)
 
 Plan Scope
 This plan governs order and enforcement, not explanation.
 
 Advancement is determined by invariant satisfaction, not documentation volume.
+
+Execution Note:
+This plan defines phase order only.
+Phase scope, permissions, placement, and exit metrics are defined exclusively in
+PHASE_CONTROL_SHEET.md.
 
 Phase 0 — Authority & Structure (Mandatory)
 Goal: Eliminate ambiguity and prevent loops.

@@ -230,3 +230,8 @@ invariants now enforced
 remaining undefined areas
 
 No narrative summaries.
+
+***Phase Control Sheet Reference***
+
+Phase execution, scope, placement rules, exit reports, and LOC metrics are governed by
+PHASE_CONTROL_SHEET.md.
