@@ -17,6 +17,7 @@ REQUIRED_SECTIONS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     "Ingest Lane Binding and Topology Closure Authority",
 >>>>>>> theirs
@@ -122,6 +123,8 @@ REQUIRED_SECTIONS = [
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
     "Ingest Lane Binding and Topology Closure Authority",
     "Coefficient Canonicalization and Chromatic Structure",
     "Deterministic Time Stencil and Kernel Equivalence",
@@ -131,6 +134,9 @@ REQUIRED_SECTIONS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -148,6 +154,7 @@ REQUIRED_SECTIONS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -160,6 +167,9 @@ REQUIRED_SECTIONS = [
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+    "Compiled Checks and Residency Proof Binding",
 >>>>>>> theirs
     "Geometry, Slice Layout, and Cache Residency Lockdown",
     "Canonical Compile Option Allowlist Enforcement",
@@ -167,6 +177,7 @@ REQUIRED_SECTIONS = [
     "Toolchain and Architecture Enforcement",
     "Performance Residency and Intrinsic Allowlist",
     "Performance Profiling and Instruction Mix Evidence",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -229,11 +240,18 @@ REQUIRED_SECTIONS = [
     "Stress Resilience and Observability Traceability",
     "Read-Only Observability Residency Discipline",
 >>>>>>> theirs
+=======
+    "Stress Resilience and Observability Traceability",
+    "Read-Only Observability Residency Discipline",
+>>>>>>> theirs
     "Diagnostic Retention and Durability",
     "Spiral Observables and Passive Sampling Discipline",
     "Invariant Regression and Readiness Compliance",
     "Ontology and Provenance Traceability",
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -259,6 +277,7 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
     "alm/core/include/alm/types.hpp",
 >>>>>>> theirs
@@ -286,6 +305,8 @@ REQUIRED_ARTIFACTS = [
     "alm/core/include/alm/stencil.hpp",
     "alm/core/include/alm/kernel.hpp",
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -308,6 +329,9 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -325,6 +349,7 @@ REQUIRED_ARTIFACTS = [
     "alm/core/include/alm/focus.hpp",
     "alm/core/include/alm/build.hpp",
     "alm/core/checks.cpp",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -432,6 +457,14 @@ REQUIRED_ARTIFACTS = [
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+    "alm/core/include/alm/config.hpp",
+    "alm/core/include/alm/performance.hpp",
+    "alm/core/include/alm/observability.hpp",
+    "CMakeLists.txt",
+    "alm/core/CMakeLists.txt",
+    "agents.md",
+>>>>>>> theirs
     "src/alm/performance.py",
     "docs/tests_and_support/INVARIANT_REGRESSION_TESTS.md",
     "docs/blueprint/Blueprint checklist.md",
@@ -451,6 +484,9 @@ REQUIRED_ARTIFACTS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -507,6 +543,7 @@ COVERAGE_ITEMS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
@@ -569,6 +606,8 @@ COVERAGE_ITEMS = [
     "tests/test_compliance_docs.py",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -591,6 +630,9 @@ COVERAGE_ITEMS = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -631,6 +673,10 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+        "Time Stencil Mechanics.md",
+>>>>>>> theirs
 =======
         "Time Stencil Mechanics.md",
 >>>>>>> theirs
@@ -658,6 +704,7 @@ def test_compliance_map_includes_required_sections_and_artifacts():
         "JITTER_FOCUS_TRANSFER.md",
         "CACHE_RESIDENCY_PROOF.md",
         "SIMD as Ontology.md",
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -746,6 +793,8 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
         "agents.md",
         "INGEST_LANE_BINDING.md",
         "Final Topology Closure.md",
@@ -769,6 +818,9 @@ def test_compliance_map_includes_required_sections_and_artifacts():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -817,7 +869,10 @@ def test_compliance_map_references_canonical_sources(reference):
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -882,6 +937,9 @@ def test_compliance_map_mentions_regression_coverage():
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
