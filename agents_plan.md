@@ -1,50 +1,191 @@
-# ALM Implementation Phased Plan
+agents_plan.md
+ALM Execution Plan (Governance-First, Phase-Gated)
 
-This plan breaks the ALM blueprint into small, buildable phases with traceability to the canonical references in `gemini.md`.
+Plan Scope
+This plan governs order and enforcement, not explanation.
 
-## Phase 1: Foundational Scaffolding
-- Define data structures for the 10×10 grid and four registers (R, G, B, I) per cell, grouped into four AVX2 lane blocks (0–31) to respect the physical runtime envelope.
-- Implement the four-slice stencil buffers (`FUTURE`, `NOW`, `RECENT`, `STABLE`) using pointer/index rotation—no copying—per the time structure contract.
-- Add deterministic seed/config handling without dynamic tuning to align with coefficient canonicalization rules.
+Advancement is determined by invariant satisfaction, not documentation volume.
 
-## Phase 2: Coefficient Canonicalization
-- Ingest the canonical coefficient tables (`α, β, Γ`) and enforce symmetry (`q[ℓ̄] = q[ℓ]`), normalization, and exact lane/block mapping.
-- Validate chromatic structure (12-hue/12-tone layout plus auxiliary lanes) at load time; fail fast on deviations.
-- Prepare static, read-only coefficient buffers accessible to both scalar and AVX2 paths to ensure deterministic equivalence.
-- Define the FUTURE bias source term Φ as a deterministic function of NOW/RECENT/STABLE to prevent tuning drift while keeping rotation and decay laws intact.
+Phase 0 — Authority & Structure (Mandatory)
+Goal: Eliminate ambiguity and prevent loops.
 
-## Phase 3: Topology & Ingest Contract
-- Implement the 12-neighbor symmetric topology with uniform weights and static closure; prohibit rewiring or per-lane specialization.
-- Build ingest lanes that inject external signals only at the allowed entry points, orthogonal to pressure/persistence channels and synchronized with stencil advancement.
-- Add configuration validation to prevent mid-step injections or hidden control metadata.
+Deliverables:
 
-## Phase 4: Relational Kernel Core (Scalar Path)
-- Implement the residual-based update (`Δ* = U* - k*`) with dual-frequency terms (fast angular, slow radial) and skew-symmetric coupling for spin without branching.
-- Integrate uniform neighbor aggregation with the canonical coefficients and topology weights.
-- Include pressure modulation and decay laws as multiplicative factors only—no control flow or gating.
+canonical execution path declared
 
-## Phase 5: AVX2 SIMD Path
-- Port the scalar kernel to AVX2 using only whitelisted intrinsics; avoid masking, reductions, gathers, shuffles, and branching to preserve simultaneity.
-- Ensure payload fits within L2 cache per `CACHE_RESIDENCY_PROOF.md` (verify layout/stride and avoid spills).
-- Add invariant checks to guarantee scalar and AVX2 outputs are deterministically equivalent per stencil step.
+non-canonical paths identified
 
-## Phase 6: Boundary Conditioning & Focus
-- Implement resonant boundary responses without gates, clamps, or thresholds; verify behavior matches the boundary conditioning contract.
-- Add focus handoff under jitter following prescribed transfer rules and maintaining orthogonality with pressure channels.
-- Validate pressure orthogonality and absence of topology distortion during focus transitions.
+frozen zones defined
 
-## Phase 7: Observability & Instrumentation
-- Provide passive observables that sample state without altering stencil rotation, pressure channels, or topology.
-- Expose spiral observables (angular/radial trajectories) aligned with the dual-frequency dynamics.
-- Add lightweight logging/telemetry hooks that remain read-only and cache-resident.
-- Specify diagnostic retention/durability policy for external observables so traces remain comparable across deployments while honoring the non-intrusive diagnostics contract.
+phase boundaries named
 
-## Phase 8: Testing & Compliance
-- Implement the invariant regression suite from `docs/tests_and_support/INVARIANT_REGRESSION_TESTS.md` to cover kernel laws, topology, timing, pressure, and scalar/AVX2 equivalence.
-- Add readiness gating via the blueprint checklist before integration.
-- Automate continuous verification to block violations of cache residency, topology closure, or coefficient canonicalization.
+Exit Condition:
 
-## Phase 9: Performance & Hardening
-- Profile memory layout and instruction mix to confirm L2 residency and adherence to allowed AVX2 intrinsics.
-- Stress test ingest cadence, pressure modulation, and focus transfer under jitter.
-- Document compliance artifacts linking implementation components to the canonical references for traceability.
+it is mechanically unambiguous where ALM state may evolve
+
+attempts to evolve state elsewhere fail
+
+No logic, math, or optimization allowed.
+
+Phase 1 — State Geometry & Time
+Goal: Establish state and temporal mechanics.
+
+Deliverables:
+
+state representation
+
+time or stencil advancement mechanism
+
+deterministic initialization
+
+Exit Condition:
+
+time advances only through declared mechanisms
+
+removing time logic causes invariant failure
+
+Phase 2 — Coefficients & Canonical Parameters
+Goal: Lock numeric and structural constants.
+
+Deliverables:
+
+canonical coefficient tables
+
+symmetry and normalization checks
+
+read-only enforcement
+
+Exit Condition:
+
+any coefficient mutation causes failure
+
+scalar and vector paths consume identical parameters
+
+Phase 3 — Topology & Ingest
+Goal: Define relational structure and external interaction.
+
+Deliverables:
+
+static topology
+
+ingest pathways
+
+orthogonality enforcement
+
+Exit Condition:
+
+topology cannot change at runtime
+
+ingest cannot bypass declared entry points
+
+Phase 4 — Relational Kernel (Scalar)
+Goal: Implement the core law without optimization.
+
+Deliverables:
+
+scalar kernel
+
+residual update logic
+
+no branching or control flow
+
+Exit Condition:
+
+kernel invariants hold under stress
+
+removing the kernel collapses behavior
+
+Phase 5 — Vector / SIMD Kernel
+Goal: Achieve law-equivalent parallel execution.
+
+Deliverables:
+
+SIMD kernel
+
+equivalence tests
+
+memory layout enforcement
+
+Exit Condition:
+
+scalar and SIMD paths are provably equivalent
+
+any divergence fails immediately
+
+Phase 6 — Boundary, Focus, Pressure
+Goal: Introduce modulation without control.
+
+Deliverables:
+
+boundary conditioning
+
+focus transfer
+
+pressure modulation
+
+Exit Condition:
+
+modulation does not alter topology or control flow
+
+removing this phase does not affect earlier phases
+
+Phase 7 — Observability
+Goal: Observe without influence.
+
+Deliverables:
+
+read-only observables
+
+spiral metrics
+
+diagnostics
+
+Exit Condition:
+
+observation does not affect state evolution
+
+Phase 8 — Invariants & Compliance
+Goal: Make correctness non-negotiable.
+
+Deliverables:
+
+invariant registry
+
+regression tests
+
+enforcement gates
+
+Exit Condition:
+
+removing any invariant causes failure
+
+tests define existence, not quality
+
+Phase 9 — Performance & Hardening
+Goal: Optimize without semantic change.
+
+Deliverables:
+
+performance characterization
+
+stress testing
+
+cache and layout validation
+
+Exit Condition:
+
+optimization does not change meaning
+
+removing optimizations preserves behavior
+
+Final Rule
+If a phase cannot be:
+
+isolated
+
+deleted
+
+enforced
+
+then it is not a phase and must be reworked.
+
