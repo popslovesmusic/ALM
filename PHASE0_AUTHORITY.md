@@ -3,6 +3,12 @@ Phase 0 Authority Declaration
 Authority Order
 - Governance acknowledged per agents.md and agents_plan.md.
 
+<<<<<<< ours
+=======
+Authority Status
+- Authority mechanically established in Phase 0 for structural enforcement only.
+
+>>>>>>> theirs
 Canonical Paths
 - alm/core (C++ build under CMake); marker: CANONICAL_EXECUTION; build gate: root CMakeLists.txt.
 
@@ -24,6 +30,15 @@ Frozen Zones
 Phase Boundaries
 - Phase 0 active; no advancement beyond Phase 0 authorized.
 
+<<<<<<< ours
+=======
+Phase 0 Report (per agents.md §10)
+- Authority established or confirmed: yes (Phase 0 declaration and markers).
+- Structural changes performed: marker files placed for canonical, reference, and documentation scopes.
+- Invariants now enforced: modification freezes applied to canonical execution, reference/validation, and documentation zones.
+- Remaining undefined areas: none flagged in Phase 0; later phases may introduce new invariants.
+
+>>>>>>> theirs
 Classification Counts (buckets A/B/C/D)
 - A (Canonical Execution): 19 files (alm/core, including markers and include assets).
 - B (Reference/Validation): 43 files (src/alm, tests, pyproject.toml, dir.py, .gitignore, root CMakeLists.txt).
