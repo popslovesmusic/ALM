@@ -17,7 +17,10 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -50,6 +53,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -84,10 +90,13 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 ## Scalar and AVX2 Equivalence and Intrinsic Parity
@@ -96,6 +105,9 @@ This document links the canonical blueprint references to the implementation art
 - **Regression coverage:** `tests/test_invariants.py` (scalar and AVX2 path equivalence), `tests/test_performance.py` (intrinsic allowlist parity and compile-option enforcement)
 
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -106,6 +118,9 @@ This document links the canonical blueprint references to the implementation art
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -119,6 +134,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -135,6 +153,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -158,7 +179,10 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -188,6 +212,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -227,6 +254,7 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 =======
@@ -246,6 +274,8 @@ This document links the canonical blueprint references to the implementation art
 >>>>>>> theirs
 =======
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -269,6 +299,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -294,6 +327,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -324,6 +360,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -366,10 +405,13 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -417,6 +459,7 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -435,6 +478,8 @@ This document links the canonical blueprint references to the implementation art
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -455,6 +500,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -470,6 +518,7 @@ This document links the canonical blueprint references to the implementation art
 ## Stress Resilience and Observability Traceability
 - **Blueprint references:** `PRESSURE_AND_DECAY_LAWS.md`, `PRESSURE_SIGNAL_ORTHOGONALITY.md`, `JITTER_FOCUS_TRANSFER.md`, `SPIRAL_OBSERVABLES.md`
 - **Implementation artifacts:** `alm/core/include/alm/ingest.hpp`, `alm/core/include/alm/focus.hpp`, `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -525,6 +574,8 @@ This document links the canonical blueprint references to the implementation art
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 - **Regression coverage:** `tests/test_performance.py` (ingest cadence and focus stress compliance), `tests/test_invariants.py` (pressure orthogonality), `tests/test_stress_paths.py` (ingest/focus/observability guards), `tests/test_compliance_docs.py` (compliance map traceability)
 
 ## Diagnostic Retention and Durability
@@ -543,6 +594,7 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -565,6 +617,13 @@ This document links the canonical blueprint references to the implementation art
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+## Spiral Observables and Passive Sampling Discipline
+- **Blueprint references:** `SPIRAL_OBSERVABLES.md`, `The Spiral Concept in ALM.md`
+- **Implementation artifacts:** `alm/core/include/alm/observability.hpp`, `src/alm/performance.py`
+- **Regression coverage:** `tests/test_stress_paths.py` (passive sampling guards), `tests/test_performance.py` (observability harness compliance), `tests/test_compliance_docs.py` (traceability enforcement)
+
 >>>>>>> theirs
 ## Invariant Regression and Readiness Compliance
 - **Blueprint references:** `docs/tests_and_support/INVARIANT_REGRESSION_TESTS.md`, `docs/blueprint/Blueprint checklist.md`, `ALM_READINESS_REPORT.md`
@@ -583,8 +642,11 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -626,6 +688,9 @@ This document links the canonical blueprint references to the implementation art
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

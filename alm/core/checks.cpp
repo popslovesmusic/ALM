@@ -31,9 +31,15 @@
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 #include <limits>
 
+>>>>>>> theirs
+=======
+#include <limits>
+
+#include "alm/build.hpp"
 >>>>>>> theirs
 =======
 #include <limits>
@@ -233,6 +239,7 @@ namespace alm::core {
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 #ifndef __AVX2__
 #error "Canonical ALM build requires AVX2 targeting."
@@ -245,6 +252,8 @@ namespace alm::core {
 static_assert(std::numeric_limits<float>::is_iec559,
               "IEEE-754 binary32 support is required for deterministic layout.");
 
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
