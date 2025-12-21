@@ -132,6 +132,7 @@ struct CanonicalizationStatus {
   const auto beta_symmetry = ValidateSymmetry(coeffs.beta, channel);
   if (!beta_symmetry.ok) {
     return beta_symmetry;
+<<<<<<< ours
   }
 
   const auto gamma_symmetry = ValidateSymmetry(coeffs.gamma, channel);
@@ -174,6 +175,74 @@ inline CoefficientTables BuildUniformCoefficients(float alpha = 0.5F, float beta
     alpha_vector[lane] = alpha;
     beta_vector[lane] = beta;
     gamma_vector[lane] = gamma;
+=======
+  }
+
+  const auto gamma_symmetry = ValidateSymmetry(coeffs.gamma, channel);
+  if (!gamma_symmetry.ok) {
+    return gamma_symmetry;
+  }
+
+  const auto alpha_norm = ValidateNormalization(coeffs.alpha, channel);
+  if (!alpha_norm.ok) {
+    return alpha_norm;
+>>>>>>> theirs
+  }
+
+  return ValidateNormalization(coeffs.beta, channel);
+}
+
+[[nodiscard]] inline CanonicalizationStatus ValidateCoefficients(const CoefficientTables &coefficients) {
+  for (std::size_t block = 0; block < kLaneBlocks; ++block) {
+    for (std::size_t reg = 0; reg < kRegisterCount; ++reg) {
+<<<<<<< ours
+      tables.blocks[block].alpha[reg].lanes = alpha_vector;
+      tables.blocks[block].beta[reg].lanes = beta_vector;
+
+      for (std::size_t source = 0; source < kRegisterCount; ++source) {
+        tables.blocks[block].gamma[reg].sources[source].lanes = gamma_vector;
+=======
+      const auto &coeff_block = coefficients.blocks[block];
+      const auto &alpha = coeff_block.alpha_for(reg).lanes;
+      const auto &beta = coeff_block.beta_for(reg).lanes;
+
+      LaneCoefficients lane_coeffs{alpha, beta, coeff_block.gamma_for(reg).for_source(reg).lanes};
+      const auto status = ValidateLaneCoefficients(lane_coeffs, "block_coefficients");
+      if (!status.ok) {
+        return status;
+      }
+
+      for (std::size_t source = 0; source < kRegisterCount; ++source) {
+        const auto &gamma = coeff_block.gamma_for(reg).for_source(source).lanes;
+        if (!FiniteCoefficients(gamma)) {
+          return {false, "gamma", "non_finite", kLaneCount};
+        }
+
+        const auto gamma_symmetry = ValidateSymmetry(gamma, "gamma");
+        if (!gamma_symmetry.ok) {
+          return gamma_symmetry;
+        }
+>>>>>>> theirs
+      }
+    }
+  }
+
+<<<<<<< ours
+=======
+  return {true, "coefficients", {}, kLaneCount};
+}
+
+inline CoefficientTables BuildUniformCoefficients(float alpha = 0.5F, float beta = 0.5F, float gamma = 0.0F) {
+  CoefficientTables tables{};
+
+  std::array<float, kLaneCount> alpha_vector{};
+  std::array<float, kLaneCount> beta_vector{};
+  std::array<float, kLaneCount> gamma_vector{};
+
+  for (std::size_t lane = 0; lane < kLaneCount; ++lane) {
+    alpha_vector[lane] = alpha;
+    beta_vector[lane] = beta;
+    gamma_vector[lane] = gamma;
   }
 
   for (std::size_t block = 0; block < kLaneBlocks; ++block) {
@@ -187,6 +256,7 @@ inline CoefficientTables BuildUniformCoefficients(float alpha = 0.5F, float beta
     }
   }
 
+>>>>>>> theirs
   return tables;
 }
 

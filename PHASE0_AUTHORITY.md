@@ -5,12 +5,15 @@ Authority Order
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 Authority Status
 - Authority mechanically established in Phase 0 for structural enforcement only.
 
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 Authority Status
 - Authority mechanically established in Phase 0 for structural enforcement only.
 
@@ -23,6 +26,9 @@ Gate Artifacts (present on disk)
 - tests/REFERENCE_ONLY
 - docs/FROZEN_NO_EDITS
 
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 Canonical Paths
 - alm/core (C++ build under CMake); marker: CANONICAL_EXECUTION; build gate: root CMakeLists.txt.
@@ -47,7 +53,10 @@ Phase Boundaries
 
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 Phase 0 Report (per agents.md §10)
@@ -57,6 +66,9 @@ Phase 0 Report (per agents.md §10)
 - Remaining undefined areas: none flagged in Phase 0; later phases may introduce new invariants.
 
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
