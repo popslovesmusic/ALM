@@ -67,6 +67,7 @@ _CONST_PATTERN = re.compile(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 _COMPILE_OPTIONS_PATTERN = re.compile(
     r"target_compile_options\(alm_core\s+INTERFACE(?P<body>[^\)]*)\)", re.MULTILINE | re.DOTALL
@@ -115,6 +116,8 @@ _BUILD_GUARD_MARKERS = (
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -202,6 +205,7 @@ _ADD_COMPILE_OPTIONS_PATTERN = re.compile(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 _FORBIDDEN_FLAGS_PATTERN = re.compile(
     r"set\(ALM_FORBIDDEN_FLAGS\s+(?P<body>[^\)]*)\)", re.MULTILINE
 >>>>>>> theirs
@@ -213,6 +217,8 @@ _FORBIDDEN_FLAGS_PATTERN = re.compile(
     r"set\(ALM_FORBIDDEN_FLAGS\s+(?P<body>[^\)]*)\)", re.MULTILINE
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -297,8 +303,11 @@ _FORBIDDEN_FLAGS_PATTERN = re.compile(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -375,6 +384,9 @@ _FLAG_SCOPE_PATTERN = re.compile(
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -460,6 +472,9 @@ _BUILD_GUARD_MARKERS = (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -567,6 +582,9 @@ _BUILD_GUARD_MARKERS = (
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -708,7 +726,10 @@ def extract_intrinsics_from_header(header: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -837,6 +858,9 @@ def collect_intrinsics_from_tree(root: Path, pattern: str = "*.hpp") -> Sequence
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -962,6 +986,7 @@ def parse_cxx_constants(header: Path) -> Mapping[str, int]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 __all__ = [
     "ALLOWED_AVX2_INTRINSICS",
 <<<<<<< ours
@@ -978,6 +1003,8 @@ __all__ = [
 >>>>>>> theirs
     "extract_intrinsics_from_header",
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -1081,6 +1108,12 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    canonical_options = parse_canonical_compile_options(cmake_lists)
+    if not canonical_options:
+        canonical_options = parse_canonical_compile_options(Path("CMakeLists.txt"))
+>>>>>>> theirs
 =======
     canonical_options = parse_canonical_compile_options(cmake_lists)
     if not canonical_options:
@@ -1251,8 +1284,11 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         tokens.extend(match.group("opts").split())
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -1337,6 +1373,9 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -1422,8 +1461,11 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
                 tokens.extend(line.split())
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -1507,6 +1549,9 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -1598,6 +1643,7 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 =======
 =======
 >>>>>>> theirs
@@ -1610,6 +1656,8 @@ def parse_compile_options(cmake_lists: Path) -> Sequence[str]:
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -1695,6 +1743,10 @@ def parse_global_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    canonical_options = parse_canonical_compile_options(cmake_lists)
+>>>>>>> theirs
 =======
     canonical_options = parse_canonical_compile_options(cmake_lists)
 >>>>>>> theirs
@@ -1810,8 +1862,11 @@ def parse_global_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
             tokens.extend(expr.group("opts").split())
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -1896,6 +1951,9 @@ def parse_global_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -1981,8 +2039,11 @@ def parse_global_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
                     tokens.extend(line.split())
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -2080,6 +2141,7 @@ def parse_canonical_compile_options(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 
     for raw in body.split():
         token = raw.strip("\" ")
@@ -2087,6 +2149,8 @@ def parse_canonical_compile_options(cmake_lists: Path) -> Sequence[str]:
             tokens.append(token)
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -2194,6 +2258,9 @@ def parse_canonical_compile_option_allowlist(cmake_lists: Path) -> Sequence[str]
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -2276,6 +2343,9 @@ def parse_canonical_compile_option_allowlist(cmake_lists: Path) -> Sequence[str]
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -2371,8 +2441,11 @@ def extract_build_guard_markers(build_header: Path) -> set[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -2488,6 +2561,7 @@ def parse_forbidden_flags(cmake_lists: Path) -> Sequence[str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -2504,6 +2578,8 @@ def parse_forbidden_flags(cmake_lists: Path) -> Sequence[str]:
 =======
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -2588,6 +2664,9 @@ def parse_flag_scopes(cmake_lists: Path) -> dict[str, str]:
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -2675,6 +2754,7 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
     "parse_compile_options",
 <<<<<<< ours
 <<<<<<< ours
@@ -2726,6 +2806,8 @@ __all__ = [
     "parse_global_compile_options",
 >>>>>>> theirs
 =======
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======
@@ -2805,6 +2887,12 @@ __all__ = [
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+    "parse_compile_options",
+    "parse_global_compile_options",
+>>>>>>> theirs
+=======
+    "parse_flag_scopes",
     "parse_compile_options",
     "parse_global_compile_options",
 >>>>>>> theirs
